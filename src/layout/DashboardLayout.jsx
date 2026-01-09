@@ -1,49 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { Link, Outlet, useLocation } from "react-router";
-import { AnimatePresence, motion } from "framer-motion";
+// import { AnimatePresence, motion } from "framer-motion";
 
 // Icons
 import { MdClose, MdDarkMode, MdLightMode, MdMenu } from "react-icons/md";
 import { BsGraphUp } from "react-icons/bs";
 import { GrLogout } from "react-icons/gr";
+import MenuItem from "../component/Dashboard/MenuItem/MenuItem";
 
 // Hooks
-import useAuth from "../hooks/useAuth";
-import useUser from "../hooks/useUser";
+// import useAuth from "../hooks/useAuth";
+// import useUser from "../hooks/useUser";
 
 // components
-import MenuItem from "../components/Dashboard/Sidebar/Menu/MenuItem";
-import AdminMenu from "../components/Dashboard/Sidebar/Menu/AdminMenu";
-import SidebarSkeleton from "../components/ui/Loading/Sidebar only/SidebarSkeleton";
+// import AdminMenu from "../components/Dashboard/Sidebar/Menu/AdminMenu";
+// import SidebarSkeleton from "../components/ui/Loading/Sidebar only/SidebarSkeleton";
 
 // Avatar
-import avatarImg from "../assets/avater.jpg";
-import logo from "../assets/Logo.png";
-import useTitle from "../hooks/useTitle";
-import StudentsMenu from "../components/Dashboard/Sidebar/Menu/StudentsMenu";
-import TrainerMenu from "../components/Dashboard/Sidebar/Menu/TrainerMenu";
-import VolunteerMenu from "../components/Dashboard/Sidebar/Menu/VolunteerMenu";
+// import avatarImg from "../assets/avater.jpg";
+// import logo from "../assets/Logo.png";
+// import useTitle from "../hooks/useTitle";
+// import StudentsMenu from "../components/Dashboard/Sidebar/Menu/StudentsMenu";
+// import TrainerMenu from "../components/Dashboard/Sidebar/Menu/TrainerMenu";
+// import VolunteerMenu from "../components/Dashboard/Sidebar/Menu/VolunteerMenu";
 
 const DashboardLayout = () => {
-  useTitle("Dashboard");
+  // useTitle("Dashboard");
 
-  const { user, logOut } = useAuth();
-  const { userData: dbUser, isLoading } = useUser();
+  // const { user, logOut } = useAuth();
+  // const { userData: dbUser, isLoading } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const location = useLocation();
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  // const location = useLocation();
+  // const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
-  useEffect(() => {
-    const html = document.querySelector("html");
-    html.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+  // useEffect(() => {
+  //   const html = document.querySelector("html");
+  //   html.setAttribute("data-theme", theme);
+  //   localStorage.setItem("theme", theme);
+  // }, [theme]);
 
-  const handleTheme = (checked) => {
-    setTheme(checked ? "dark" : "light");
-  };
+  // const handleTheme = (checked) => {
+  //   setTheme(checked ? "dark" : "light");
+  // };
 
-  if (isLoading) return <SidebarSkeleton />;
+  // if (isLoading) return <SidebarSkeleton />;
 
   return (
     // Inside DashboardLayout.jsx
@@ -59,7 +59,7 @@ const DashboardLayout = () => {
               to="/"
               className={`flex items-center gap-3 ${sidebarOpen ? "opacity-100" : "opacity-0"}`}
             >
-              <img src={logo} alt="Logo" className="w-10 h-10" />
+              <img src="#" alt="Logo" className="w-10 h-10" />
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                 GRAMEEN <br />
                 <span className="bg-linear-to-r from-[#1b552c] to-[#02e446] bg-clip-text text-transparent">
@@ -84,10 +84,10 @@ const DashboardLayout = () => {
                   label="Statistics"
                   address="/dashboard"
                 />
-                {dbUser?.role === "admin" && <AdminMenu />}
+                {/* {dbUser?.role === "admin" && <AdminMenu />}
                 {dbUser?.role === "volunteer" && <VolunteerMenu />}
                 {dbUser?.role === "student" && <StudentsMenu />}
-                {dbUser?.role === "trainer" && <TrainerMenu />}
+                {dbUser?.role === "trainer" && <TrainerMenu />} */}
               </>
             )}
           </div>
@@ -95,7 +95,7 @@ const DashboardLayout = () => {
           {sidebarOpen && (
             <Link
               to="/"
-              onClick={logOut}
+              // onClick={logOut}
               className="cursor-pointer px-4 m-4 flex items-center gap-3 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
             >
               <GrLogout />
@@ -145,8 +145,7 @@ const DashboardLayout = () => {
 
           {/* CONTENT */}
           <div className="flex-1 overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.main
+              <main
                 key={location.pathname}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -155,8 +154,7 @@ const DashboardLayout = () => {
                 className="h-full overflow-y-auto m-4 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100"
               >
                 <Outlet />
-              </motion.main>
-            </AnimatePresence>
+              </main>
           </div>
         </div>
       </div>
