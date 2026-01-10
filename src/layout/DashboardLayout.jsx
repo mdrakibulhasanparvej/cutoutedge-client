@@ -7,6 +7,7 @@ import { MdClose, MdDarkMode, MdLightMode, MdMenu } from "react-icons/md";
 import { BsGraphUp } from "react-icons/bs";
 import { GrLogout } from "react-icons/gr";
 import MenuItem from "../component/Dashboard/MenuItem/MenuItem";
+import Navbar from "../component/shared/Navbar/Navbar";
 
 // Hooks
 // import useAuth from "../hooks/useAuth";
@@ -31,7 +32,8 @@ const DashboardLayout = () => {
   // const { userData: dbUser, isLoading } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   // const location = useLocation();
-  // const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [user, setUser] = useState(true)
 
   // useEffect(() => {
   //   const html = document.querySelector("html");
@@ -39,9 +41,9 @@ const DashboardLayout = () => {
   //   localStorage.setItem("theme", theme);
   // }, [theme]);
 
-  // const handleTheme = (checked) => {
-  //   setTheme(checked ? "dark" : "light");
-  // };
+  const handleTheme = (checked) => {
+    setTheme(checked ? "dark" : "light");
+  };
 
   // if (isLoading) return <SidebarSkeleton />;
 
@@ -61,9 +63,9 @@ const DashboardLayout = () => {
             >
               <img src="#" alt="Logo" className="w-10 h-10" />
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                GRAMEEN <br />
+                Cutout <br />
                 <span className="bg-linear-to-r from-[#1b552c] to-[#02e446] bg-clip-text text-transparent">
-                  SHIKKHA-VTC
+                  Age
                 </span>
               </h2>
             </Link>
@@ -110,7 +112,7 @@ const DashboardLayout = () => {
       ${sidebarOpen ? "ml-0" : "ml-0"}`}
         >
           {/* TOP NAV */}
-          <header className="flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+          {/* <header className="flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
             <button onClick={() => setSidebarOpen(!sidebarOpen)}>
               <MdMenu className="w-7 h-7 text-gray-700 dark:text-gray-300" />
             </button>
@@ -133,15 +135,18 @@ const DashboardLayout = () => {
                     Hey,{" "}
                     <span className="font-semibold">{user?.displayName}</span>
                   </p>
-                  <p className="text-xs text-gray-500">{dbUser?.role}</p>
+                  <p className="text-xs text-gray-500">Admin</p>
                 </div>
                 <img
-                  src={user?.photoURL || avatarImg}
+                  src="#"
                   className="w-10 h-10 rounded-full border-2 border-red-800 object-cover"
                 />
               </div>
             </div>
-          </header>
+          </header> */}
+
+          {/* Header */}
+          <Navbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
           {/* CONTENT */}
           <div className="flex-1 overflow-hidden">

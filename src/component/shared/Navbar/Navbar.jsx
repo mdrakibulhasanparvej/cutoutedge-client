@@ -7,10 +7,10 @@ import {
   MdAccountCircle
 } from 'react-icons/md';
 
-const Navbar = () => {
+const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
   return (
-    <header className="bg-blue-700 text-white shadow-md fixed w-full top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="bg-blue-700 text-white shadow-md top-0 z-50">
+      <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Left - Menu + Logo */}
@@ -18,6 +18,7 @@ const Navbar = () => {
             <button
               className="p-2 rounded-full hover:bg-blue-600 transition-colors"
               aria-label="menu"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
             >
               <MdMenu size={28} />
             </button>
