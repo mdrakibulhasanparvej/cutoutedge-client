@@ -7,6 +7,7 @@ import {
   FiDownload,
   FiExternalLink,
 } from "react-icons/fi";
+import { Link } from "react-router";
 
 const Finished = ({
   order = {
@@ -28,10 +29,12 @@ const Finished = ({
   return (
     <div
       className={`
-        group flex items-center gap-4 px-4 py-3.5
-        bg-white border-b border-gray-100
-        rounded-xl hover:shadow-sm hover:scle-1.02 transition-colors
-        last:border-b-0
+        roup w-full
+        flex flex-col sm:flex-row
+        sm:items-center gap-4
+        px-4 py-4
+        bg-white border border-gray-100 rounded-xl
+        hover:shadow-md hover:-translate-y-0.5 transition-all
       `}
     >
       {/* Status indicator + ID */}
@@ -110,14 +113,15 @@ const Finished = ({
           Download
         </button>
 
-        <button
+        <Link
+          to="/dashboard/viewdetails"
           onClick={onViewDetails}
           className="flex items-center gap-1.5 rounded-lg border border-green-600 px-3.5 py-1.5 
                    text-sm font-medium text-green-700 hover:bg-green-50 transition-colors"
         >
           <FiExternalLink size={16} />
           View Details
-        </button>
+        </Link>
 
         <button
           className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"

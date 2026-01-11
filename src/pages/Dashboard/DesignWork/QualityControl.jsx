@@ -3,7 +3,6 @@ import {
   FiCheckCircle,
   FiXCircle,
   FiAlertCircle,
-  FiImage,
   FiClock,
   FiMoreVertical,
   FiEye,
@@ -19,7 +18,7 @@ const QualityControl = ({
     rejectedCount: 5,
     status: "quality-control",
     priority: "normal",
-    qcIssues: 3, // number of images with issues flagged
+    qcIssues: 3,
   },
   onApproveAll,
   onReview,
@@ -31,39 +30,39 @@ const QualityControl = ({
 
   return (
     <div
-      className={`
-        group flex items-center gap-4 px-4 py-3.5
-        bg-white border-b border-gray-100
-        rounded-xl hover:shadow-sm hover:scle-1.02 transition-colors
-        last:border-b-0
-      `}
+      className="
+        group w-full
+        flex flex-col sm:flex-row
+        sm:items-center gap-4
+        px-4 py-4
+        bg-white border border-gray-100 rounded-xl
+        hover:shadow-md hover:-translate-y-0.5 transition-all
+      "
     >
-      {/* Status indicator + ID */}
-      <div className="flex items-center gap-3 min-w-[140px]">
-        <div className="relative h-2.5 w-2.5">
+      {/* Left */}
+      <div className="flex items-center gap-3 min-w-[130px]">
+        <div className="relative h-3 w-3">
           {hasIssues ? (
             <>
               <div className="absolute inset-0 rounded-full bg-amber-500 animate-ping opacity-30" />
-              <div className="relative h-2.5 w-2.5 rounded-full bg-amber-600" />
+              <div className="relative h-3 w-3 rounded-full bg-amber-600" />
             </>
           ) : (
-            <div className="h-2.5 w-2.5 rounded-full bg-green-500" />
+            <div className="h-3 w-3 rounded-full bg-green-500" />
           )}
         </div>
-        <span className="font-medium text-gray-900">{order.id}</span>
+
+        <span className="font-semibold text-gray-900">{order.id}</span>
       </div>
 
-      {/* Main content */}
+      {/* Main */}
       <div className="flex-1 min-w-0 space-y-2">
-        <div className="flex items-center gap-2 flex-wrap">
-          <h3 className="font-medium text-gray-900 truncate">{order.title}</h3>
+        <div className="flex flex-wrap items-center gap-2">
+          <h3 className="font-medium text-gray-900 truncate max-w-[260px] sm:max-w-full">
+            {order.title}
+          </h3>
 
-          <span
-            className="
-            inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
-            bg-purple-100 text-purple-800 border border-purple-300
-          "
-          >
+          <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium bg-purple-100 text-purple-800 border-purple-300">
             Quality Control
           </span>
 
@@ -81,16 +80,16 @@ const QualityControl = ({
           )}
         </div>
 
-        {/* Approval progress */}
+        {/* Approval Progress */}
         <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
           <div
-            className="h-2.5 rounded-full bg-green-500 transition-all duration-500"
+            className="h-full rounded-full bg-green-500 transition-all duration-700"
             style={{ width: `${approvalRate}%` }}
           />
         </div>
 
-        <div className="flex items-center justify-between text-xs text-gray-600">
-          <div className="flex items-center gap-5 flex-wrap">
+        <div className="flex flex-wrap items-center justify-between text-xs text-gray-600">
+          <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-1">
               <FiClock size={14} />
               <span>Finished {order.completedAt}</span>
@@ -108,16 +107,16 @@ const QualityControl = ({
             </div>
           </div>
 
-          <div className="font-medium text-gray-800">{approvalRate}%</div>
+          <div className="font-semibold text-gray-800">{approvalRate}%</div>
         </div>
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity md:opacity-70">
+      <div className="flex items-center gap-2 justify-end sm:justify-start">
         <button
           onClick={onReview}
-          className="flex items-center gap-1.5 rounded-lg bg-purple-600 px-3.5 py-1.5 
-                   text-sm font-medium text-white hover:bg-purple-700 transition-colors"
+          className="flex items-center gap-1.5 rounded-lg bg-purple-600 px-4 py-2
+            text-sm font-medium text-white hover:bg-purple-700 transition"
         >
           <FiEye size={16} />
           Review
@@ -126,16 +125,16 @@ const QualityControl = ({
         <button
           onClick={onApproveAll}
           disabled={hasIssues}
-          className="flex items-center gap-1.5 rounded-lg border border-green-600 px-3.5 py-1.5 
-                   text-sm font-medium text-green-700 hover:bg-green-50 transition-colors
-                   disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-1.5 rounded-lg border border-green-600 px-4 py-2
+            text-sm font-medium text-green-700 hover:bg-green-50 transition
+            disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <FiCheckCircle size={16} />
-          Approve All
+          Approve
         </button>
 
         <button
-          className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+          className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition"
           title="More actions"
         >
           <FiMoreVertical size={18} />

@@ -2,9 +2,8 @@ import React from "react";
 import {
   FiClock,
   FiImage,
-  FiLoader, // spinning loader icon
+  FiLoader,
   FiMoreVertical,
-  FiCheckCircle,
   FiXCircle,
 } from "react-icons/fi";
 
@@ -14,10 +13,10 @@ const InProgress = ({
     title: "Bundle of product photos",
     startedAt: "12 minutes ago",
     imagesCount: 47,
-    processedCount: 28, // how many already done
+    processedCount: 28,
     status: "processing",
     priority: "normal",
-    progress: 60, // 0–100 (percentage)
+    progress: 60,
   },
   onPause,
   onCancel,
@@ -27,33 +26,32 @@ const InProgress = ({
 
   return (
     <div
-      className={`
-         group flex items-center gap-4 px-4 py-3.5
-        bg-white border-b border-gray-100
-        rounded-xl hover:shadow-sm hover:scle-1.02 transition-colors
-        last:border-b-0
-      `}
+      className="
+        group w-full
+        flex flex-col sm:flex-row
+        sm:items-center gap-4
+        px-4 py-4
+        bg-white border border-gray-100 rounded-xl
+        hover:shadow-md hover:-translate-y-0.5 transition-all
+      "
     >
-      {/* Status dot + ID */}
-      <div className="flex items-center gap-3 min-w-[140px]">
-        <div className="relative h-2.5 w-2.5">
-          <div className="absolute inset-0 rounded-full bg-blue-500 animate-ping opacity-40" />
-          <div className="relative h-2.5 w-2.5 rounded-full bg-blue-600" />
+      {/* Left */}
+      <div className="flex items-center gap-3 min-w-[130px]">
+        <div className="relative h-3 w-3">
+          <div className="absolute inset-0 rounded-full bg-blue-500 animate-ping opacity-30" />
+          <div className="relative h-3 w-3 rounded-full bg-blue-600" />
         </div>
-        <span className="font-medium text-gray-900">{order.id}</span>
+        <span className="font-semibold text-gray-900">{order.id}</span>
       </div>
 
-      {/* Main content */}
+      {/* Main */}
       <div className="flex-1 min-w-0 space-y-2">
-        <div className="flex items-center gap-2">
-          <h3 className="font-medium text-gray-900 truncate">{order.title}</h3>
+        <div className="flex flex-wrap items-center gap-2">
+          <h3 className="font-medium text-gray-900 truncate max-w-[260px] sm:max-w-full">
+            {order.title}
+          </h3>
 
-          <span
-            className="
-            inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
-            bg-blue-100 text-blue-800 border border-blue-300
-          "
-          >
+          <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 border-blue-300">
             Processing
           </span>
 
@@ -64,18 +62,18 @@ const InProgress = ({
           )}
         </div>
 
-        {/* Progress bar */}
+        {/* Progress */}
         <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
           <div
-            className={`h-2.5 rounded-full transition-all duration-500 ease-out ${
+            className={`h-full rounded-full transition-all duration-700 ${
               isAlmostDone ? "bg-green-500" : "bg-blue-600"
             }`}
             style={{ width: `${progress}%` }}
           />
         </div>
 
-        <div className="flex items-center justify-between text-xs text-gray-600">
-          <div className="flex items-center gap-5">
+        <div className="flex flex-wrap items-center justify-between text-xs text-gray-600">
+          <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-1">
               <FiClock size={14} />
               <span>Started {order.startedAt}</span>
@@ -88,16 +86,16 @@ const InProgress = ({
             </div>
           </div>
 
-          <div className="font-medium">{progress}%</div>
+          <div className="font-semibold">{progress}%</div>
         </div>
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity md:opacity-70">
+      <div className="flex items-center gap-2 justify-end sm:justify-start">
         <button
           onClick={onPause}
-          className="flex items-center gap-1.5 rounded-lg border border-amber-600 px-3.5 py-1.5 
-                   text-sm font-medium text-amber-700 hover:bg-amber-50 transition-colors"
+          className="flex items-center gap-1.5 rounded-lg border border-amber-600 px-4 py-2
+            text-sm font-medium text-amber-700 hover:bg-amber-50 transition"
         >
           <FiLoader size={16} className="animate-spin" />
           Pause
@@ -105,15 +103,15 @@ const InProgress = ({
 
         <button
           onClick={onCancel}
-          className="flex items-center gap-1.5 rounded-lg border border-red-600 px-3.5 py-1.5 
-                   text-sm font-medium text-red-700 hover:bg-red-50 transition-colors"
+          className="flex items-center gap-1.5 rounded-lg border border-red-600 px-4 py-2
+            text-sm font-medium text-red-700 hover:bg-red-50 transition"
         >
           <FiXCircle size={16} />
           Cancel
         </button>
 
         <button
-          className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+          className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition"
           title="More actions"
         >
           <FiMoreVertical size={18} />
