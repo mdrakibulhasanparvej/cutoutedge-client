@@ -8,6 +8,8 @@ import { BsGraphUp } from "react-icons/bs";
 import { GrLogout } from "react-icons/gr";
 import MenuItem from "../component/Dashboard/MenuItem/MenuItem";
 import Navbar from "../component/shared/Navbar/Navbar";
+import { IoNotifications } from "react-icons/io5";
+import { FaBell } from "react-icons/fa";
 
 // Hooks
 // import useAuth from "../hooks/useAuth";
@@ -31,6 +33,7 @@ const DashboardLayout = () => {
   // const { user, logOut } = useAuth();
   // const { userData: dbUser, isLoading } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [notificationCount, setNotificationCount] = useState(5);
   // const location = useLocation();
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [user, setUser] = useState(true);
@@ -117,6 +120,27 @@ const DashboardLayout = () => {
             </button>
 
             <div className="flex items-center gap-4 ml-auto">
+
+              <button className="relative">
+                <FaBell size={24} className="text-gray-600" />
+
+                {notificationCount > 0 && (
+                  <span className="
+                          absolute -top-1 -right-1 
+                          min-w-[18px] h-5 
+                         bg-red-500 text-white 
+                          text-[11px] font-bold 
+                          rounded-full 
+                          flex items-center justify-center 
+                          px-1
+                          border-2 border-white
+                          shadow-sm
+                        ">
+                    {notificationCount > 99 ? '99+' : notificationCount}
+                  </span>
+                )}
+              </button>
+
               <button
                 onClick={() => handleTheme(theme !== "dark")}
                 className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 transition-colors"
