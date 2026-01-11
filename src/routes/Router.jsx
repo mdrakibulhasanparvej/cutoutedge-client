@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router";
 import Home from "../pages/Home/Home";
 import AdminDashboard from "../pages/Dashboard/AdminDashboard";
 import DashboardLayout from "../layout/DashboardLayout";
+import Statistics from "../pages/Dashboard/common/Statistics";
+import DesignOnline from "../pages/Dashboard/DesignWork/DesignOnline";
 
 const router = createBrowserRouter([
   {
@@ -10,8 +12,18 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashboardLayout />
-  }
+    element: <DashboardLayout />,
+    children: [
+      {
+        index: true,
+        element: <Statistics />,
+      },
+      {
+        path: "design-online",
+        element: <DesignOnline />,
+      },
+    ],
+  },
 ]);
 
 export default router;

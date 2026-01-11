@@ -11,14 +11,14 @@ const MenuItem = ({ icon: Icon, label, address }) => {
           transition relative
           ${
             isActive
-              ? "bg-linear-to-br from-[#1b552c] to-[#02e446] text-white shadow-sm shadow-[#6A0B37]/40 p-4 rounded-lg"
+              ? "bg-linear-to-br from-[#0F83B2] to-[#36b6e9] text-white shadow-sm shadow-[#6A0B37]/40 p-4 rounded-lg"
               : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
           }`}
         >
           {isActive && (
             <motion.span
               layoutId="activeGlow"
-              className="absolute inset-0 rounded-lg bg-linear-to-br from-[#1b552c] to-[#02e446]  -z-10"
+              className="absolute inset-0 rounded-lg bg-linear-to-br from-[#0F83B2] to-[#36b6e9]  -z-10"
             />
           )}
 

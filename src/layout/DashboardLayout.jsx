@@ -33,7 +33,7 @@ const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   // const location = useLocation();
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-  const [user, setUser] = useState(true)
+  const [user, setUser] = useState(true);
 
   // useEffect(() => {
   //   const html = document.querySelector("html");
@@ -63,9 +63,9 @@ const DashboardLayout = () => {
             >
               <img src="#" alt="Logo" className="w-10 h-10" />
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                Cutout <br />
-                <span className="bg-linear-to-r from-[#1b552c] to-[#02e446] bg-clip-text text-transparent">
-                  Age
+                Cutout
+                <span className="bg-linear-to-r from-[#0F83B2] to-[#0F83B2] bg-clip-text text-transparent">
+                  Edge
                 </span>
               </h2>
             </Link>
@@ -85,6 +85,11 @@ const DashboardLayout = () => {
                   icon={BsGraphUp}
                   label="Statistics"
                   address="/dashboard"
+                />
+                <MenuItem
+                  icon={BsGraphUp}
+                  label="Designs-online"
+                  address="design-online"
                 />
                 {/* {dbUser?.role === "admin" && <AdminMenu />}
                 {dbUser?.role === "volunteer" && <VolunteerMenu />}
@@ -112,7 +117,7 @@ const DashboardLayout = () => {
       ${sidebarOpen ? "ml-0" : "ml-0"}`}
         >
           {/* TOP NAV */}
-          {/* <header className="flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+          <header className="flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
             <button onClick={() => setSidebarOpen(!sidebarOpen)}>
               <MdMenu className="w-7 h-7 text-gray-700 dark:text-gray-300" />
             </button>
@@ -143,23 +148,23 @@ const DashboardLayout = () => {
                 />
               </div>
             </div>
-          </header> */}
+          </header>
 
           {/* Header */}
-          <Navbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          {/* <Navbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
 
           {/* CONTENT */}
           <div className="flex-1 overflow-hidden">
-              <main
-                key={location.pathname}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25 }}
-                className="h-full overflow-y-auto m-4 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100"
-              >
-                <Outlet />
-              </main>
+            <main
+              key={location.pathname}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25 }}
+              className="h-full overflow-y-auto m-4 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+            >
+              <Outlet />
+            </main>
           </div>
         </div>
       </div>

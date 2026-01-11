@@ -1,15 +1,17 @@
 import React from "react";
-import AdminStatics from "../../../components/Dashboard/Statistics/AdminStatics";
-import useUser from "../../../hooks/useUser";
-import BlodDonnerStatics from "../../../components/Dashboard/Statistics/StudentStatistics";
-import useTitle from "../../../hooks/useTitle";
+// import AdminStatics from "../../../components/Dashboard/Statistics/AdminStatics";
+// import useUser from "../../../hooks/useUser";
+// import BlodDonnerStatics from "../../../components/Dashboard/Statistics/StudentStatistics";
+import useTitle from "../../../hook/useTitle";
+import WorkStatics from "../../../component/Dashboard/Statistics/WorkStatics";
+import StatisticsPage from "../DesignWork/StatisticsPage";
 
 const Statistics = () => {
   useTitle("Statistics");
-  const { userData: dbUser, isLoading } = useUser();
+  // const { userData: dbUser, isLoading } = useUser();
   return (
     <div>
-      <h2>text will go here</h2>
+      <StatisticsPage />
     </div>
     // <div>
     //   {dbUser?.role === "donor" && <BlodDonnerStatics dbUser={dbUser} />}
