@@ -19,19 +19,39 @@ const DesignOnline = () => {
           <Tab>Finish</Tab>
         </TabList>
 
-        <TabPanel>
+        <TabPanel className="space-y-5">
+          <Pending />
+          <Pending />
+          <Pending />
+          <Pending />
           <Pending />
         </TabPanel>
-        <TabPanel>
+        <TabPanel className="space-y-5">
+          <InProgress />
+          <InProgress />
+          <InProgress />
+          <InProgress />
           <InProgress />
         </TabPanel>
-        <TabPanel>
+        <TabPanel className="space-y-5">
+          <QualityControl />
+          <QualityControl />
+          <QualityControl />
+          <QualityControl />
           <QualityControl />
         </TabPanel>
-        <TabPanel>
+        <TabPanel className="space-y-5">
+          <QualityControl2 />
+          <QualityControl2 />
+          <QualityControl2 />
+          <QualityControl2 />
           <QualityControl2 />
         </TabPanel>
-        <TabPanel>
+        <TabPanel className="space-y-5">
+          <Finished />
+          <Finished />
+          <Finished />
+          <Finished />
           <Finished />
         </TabPanel>
       </Tabs>

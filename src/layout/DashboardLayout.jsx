@@ -61,13 +61,7 @@ const DashboardLayout = () => {
               to="/"
               className={`flex items-center gap-3 ${sidebarOpen ? "opacity-100" : "opacity-0"}`}
             >
-              <img src="#" alt="Logo" className="w-10 h-10" />
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                Cutout
-                <span className="bg-linear-to-r from-[#0F83B2] to-[#0F83B2] bg-clip-text text-transparent">
-                  Edge
-                </span>
-              </h2>
+              <img src="/Logo-01-1-2048x418.webp" alt="Logo" className="" />
             </Link>
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
