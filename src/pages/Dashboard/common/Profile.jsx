@@ -1,5 +1,9 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import Pending from "../DesignWork/Pending";
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import InProgress from "../DesignWork/InProgress";
+import QualityControl from "../DesignWork/QualityControl";
 // import { useState, useEffect } from "react";
 // import { useForm } from "react-hook-form";
 // import { useMutation } from "@tanstack/react-query";
@@ -193,14 +197,41 @@ const Profile = () => {
             {isEditing ? "Cancel" : "Edit Profile"}
           </button>
         </div>
-
-
-       
       </motion.div >
+
+      <div className="py-8 space-y-2">
+        <h3 className="font-semibold text-xl">
+          Today's Project (0)
+        </h3>
+        <Tabs className="space-y-2">
+          <TabList>
+            <Tab>Pending</Tab>
+            <Tab>In-Progress</Tab>
+            <Tab>Finished</Tab>
+            <Tab>Completed</Tab>
+          </TabList>
+
+          <TabPanel className="space-y-2">
+            <Pending />
+            <Pending />
+            <Pending />
+          </TabPanel>
+
+          <TabPanel className="space-y-2">
+            <InProgress />
+            <InProgress />
+            <InProgress />
+          </TabPanel>
+
+          <TabPanel className="space-y-2">
+            <QualityControl />
+            <QualityControl />
+            <QualityControl />
+          </TabPanel>
+        </Tabs>
+      </div>
+
     </div >
-
-
-
   );
 };
 
