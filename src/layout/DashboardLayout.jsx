@@ -88,6 +88,12 @@ const DashboardLayout = () => {
                   label="Designs-online"
                   address="design-online"
                 />
+                <MenuItem
+                  icon={BsGraphUp}
+                  label="My Profile"
+                  address="profile"
+                />
+
                 {/* {dbUser?.role === "admin" && <AdminMenu />}
                 {dbUser?.role === "volunteer" && <VolunteerMenu />}
                 {dbUser?.role === "student" && <StudentsMenu />}
@@ -160,10 +166,12 @@ const DashboardLayout = () => {
                   </p>
                   <p className="text-xs text-gray-500">Admin</p>
                 </div>
-                <img
-                  src="#"
-                  className="w-10 h-10 rounded-full border-2 border-red-800 object-cover"
-                />
+                <Link to="profile">
+                  <img
+                    src="https://avatars.githubusercontent.com/u/172835253?v=4"
+                    className="w-10 h-10 rounded-full border-2 border-red-800 object-cover"
+                  />
+                </Link>
               </div>
             </div>
           </header>
