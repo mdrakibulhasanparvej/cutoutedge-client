@@ -4,6 +4,8 @@ import Pending from "../DesignWork/Pending";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import InProgress from "../DesignWork/InProgress";
 import QualityControl from "../DesignWork/QualityControl";
+import { FiImage } from "react-icons/fi";
+import StatsCard from "../../../component/shared/Cards/StatsCard";
 // import { useState, useEffect } from "react";
 // import { useForm } from "react-hook-form";
 // import { useMutation } from "@tanstack/react-query";
@@ -199,6 +201,79 @@ const Profile = () => {
         </div>
       </motion.div >
 
+      <div className="flex">
+        <div style={{ padding: '20px' }} >
+          <label
+            htmlFor="date-input"
+            style={{ display: 'block', marginBottom: '8px', fontWeight: 500 }}
+          >
+            From : 
+          </label>
+
+          <input
+            type="date"
+            id="date-input"
+            style={{
+              padding: '10px',
+              fontSize: '16px',
+              border: '1px solid #ccc',
+              borderRadius: '6px',
+              width: '240px'
+            }}
+          />
+          
+        </div>
+
+          <div style={{ padding: '20px' }} >
+          <label
+            htmlFor="date-input"
+            style={{ display: 'block', marginBottom: '8px', fontWeight: 500 }}
+          >
+            To : 
+          </label>
+
+          <input
+            type="date"
+            id="date-input"
+            style={{
+              padding: '10px',
+              fontSize: '16px',
+              border: '1px solid #ccc',
+              borderRadius: '6px',
+              width: '240px'
+            }}
+          />
+          </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-10 py-4">
+        <StatsCard
+          title="Total In-Progress"
+          value={"0"}
+          icon={FiImage}
+          color="bg-indigo-600"
+        />
+        <StatsCard
+          title="Total Completed"
+          value={"0"}
+          icon={FiImage}
+          color="bg-indigo-600"
+        />
+        <StatsCard
+          title="Total Rejected"
+          value={"0"}
+          icon={FiImage}
+          color="bg-indigo-600"
+        />
+        <StatsCard
+          title="Total Projects"
+          value={"0"}
+          icon={FiImage}
+          color="bg-indigo-600"
+        />
+
+      </div>
+
       <div className="py-8 space-y-2">
         <h3 className="font-semibold text-xl">
           Today's Project (0)
@@ -209,6 +284,7 @@ const Profile = () => {
             <Tab>In-Progress</Tab>
             <Tab>Finished</Tab>
             <Tab>Completed</Tab>
+            <Tab>Rejected</Tab>
           </TabList>
 
           <TabPanel className="space-y-2">
