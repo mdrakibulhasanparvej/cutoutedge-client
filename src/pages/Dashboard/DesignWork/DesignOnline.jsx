@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 // আইকন ইমপোর্ট (lucide-react থেকে)
 import {
-  Globe,
-  ChartGantt,
-  KanbanSquare,
-  CalendarDays,
-  ListTodo,
-  Target,
-  Code2,
-  Terminal,
+  Clock, // Pending এর জন্য
+  PlayCircle, // InProgress এর জন্য
+  SearchCheck, // QualityControl এর জন্য
+  ShieldCheck, // QualityControl2 এর জন্য
+  CheckCircle2, // Finished এর জন্য
   MoreHorizontal,
   Plus,
   Users,
   Share2,
   Zap,
   Maximize2,
+  KanbanSquare,
 } from "lucide-react";
 
 import Pending from "./Pending";
@@ -29,11 +27,11 @@ const DesignOnline = () => {
 
   // আপনার কম্পোনেন্টগুলোকে স্ক্রিনশটের নাম অনুযায়ী ম্যাপ করা হয়েছে
   const tabData = [
-    { label: "Pending", icon: Globe, Comp: Pending },
-    { label: "InProgress", icon: ChartGantt, Comp: InProgress },
-    { label: "QualityControl", icon: KanbanSquare, Comp: QualityControl },
-    { label: "QualityControl2", icon: CalendarDays, Comp: QualityControl2 },
-    { label: "Finished", icon: ListTodo, Comp: Finished },
+    { label: "Pending", icon: Clock, Comp: Pending },
+    { label: "InProgress", icon: PlayCircle, Comp: InProgress },
+    { label: "QualityControl", icon: SearchCheck, Comp: QualityControl },
+    { label: "QualityControl2", icon: ShieldCheck, Comp: QualityControl2 },
+    { label: "Finished", icon: CheckCircle2, Comp: Finished },
   ];
 
   // Active Component বের করা
@@ -89,7 +87,7 @@ const DesignOnline = () => {
 
       {/* --- Tab Navigation Bar (Updated) --- */}
       <div className='flex items-center px-6 border-b border-gray-200 overflow-x-auto no-scrollbar'>
-        <div className='flex items-center gap-6 w-full'>
+        <div className='flex items-center gap-6 w-full cursor-pointer'>
           {tabData.map((tab) => {
             const isActive = activeTab === tab.label;
             const Icon = tab.icon;
@@ -99,7 +97,7 @@ const DesignOnline = () => {
                 key={tab.label}
                 onClick={() => setActiveTab(tab.label)}
                 className={`
-                    group flex items-center gap-2 py-3 border-b-[3px] transition-all whitespace-nowrap text-[15px]
+                    group cursor-pointer  flex items-center gap-2 py-3 border-b-[3px] transition-all whitespace-nowrap text-[15px]
                     ${
                       isActive
                         ? "border-[#0F83B2] text-[#0F83B2] font-medium" // Active: Blue color & border

@@ -65,13 +65,15 @@ const Pending = ({
         <span
           className={`h-2.5 w-2.5 rounded-full ${getDotColor(order.status)}`}
         />
-        <span className='font-semibold text-gray-900'>{order.id}</span>
+        <span className='font-semibold text-gray-900 text-[14px]'>
+          {order.id}
+        </span>
       </div>
 
       {/* Main content */}
       <div className='flex-1 min-w-0'>
         <div className='flex flex-wrap items-center gap-2'>
-          <h3 className='font-medium text-gray-900 truncate max-w-[260px] sm:max-w-full'>
+          <h3 className='font-medium text-[14px] text-gray-900 truncate max-w-[260px] sm:max-w-full'>
             {order.title}
           </h3>
 
@@ -106,10 +108,10 @@ const Pending = ({
         {order.status === "pending" && (
           <button
             onClick={onStart}
-            className='flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 
+            className='flex items-center gap-1.5 rounded-lg bg-[#0F83B2] px-4 py-2 
               text-sm font-medium text-white hover:bg-blue-700 transition cursor-pointer'>
             <FiPlayCircle size={16} />
-            Add
+            View Details
           </button>
         )}
 
