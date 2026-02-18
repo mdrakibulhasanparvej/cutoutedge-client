@@ -1,0 +1,201 @@
+import React, { useState, useEffect } from "react";
+import { Link, Outlet, useLocation } from "react-router";
+import { CgProfile } from "react-icons/cg";
+// import { AnimatePresence, motion } from "framer-motion";
+
+// Icons
+import {
+  MdClose,
+  MdDarkMode,
+  MdLightMode,
+  MdMenu,
+  MdOutlineDesignServices,
+} from "react-icons/md";
+import { BsGraphUp } from "react-icons/bs";
+import { GrLogout } from "react-icons/gr";
+import MenuItem from "../component/Dashboard/MenuItem/MenuItem";
+import Navbar from "../component/shared/Navbar/Navbar";
+import { IoNotifications } from "react-icons/io5";
+import { FaBell } from "react-icons/fa";
+
+// Hooks
+// import useAuth from "../hooks/useAuth";
+// import useUser from "../hooks/useUser";
+
+// components
+// import AdminMenu from "../components/Dashboard/Sidebar/Menu/AdminMenu";
+// import SidebarSkeleton from "../components/ui/Loading/Sidebar only/SidebarSkeleton";
+
+// Avatar
+// import avatarImg from "../assets/avater.jpg";
+// import logo from "../assets/Logo.png";
+// import useTitle from "../hooks/useTitle";
+// import StudentsMenu from "../components/Dashboard/Sidebar/Menu/StudentsMenu";
+// import TrainerMenu from "../components/Dashboard/Sidebar/Menu/TrainerMenu";
+// import VolunteerMenu from "../components/Dashboard/Sidebar/Menu/VolunteerMenu";
+
+const DashboardLayout = () => {
+  // useTitle("Dashboard");
+
+  // const { user, logOut } = useAuth();
+  // const { userData: dbUser, isLoading } = useUser();
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [notificationCount, setNotificationCount] = useState(5);
+  // const location = useLocation();
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [user, setUser] = useState(true);
+
+  // useEffect(() => {
+  //   const html = document.querySelector("html");
+  //   html.setAttribute("data-theme", theme);
+  //   localStorage.setItem("theme", theme);
+  // }, [theme]);
+
+  const handleTheme = (checked) => {
+    setTheme(checked ? "dark" : "light");
+  };
+
+  // if (isLoading) return <SidebarSkeleton />;
+
+  return (
+    // Inside DashboardLayout.jsx
+    <div className='min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors'>
+      <div className='flex h-screen overflow-hidden'>
+        {/* SIDEBAR */}
+        <aside
+          className={`transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col border-l border-gray-600 dark:border-gray-700
+        ${sidebarOpen ? "w-64 " : "w-0"} overflow-hidden`}>
+          <div className='px-4 py-1  dark:border-gray-700 flex items-center justify-between'>
+            <Link
+              to='/'
+              className={`flex items-center gap-3 ${sidebarOpen ? "opacity-100" : "opacity-0"}`}>
+              <img src='/Logo-01-1-2048x418.webp' alt='Logo' className='' />
+            </Link>
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className='lg:hidden'>
+              <MdClose className='w-6 h-6 text-gray-600 dark:text-gray-300' />
+            </button>
+          </div>
+
+          {/* Menu */}
+          <div className='flex-1 mt-6 overflow-y-auto px-3 space-y-2'>
+            {sidebarOpen && (
+              <>
+                <MenuItem
+                  icon={BsGraphUp}
+                  label='Statistics'
+                  address='/dashboard'
+                />
+                <MenuItem
+                  icon={MdOutlineDesignServices}
+                  label='Designs-online'
+                  address='design-online'
+                />
+                <MenuItem
+                  icon={CgProfile}
+                  label='My Profile'
+                  address='profile'
+                />
+
+                {/* {dbUser?.role === "admin" && <AdminMenu />}
+                {dbUser?.role === "volunteer" && <VolunteerMenu />}
+                {dbUser?.role === "student" && <StudentsMenu />}
+                {dbUser?.role === "trainer" && <TrainerMenu />} */}
+              </>
+            )}
+          </div>
+
+          {sidebarOpen && (
+            <Link
+              to='/'
+              // onClick={logOut}
+              className='cursor-pointer text-[14px] px-2 m-4 flex items-center gap-3 py-1 rounded-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition'>
+              <GrLogout />
+              Logout
+            </Link>
+          )}
+        </aside>
+
+        {/* MAIN */}
+        <div
+          className={`flex-1 flex flex-col overflow-hidden transition-all duration-300
+      ${sidebarOpen ? "ml-0" : "ml-0"}`}>
+          {/* TOP NAV */}
+          <header className='flex items-center justify-between pl-4 pr-6 py-1.5 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700'>
+            <button onClick={() => setSidebarOpen(!sidebarOpen)}>
+              <MdMenu className='w-7 h-7 text-gray-700 dark:text-gray-300' />
+            </button>
+
+            <div className='flex items-center gap-4 ml-auto'>
+              <button className='relative'>
+                <FaBell size={20} className='text-gray-600' />
+
+                {notificationCount > 0 && (
+                  <span
+                    className='
+                          absolute -top-1 -right-1 
+                          min-w-2.5 h-4
+                         bg-red-500 text-white 
+                          text-[10px] font-bold 
+                          rounded-full 
+                          flex items-center justify-center 
+                          px-1
+                          border-2 border-white
+                          shadow-sm
+                        '>
+                    {notificationCount > 99 ? "99+" : notificationCount}
+                  </span>
+                )}
+              </button>
+
+              <button
+                onClick={() => handleTheme(theme !== "dark")}
+                className='p-1 rounded-md transition-colors'>
+                {theme === "dark" ? (
+                  <MdDarkMode className='text-yellow-400 w-5 h-5' />
+                ) : (
+                  <MdLightMode className='text-gray-800 w-5 h-5' />
+                )}
+              </button>
+
+              <div className='flex items-center gap-3'>
+                <div className='text-right hidden sm:block'>
+                  <p className='text-xs font-bold text-gray-700 dark:text-gray-300'>
+                    Hey{" "}
+                    <span className='font-semibold'>{user?.displayName}</span>
+                  </p>
+                  <p className='text-xs text-gray-500'>Admin</p>
+                </div>
+                <Link to='profile'>
+                  <img
+                    src='https://avatars.githubusercontent.com/u/172835253?v=4'
+                    className='w-6 h-6 rounded-full border border-red-800 object-cover'
+                  />
+                </Link>
+              </div>
+            </div>
+          </header>
+
+          {/* Header */}
+          {/* <Navbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
+
+          {/* CONTENT */}
+          <div className='flex-1 overflow-hidden'>
+            <main
+              key={location.pathname}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25 }}
+              className='h-full overflow-y-auto m-4 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100'>
+              <Outlet />
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DashboardLayout;
