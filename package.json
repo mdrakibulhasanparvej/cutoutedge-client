@@ -19,6 +19,7 @@
     "axios": "^1.13.2",
     "daisyui": "^5.5.14",
     "framer-motion": "^12.25.0",
+    "lucide-react": "^0.574.0",
     "prettier": "^3.7.4",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

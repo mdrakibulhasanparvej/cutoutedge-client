@@ -1,313 +1,232 @@
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { useState } from "react";
-import Pending from "../DesignWork/Pending";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import {
+  Briefcase,
+  Network,
+  Building2,
+  MapPin,
+  Mail,
+  Plus,
+  Trophy,
+  ClipboardList,
+  Users,
+} from "lucide-react";
+
+// আপনার কম্পোনেন্টগুলো
+import Pending from "../DesignWork/Pending";
 import InProgress from "../DesignWork/InProgress";
 import QualityControl from "../DesignWork/QualityControl";
-import { FiImage } from "react-icons/fi";
 import StatsCard from "../../../component/shared/Cards/StatsCard";
-// import { useState, useEffect } from "react";
-// import { useForm } from "react-hook-form";
-// import { useMutation } from "@tanstack/react-query";
-// import axios from "axios";
-// import { toast } from "react-toastify";
-
-// import useUser from "../../../hooks/useUser";
-// import useAuth from "../../../hooks/useAuth";
-// import useAxios from "../../../hooks/useAxios";
-// import useBDLocation from "../../../hooks/useBDLocation";
-// import useTitle from "../../../hooks/useTitle";
-
-// import Button from "../../../components/ui/Button";
-// import ProfileSkeleton from "../../../components/ui/Loading/Profile/ProfileSkeleton";
-// import AddressSelect from "../Students/AddressSelect";
-
-/* ================= INFO COMPONENT ================= */
-// const Info = ({ label, value }) => (
-//   <div>
-//     <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
-//     <p className="font-medium text-gray-900 dark:text-gray-100">
-//       {value || "—"}
-//     </p>
-//   </div>
-// );
 
 const Profile = () => {
-  // useTitle("Profile");
-
-  // const { userData: dbUser, isLoading, refetch } = useUser();
-  // const { user: firebaseUser, updateUserProfile } = useAuth();
-  // const axiosSecure = useAxios();
-
   const [isEditing, setIsEditing] = useState(false);
-  // const [preview, setPreview] = useState("");
-
-  // const { register, handleSubmit, reset, watch } = useForm();
-
-  /* ================= BD LOCATION ================= */
-  // const {
-  //   divisions,
-
-  //   // Present
-  //   presentDivision,
-  //   presentDistrict,
-  //   presentUpazila,
-  //   presentUnion,
-  //   filteredPresentDistricts,
-  //   filteredPresentUpazilas,
-  //   filteredPresentUnions,
-  //   setPresentDivision,
-  //   setPresentDistrict,
-  //   setPresentUpazila,
-  //   setPresentUnion,
-
-  //   // Permanent
-  //   permanentDivision,
-  //   permanentDistrict,
-  //   permanentUpazila,
-  //   permanentUnion,
-  //   filteredPermanentDistricts,
-  //   filteredPermanentUpazilas,
-  //   filteredPermanentUnions,
-  //   setPermanentDivision,
-  //   setPermanentDistrict,
-  //   setPermanentUpazila,
-  //   setPermanentUnion,
-  // } = useBDLocation();
-
-  /* ================= INIT FORM ================= */
-  // useEffect(() => {
-  //   if (dbUser && isEditing) {
-  //     reset({
-  //       name: dbUser.name,
-  //       bloodGroup: dbUser.bloodGroup,
-  //       presentAddressLine: dbUser.presentAddress?.address,
-  //       permanentAddressLine: dbUser.permanentAddress?.address,
-  //     });
-
-  //     setPreview(dbUser.avatar);
-
-  //     setPresentDivision(
-  //       divisions.find((d) => d.name === dbUser.presentAddress?.division)
-  //     );
-  //     setPermanentDivision(
-  //       divisions.find((d) => d.name === dbUser.permanentAddress?.division)
-  //     );
-  //   }
-  // }, [dbUser, isEditing, reset, divisions]);
-
-  /* ================= IMAGE PREVIEW ================= */
-  // const avatarFile = watch("avatar");
-  // useEffect(() => {
-  //   if (avatarFile?.[0]) {
-  //     setPreview(URL.createObjectURL(avatarFile[0]));
-  //   }
-  // }, [avatarFile]);
-
-  /* ================= UPDATE PROFILE ================= */
-  // const updateMutation = useMutation({
-  //   mutationFn: async (data) => {
-  //     let photoURL = dbUser.avatar;
-
-  //     if (data.avatar?.[0]) {
-  //       const formData = new FormData();
-  //       formData.append("image", data.avatar[0]);
-
-  //       const res = await axios.post(
-  //         `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_imgBB_host}`,
-  //         formData
-  //       );
-
-  //       photoURL = res.data.data.url;
-  //     }
-
-  //     const payload = {
-  //       name: data.name,
-  //       avatar: photoURL,
-  //       bloodGroup: data.bloodGroup,
-
-  //       presentAddress: {
-  //         address: data.presentAddressLine,
-  //         division: presentDivision?.name,
-  //         district: presentDistrict?.name,
-  //         upazila: presentUpazila?.name,
-  //         union: presentUnion?.name,
-  //       },
-
-  //       permanentAddress: {
-  //         address: data.permanentAddressLine,
-  //         division: permanentDivision?.name,
-  //         district: permanentDistrict?.name,
-  //         upazila: permanentUpazila?.name,
-  //         union: permanentUnion?.name,
-  //       },
-  //     };
-
-  //     await axiosSecure.patch(`/user-profile/${firebaseUser.email}`, payload);
-
-  //     await updateUserProfile({
-  //       displayName: data.name,
-  //       photoURL,
-  //     });
-  //   },
-  //   onSuccess: () => {
-  //     toast.success("Profile updated successfully");
-  //     setIsEditing(false);
-  //     refetch();
-  //   },
-  //   onError: () => toast.error("Profile update failed"),
-  // });
-
-  // if (isLoading) return <ProfileSkeleton />;
 
   return (
-    <div className="py-6 max-w-5xl mx-auto">
-      <motion.div
-        className="p-6 rounded-2xl border shadow-sm bg-white dark:bg-gray-900 dark:border-gray-700"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        {/* ================= HEADER ================= */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6 border rounded-xl p-5 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-          <div className="flex flex-col md:flex-row items-center gap-5">
-            <img
-              src="https://avatars.githubusercontent.com/u/172835253?v=4"
-              className="w-28 h-28 rounded-full object-cover border"
-            />
-            <div>
-              <h2 className="md:text-2xl font-semibold text-gray-900 dark:text-white">
-                Md. Rafiul Islam
-              </h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                rafi@cutot.com
-              </p>
-              <div className="flex gap-2 mt-2">
-                <span className="px-3 py-1 text-xs rounded-full bg-blue-600 text-white">
-                  admin
-                </span>
-                <span className="px-3 py-1 text-xs rounded-full bg-green-600 text-white">
-                  active
-                </span>
-              </div>
+    // মেইন ব্যাকগ্রাউন্ড এখন পুরোপুরি হোয়াইট
+    <div className='bg-white min-h-screen font-sans text-[#172b4d]'>
+      {/* --- Top Banner Section --- */}
+      <div className='bg-white border-b border-gray-200'>
+        <div className='relative h-48 bg-[#091e42] overflow-hidden'>
+          <div className='absolute inset-0 opacity-40 bg-gradient-to-r from-blue-600 to-purple-600'></div>
+          <div className='absolute right-10 top-10 text-white text-right'>
+            <h1 className='text-2xl font-bold tracking-widest uppercase'>
+              Md. Rafiul Islam
+            </h1>
+            <p className='text-sm opacity-80 font-medium'>
+              FULL STACK DEVELOPER
+            </p>
+          </div>
+        </div>
+
+        <div className='max-w-7xl mx-auto px-8 relative pb-6'>
+          <div className='absolute -top-16 left-8'>
+            <div className='w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-gray-100 shadow-sm'>
+              <img
+                src='https://avatars.githubusercontent.com/u/218391105?v=4'
+                alt='Profile'
+                className='w-full h-full object-cover'
+              />
             </div>
           </div>
 
-          <button
-            onClick={() => setIsEditing(!isEditing)}
-            className="btn btn-outline rounded-full"
-          >
-            {isEditing ? "Cancel" : "Edit Profile"}
-          </button>
-        </div>
-      </motion.div >
-
-      <div className="flex">
-        <div style={{ padding: '20px' }} >
-          <label
-            htmlFor="date-input"
-            style={{ display: 'block', marginBottom: '8px', fontWeight: 500 }}
-          >
-            From : 
-          </label>
-
-          <input
-            type="date"
-            id="date-input"
-            style={{
-              padding: '10px',
-              fontSize: '16px',
-              border: '1px solid #ccc',
-              borderRadius: '6px',
-              width: '240px'
-            }}
-          />
-          
-        </div>
-
-          <div style={{ padding: '20px' }} >
-          <label
-            htmlFor="date-input"
-            style={{ display: 'block', marginBottom: '8px', fontWeight: 500 }}
-          >
-            To : 
-          </label>
-
-          <input
-            type="date"
-            id="date-input"
-            style={{
-              padding: '10px',
-              fontSize: '16px',
-              border: '1px solid #ccc',
-              borderRadius: '6px',
-              width: '240px'
-            }}
-          />
+          <div className='pt-20 flex justify-between items-end'>
+            <div>
+              <h2 className='text-2xl font-semibold'>Md. Rafiul Islam</h2>
+              <div className='flex gap-2 mt-1'>
+                <span className='px-2 py-0.5 text-xs rounded-md bg-blue-50 text-blue-700 font-medium border border-blue-100'>
+                  Admin
+                </span>
+                <span className='px-2 py-0.5 text-xs rounded-md bg-green-50 text-green-700 font-medium border border-green-100'>
+                  Active
+                </span>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsEditing(!isEditing)}
+              className='px-4 py-1.5 border border-gray-200 rounded-md font-medium text-sm hover:bg-gray-50 transition-colors shadow-sm'>
+              {isEditing ? "Cancel" : "Edit Profile"}
+            </button>
           </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-10 py-4">
-        <StatsCard
-          title="Total In-Progress"
-          value={"0"}
-          icon={FiImage}
-          color="bg-indigo-600"
-        />
-        <StatsCard
-          title="Total Completed"
-          value={"0"}
-          icon={FiImage}
-          color="bg-indigo-600"
-        />
-        <StatsCard
-          title="Total Rejected"
-          value={"0"}
-          icon={FiImage}
-          color="bg-indigo-600"
-        />
-        <StatsCard
-          title="Total Projects"
-          value={"0"}
-          icon={FiImage}
-          color="bg-indigo-600"
-        />
+      {/* --- Main Grid Content --- */}
+      <div className='max-w-7xl mx-auto px-8 py-8 grid grid-cols-12 gap-8'>
+        {/* === Left Sidebar === */}
+        <div className='col-span-12 lg:col-span-3 space-y-6'>
+          <section className='bg-white p-5 rounded-md border border-gray-200 shadow-sm'>
+            <h3 className='font-semibold mb-4 border-b border-gray-100 pb-2 text-gray-700'>
+              About
+            </h3>
+            <div className='space-y-4 text-sm text-gray-600'>
+              <div className='flex items-center gap-3'>
+                <Briefcase size={16} className='text-gray-400' /> Web Developer
+              </div>
+              <div className='flex items-center gap-3'>
+                <Network size={16} className='text-gray-400' /> Engineering
+              </div>
+              <div className='flex items-center gap-3'>
+                <Building2 size={16} className='text-gray-400' /> Cutot
+              </div>
+              <div className='flex items-center gap-3'>
+                <MapPin size={16} className='text-gray-400' /> Dhaka, Bangladesh
+              </div>
+            </div>
+          </section>
 
+          <section className='bg-white p-5 rounded-md border border-gray-200 shadow-sm'>
+            <h4 className='text-xs font-bold text-gray-500 uppercase tracking-wider mb-4'>
+              Date Filter
+            </h4>
+            <div className='space-y-3'>
+              <div>
+                <label className='text-[11px] font-bold text-gray-400'>
+                  FROM
+                </label>
+                <input
+                  type='date'
+                  className='w-full mt-1 p-2 border border-gray-200 rounded-md text-sm outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100'
+                />
+              </div>
+              <div>
+                <label className='text-[11px] font-bold text-gray-400'>
+                  TO
+                </label>
+                <input
+                  type='date'
+                  className='w-full mt-1 p-2 border border-gray-200 rounded-md text-sm outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100'
+                />
+              </div>
+            </div>
+          </section>
+
+          <section className='bg-white p-5 rounded-md border border-gray-200 shadow-sm'>
+            <h4 className='text-xs font-bold text-gray-500 uppercase tracking-wider mb-3'>
+              Contact
+            </h4>
+            <div className='flex items-center gap-3 text-sm text-blue-600 truncate'>
+              <Mail size={16} className='text-gray-400 shrink-0' />
+              rafi@cutot.com
+            </div>
+          </section>
+        </div>
+
+        {/* === Right Content === */}
+        <div className='col-span-12 lg:col-span-9 space-y-6'>
+          {/* Stats Cards - Border gray 200 used in internal component usually */}
+          <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4'>
+            <StatsCard
+              title='In-Progress'
+              value='0'
+              icon={ClipboardList}
+              color='bg-indigo-600'
+            />
+            <StatsCard
+              title='Completed'
+              value='0'
+              icon={Plus}
+              color='bg-green-600'
+            />
+            <StatsCard
+              title='Rejected'
+              value='0'
+              icon={Trophy}
+              color='bg-red-600'
+            />
+            <StatsCard
+              title='Total Projects'
+              value='0'
+              icon={Users}
+              color='bg-blue-600'
+            />
+          </div>
+
+          {/* Tabs Section */}
+          <div className='bg-white border border-gray-200 rounded-md p-6 shadow-sm'>
+            <div className='flex justify-between items-center mb-6'>
+              <h3 className='font-semibold text-lg'>Today's Projects (0)</h3>
+              <span className='text-xs text-gray-400 italic font-medium'>
+                Last updated: Just now
+              </span>
+            </div>
+
+            <Tabs className='jira-tabs'>
+              <TabList className='flex gap-6 border-b border-gray-200 mb-6 overflow-x-auto no-scrollbar'>
+                {[
+                  "Pending",
+                  "In-Progress",
+                  "Finished",
+                  "Completed",
+                  "Rejected",
+                ].map((tab) => (
+                  <Tab
+                    key={tab}
+                    className='pb-3 cursor-pointer text-sm font-medium text-gray-500 outline-none transition-all hover:text-blue-600 border-b-2 border-transparent'
+                    selectedClassName='!text-blue-600 !border-blue-600'>
+                    {tab}
+                  </Tab>
+                ))}
+              </TabList>
+
+              <TabPanel>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className='space-y-3'>
+                  <Pending />
+                  <Pending />
+                </motion.div>
+              </TabPanel>
+
+              {/* বাকি TabPanel গুলোতেও একইভাবে কম্পোনেন্ট বসবে */}
+              <TabPanel>
+                <div className='space-y-3'>
+                  <InProgress />
+                </div>
+              </TabPanel>
+
+              <TabPanel>
+                <div className='py-10 text-center text-gray-400 text-sm border border-dashed border-gray-200 rounded-md'>
+                  No data available in this section
+                </div>
+              </TabPanel>
+            </Tabs>
+          </div>
+
+          {/* Reporting Line */}
+          <div className='bg-white border border-gray-200 rounded-md p-6 shadow-sm text-center'>
+            <h3 className='font-semibold text-left mb-6'>Reporting line</h3>
+            <div className='flex flex-col items-center py-6'>
+              <Users size={40} className='text-gray-100 mb-2' />
+              <p className='text-sm text-gray-400 max-w-md'>
+                No direct reports or manager assigned yet.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div className="py-8 space-y-2">
-        <h3 className="font-semibold text-xl">
-          Today's Project (0)
-        </h3>
-        <Tabs className="space-y-2">
-          <TabList>
-            <Tab>Pending</Tab>
-            <Tab>In-Progress</Tab>
-            <Tab>Finished</Tab>
-            <Tab>Completed</Tab>
-            <Tab>Rejected</Tab>
-          </TabList>
-
-          <TabPanel className="space-y-2">
-            <Pending />
-            <Pending />
-            <Pending />
-          </TabPanel>
-
-          <TabPanel className="space-y-2">
-            <InProgress />
-            <InProgress />
-            <InProgress />
-          </TabPanel>
-
-          <TabPanel className="space-y-2">
-            <QualityControl />
-            <QualityControl />
-            <QualityControl />
-          </TabPanel>
-        </Tabs>
-      </div>
-
-    </div >
+    </div>
   );
 };
 

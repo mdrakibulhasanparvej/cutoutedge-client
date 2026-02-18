@@ -63,7 +63,7 @@ const DashboardLayout = () => {
       <div className='flex h-screen overflow-hidden'>
         {/* SIDEBAR */}
         <aside
-          className={`transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col border-l border-gray-600 dark:border-gray-700
+          className={`transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col border-r border-gray-200 dark:border-gray-700
         ${sidebarOpen ? "w-64 " : "w-0"} overflow-hidden`}>
           <div className='px-4 py-1  dark:border-gray-700 flex items-center justify-between'>
             <Link
@@ -188,7 +188,7 @@ const DashboardLayout = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.25 }}
-              className='h-full overflow-y-auto m-4 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100'>
+              className='h-full overflow-y-auto  bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100'>
               <Outlet />
             </main>
           </div>
