@@ -16,14 +16,26 @@ import {
 // আপনার কম্পোনেন্টগুলো
 import Pending from "../DesignWork/Pending";
 import InProgress from "../DesignWork/InProgress";
-import QualityControl from "../DesignWork/QualityControl";
 import StatsCard from "../../../component/shared/Cards/StatsCard";
+import useUser from "../../../hook/useUser"; // useUser ইম্পোর্ট করা হলো
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
 
+  // useUser থেকে ডাটা আনা হলো
+  const { avatar, userName, userEmail, role, isLoading, dbUser } = useUser();
+
+  if (isLoading) {
+    return (
+      <div className='min-h-screen flex justify-center items-center bg-white'>
+        <p className='animate-pulse font-medium text-gray-500'>
+          Loading profile...
+        </p>
+      </div>
+    );
+  }
+
   return (
-    // মেইন ব্যাকগ্রাউন্ড এখন পুরোপুরি হোয়াইট
     <div className='bg-white min-h-screen font-sans text-[#172b4d]'>
       {/* --- Top Banner Section --- */}
       <div className='bg-white border-b border-gray-200'>
@@ -31,10 +43,10 @@ const Profile = () => {
           <div className='absolute inset-0 opacity-40 bg-gradient-to-r from-blue-600 to-purple-600'></div>
           <div className='absolute right-10 top-10 text-white text-right'>
             <h1 className='text-2xl font-bold tracking-widest uppercase'>
-              Md. Rafiul Islam
+              {userName || "User Name"} {/* ডাইনামিক নাম */}
             </h1>
-            <p className='text-sm opacity-80 font-medium'>
-              FULL STACK DEVELOPER
+            <p className='text-sm opacity-80 font-medium uppercase'>
+              {role || "Member"} {/* ডাইনামিক রোল */}
             </p>
           </div>
         </div>
@@ -43,7 +55,7 @@ const Profile = () => {
           <div className='absolute -top-16 left-8'>
             <div className='w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-gray-100 shadow-sm'>
               <img
-                src='https://avatars.githubusercontent.com/u/218391105?v=4'
+                src={avatar || "https://via.placeholder.com/150"} // ডাইনামিক অ্যাভাটার
                 alt='Profile'
                 className='w-full h-full object-cover'
               />
@@ -52,10 +64,10 @@ const Profile = () => {
 
           <div className='pt-20 flex justify-between items-end'>
             <div>
-              <h2 className='text-2xl font-semibold'>Md. Rafiul Islam</h2>
+              <h2 className='text-2xl font-semibold'>{userName}</h2>
               <div className='flex gap-2 mt-1'>
-                <span className='px-2 py-0.5 text-xs rounded-md bg-blue-50 text-blue-700 font-medium border border-blue-100'>
-                  Admin
+                <span className='px-2 py-0.5 text-xs rounded-md bg-blue-50 text-blue-700 font-medium border border-blue-100 capitalize'>
+                  {role}
                 </span>
                 <span className='px-2 py-0.5 text-xs rounded-md bg-green-50 text-green-700 font-medium border border-green-100'>
                   Active
@@ -81,13 +93,15 @@ const Profile = () => {
             </h3>
             <div className='space-y-4 text-sm text-gray-600'>
               <div className='flex items-center gap-3'>
-                <Briefcase size={16} className='text-gray-400' /> Web Developer
+                <Briefcase size={16} className='text-gray-400' />{" "}
+                {role === "designer" ? "Graphic Designer" : "Web Developer"}
+              </div>
+              <div className='flex items-center gap-3 italic'>
+                <Network size={16} className='text-gray-400' />{" "}
+                {dbUser?.age ? `${dbUser.age} years old` : "Age not set"}
               </div>
               <div className='flex items-center gap-3'>
-                <Network size={16} className='text-gray-400' /> Engineering
-              </div>
-              <div className='flex items-center gap-3'>
-                <Building2 size={16} className='text-gray-400' /> Cutot
+                <Building2 size={16} className='text-gray-400' /> Cutout Edge
               </div>
               <div className='flex items-center gap-3'>
                 <MapPin size={16} className='text-gray-400' /> Dhaka, Bangladesh
@@ -95,6 +109,7 @@ const Profile = () => {
             </div>
           </section>
 
+          {/* ... Date Filter Section (অপরিবর্তিত) ... */}
           <section className='bg-white p-5 rounded-md border border-gray-200 shadow-sm'>
             <h4 className='text-xs font-bold text-gray-500 uppercase tracking-wider mb-4'>
               Date Filter
@@ -106,7 +121,7 @@ const Profile = () => {
                 </label>
                 <input
                   type='date'
-                  className='w-full mt-1 p-2 border border-gray-200 rounded-md text-sm outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100'
+                  className='w-full mt-1 p-2 border border-gray-200 rounded-md text-sm outline-none focus:border-blue-400'
                 />
               </div>
               <div>
@@ -115,7 +130,7 @@ const Profile = () => {
                 </label>
                 <input
                   type='date'
-                  className='w-full mt-1 p-2 border border-gray-200 rounded-md text-sm outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100'
+                  className='w-full mt-1 p-2 border border-gray-200 rounded-md text-sm outline-none focus:border-blue-400'
                 />
               </div>
             </div>
@@ -127,14 +142,14 @@ const Profile = () => {
             </h4>
             <div className='flex items-center gap-3 text-sm text-blue-600 truncate'>
               <Mail size={16} className='text-gray-400 shrink-0' />
-              rafi@cutot.com
+              {userEmail} {/* ডাইনামিক ইমেইল */}
             </div>
           </section>
         </div>
 
         {/* === Right Content === */}
         <div className='col-span-12 lg:col-span-9 space-y-6'>
-          {/* Stats Cards - Border gray 200 used in internal component usually */}
+          {/* Stats Cards */}
           <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4'>
             <StatsCard
               title='In-Progress'
@@ -198,7 +213,6 @@ const Profile = () => {
                 </motion.div>
               </TabPanel>
 
-              {/* বাকি TabPanel গুলোতেও একইভাবে কম্পোনেন্ট বসবে */}
               <TabPanel>
                 <div className='space-y-3'>
                   <InProgress />

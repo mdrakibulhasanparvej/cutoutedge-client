@@ -8,15 +8,26 @@ import ViewDetails from "../pages/Dashboard/DesignWork/ViewDetails";
 import Profile from "../pages/Dashboard/common/Profile";
 import CreateProject from "../pages/Dashboard/createProject/CreateProject";
 import ProjectDetails from "../pages/Dashboard/project-details/ProjectDetails";
+import Login from "../pages/Home/Login/Login";
+import Register from "../pages/Home/Register/Register";
+import PrivateRoutes from "./PrivateRoutes";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
   {
     path: "/dashboard",
-    element: <DashboardLayout />,
+    element: (
+      <PrivateRoutes>
+        <DashboardLayout />,
+      </PrivateRoutes>
+    ),
     children: [
       {
         index: true,
@@ -40,8 +51,8 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile />
-      }
+        element: <Profile />,
+      },
     ],
   },
 ]);
