@@ -3,20 +3,30 @@ import useAuth from "./useAuth";
 import useAxios from "./useAxios";
 
 const useUser = () => {
-  // const { user } = useAuth();
+  const { user } = useAuth();
   const axiosSecure = useAxios();
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["user", user?.email],
-    enabled: !!user?.email, // Only fetch if logged in
+    enabled: !!user?.email,
     queryFn: async () => {
-      if (!user?.email) throw new Error("User not logged in");
-      const res = await axiosSecure.get(`/users/${user.email}`);
-      return res.data;
+      const res = await axiosSecure.get(`users/email/${user.email}`);
+      return res.data.data ? res.data.data : res.data;
     },
   });
 
-  return { userData: data, isLoading, error, refetch };
+  // ডাটা না থাকলে বা লোডিং হলে একটি ডিফল্ট অবজেক্ট রিটার্ন করতে হবে
+  // যাতে Destructuring করার সময় ক্র্যাশ না করে
+  return {
+    avatar: user?.photoURL || data?.photo,
+    userName: data?.name || "",
+    userEmail: data?.email || "",
+    role: data?.role || "viewer",
+    dbUser: data, // ডাটাবেসের পুরো অবজেক্ট এখানে থাকবে
+    isLoading,
+    error,
+    refetch,
+  };
 };
 
 export default useUser;

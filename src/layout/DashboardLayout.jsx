@@ -17,6 +17,8 @@ import MenuItem from "../component/Dashboard/MenuItem/MenuItem";
 import Navbar from "../component/shared/Navbar/Navbar";
 import { IoNotifications } from "react-icons/io5";
 import { FaBell } from "react-icons/fa";
+import useAuth from "../hook/useAuth";
+import useUser from "../hook/useUser";
 
 // Hooks
 // import useAuth from "../hooks/useAuth";
@@ -37,13 +39,13 @@ import { FaBell } from "react-icons/fa";
 const DashboardLayout = () => {
   // useTitle("Dashboard");
 
-  // const { user, logOut } = useAuth();
-  // const { userData: dbUser, isLoading } = useUser();
+  const { user, logOut } = useAuth();
+  const { avatar, userName, role } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [notificationCount, setNotificationCount] = useState(5);
   // const location = useLocation();
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-  const [user, setUser] = useState(true);
+  // const [user, setUser] = useState(true);
 
   // useEffect(() => {
   //   const html = document.querySelector("html");
@@ -102,7 +104,6 @@ const DashboardLayout = () => {
                   label='My Profile'
                   address='profile'
                 />
-
               </>
             )}
           </div>
@@ -110,7 +111,7 @@ const DashboardLayout = () => {
           {sidebarOpen && (
             <Link
               to='/'
-              // onClick={logOut}
+              onClick={logOut}
               className='cursor-pointer text-[14px] px-2 m-4 flex items-center gap-3 py-1 rounded-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition'>
               <GrLogout />
               Logout
@@ -163,14 +164,13 @@ const DashboardLayout = () => {
               <div className='flex items-center gap-3'>
                 <div className='text-right hidden sm:block'>
                   <p className='text-xs font-bold text-gray-700 dark:text-gray-300'>
-                    Hey{" "}
-                    <span className='font-semibold'>{user?.displayName}</span>
+                    Hey <span className='font-semibold'>{userName}</span>
                   </p>
-                  <p className='text-xs text-gray-500'>Admin</p>
+                  <p className='text-xs text-gray-500'>{role}</p>
                 </div>
                 <Link to='profile'>
                   <img
-                    src='https://avatars.githubusercontent.com/u/172835253?v=4'
+                    src={`${avatar} || https://avatars.githubusercontent.com/u/172835253?v=4`}
                     className='w-6 h-6 rounded-full border border-red-800 object-cover'
                   />
                 </Link>
