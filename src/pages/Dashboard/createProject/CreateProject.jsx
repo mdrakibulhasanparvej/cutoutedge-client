@@ -7,7 +7,6 @@ const CreateProject = () => {
 
     const axios = useAxios()
 
-
     const {
         register,
         handleSubmit,
@@ -18,7 +17,7 @@ const CreateProject = () => {
     const selectDeadline = watch('deadline')
 
     const onSubmit = async (data) => {
-        const { categories, deadline, customDeadline, projectId, instructions } = data;
+        const { categories, deadline, customDeadline, projectId, instructions, priority } = data;
 
         const finalDeadline = deadline === 'other' ? Number(customDeadline) : Number(deadline)
 
@@ -26,7 +25,8 @@ const CreateProject = () => {
             orderId: projectId,
             deadline: finalDeadline,
             categories,
-            instructions
+            instructions,
+            priority
         };
 
         const res = await axios.post('/files/register',
@@ -37,9 +37,10 @@ const CreateProject = () => {
                 }
             })
         if (res.data) {
-            alert("project creation complete")
+            return alert("project creation complete")
+        } else {
+            return alert("failed to create project")
         }
-        alert("failed to create project")
     };
 
     return (
@@ -117,6 +118,24 @@ const CreateProject = () => {
                             <p>Category 3</p>
                         </div>
                     </div>
+
+                    <legend className="fieldset-legend">Priority</legend>
+                    <select
+                        className="select bg-white"
+                        defaultValue={"normal"}
+                        {...register("priority")}
+                    >
+                        <option disabled value="">Select priority</option>
+                        <option value={"normal"}>Normal</option>
+                        <option value={"medium"}>Medium</option>
+                        <option value={"high"}>High</option>
+                    </select>
+                    {errors.priority && (
+                        <span className="text-red-500 text-sm">
+                            {errors.priority.message}
+                        </span>
+                    )}
+
 
                     {/* Deadline */}
                     <fieldset className="fieldset">

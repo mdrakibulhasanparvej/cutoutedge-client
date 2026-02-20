@@ -195,7 +195,6 @@ const Profile = () => {
                   animate={{ opacity: 1 }}
                   className='space-y-3'>
                   <Pending />
-                  <Pending />
                 </motion.div>
               </TabPanel>
 
