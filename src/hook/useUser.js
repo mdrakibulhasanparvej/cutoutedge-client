@@ -3,7 +3,7 @@ import useAuth from "./useAuth";
 import useAxios from "./useAxios";
 
 const useUser = () => {
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const axiosSecure = useAxios();
 
   const { data, isLoading, error, refetch } = useQuery({

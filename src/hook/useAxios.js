@@ -2,9 +2,10 @@ import axios from "axios";
 import React from "react";
 
 const axiosSecure = axios.create({
-  baseURL: "https://grameenshikkha-server.vercel.app",
-  // baseURL: "http://localhost:5000",
+  baseURL: "http://localhost:8080/api",
+
 });
+
 const useAxios = () => {
   return axiosSecure;
 };
