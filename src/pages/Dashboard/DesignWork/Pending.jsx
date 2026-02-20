@@ -111,7 +111,7 @@ const Pending = () => {
             {/* Actions */}
             <div className='flex items-center gap-2 justify-end sm:justify-start'>
               <Link
-                to={`/order-details/${orderId}`}
+                to={`/dashboard/order-details/${encodeURIComponent(orderId)}`}
                 className='flex items-center gap-1.5 rounded-lg bg-[#0F83B2] px-4 py-1 text-sm font-medium text-white hover:bg-[#0f99cf] duration-500 transition-colors  cursor-pointer'>
                 View Details
               </Link>
