@@ -5,7 +5,7 @@ import useAuth from "../../../hook/useAuth";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const { logIn, signInWithGoogle } = useAuth(); // signInWithGoogle যোগ করা হয়েছে
+  const { logIn } = useAuth(); // signInWithGoogle যোগ করা হয়েছে
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
