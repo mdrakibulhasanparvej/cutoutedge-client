@@ -5,7 +5,7 @@ import useAuth from "../../../hook/useAuth";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const { logIn } = useAuth(); // signInWithGoogle যোগ করা হয়েছে
+  const { logIn, signInWithGoogle } = useAuth(); // signInWithGoogle যোগ করা হয়েছে
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -30,15 +30,15 @@ const Login = () => {
   };
 
   // গুগল লগইন হ্যান্ডলার
-  const handleGoogleLogin = async () => {
-    try {
-      await signInWithGoogle();
-      toast.success("Google Login successful! 🎉");
-      navigate("/dashboard");
-    } catch (error) {
-      toast.error("Google sign-in failed ❌");
-    }
-  };
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     await signInWithGoogle();
+  //     toast.success("Google Login successful! 🎉");
+  //     navigate("/dashboard");
+  //   } catch (error) {
+  //     toast.error("Google sign-in failed ❌");
+  //   }
+  // };
 
   return (
     <div className='min-h-screen bg-[#F4F5F7] flex flex-col items-center justify-center p-4 font-sans text-[#172B4D]'>
@@ -69,11 +69,10 @@ const Login = () => {
               })}
               type='email'
               placeholder='Enter email'
-              className={`w-full px-3 py-2 border-2 rounded-md outline-none transition-all text-sm ${
-                errors.email
+              className={`w-full px-3 py-2 border-2 rounded-md outline-none transition-all text-sm ${errors.email
                   ? "border-red-500 focus:border-red-500"
                   : "border-gray-200 focus:border-[#0F83B2]"
-              }`}
+                }`}
             />
             {errors.email && (
               <p className='text-red-500 text-[11px] mt-1 font-medium'>
@@ -90,11 +89,10 @@ const Login = () => {
               })}
               type='password'
               placeholder='Enter password'
-              className={`w-full px-3 py-2 border-2 rounded-md outline-none transition-all text-sm ${
-                errors.password
+              className={`w-full px-3 py-2 border-2 rounded-md outline-none transition-all text-sm ${errors.password
                   ? "border-red-500 focus:border-red-500"
                   : "border-gray-200 focus:border-[#0F83B2]"
-              }`}
+                }`}
             />
             {errors.password && (
               <p className='text-red-500 text-[11px] mt-1 font-medium'>
