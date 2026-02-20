@@ -98,11 +98,10 @@ const DesignOnline = () => {
                 onClick={() => setActiveTab(tab.label)}
                 className={`
                     group cursor-pointer  flex items-center gap-2 py-3 border-b-[3px] transition-all whitespace-nowrap text-[15px]
-                    ${
-                      isActive
-                        ? "border-[#0F83B2] text-[#0F83B2] font-medium" // Active: Blue color & border
-                        : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-t-md px-1" // Inactive
-                    }
+                    ${isActive
+                    ? "border-[#0F83B2] text-[#0F83B2] font-medium" // Active: Blue color & border
+                    : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-t-md px-1" // Inactive
+                  }
                 `}>
                 <Icon
                   size={18}
@@ -141,6 +140,7 @@ const DesignOnline = () => {
             className='pl-3 pr-8 py-1.5 border border-gray-300 rounded focus:outline-none focus:border-blue-500 text-sm w-48'
           />
         </div>
+
         <div className='flex -space-x-2'>
           {/* Dummy User Avatars */}
           <div className='w-8 h-8 rounded-full bg-blue-500 border-2 border-white text-white text-xs flex items-center justify-center'>
@@ -164,11 +164,8 @@ const DesignOnline = () => {
 
       {/* --- Main Content Area --- */}
       <div className='bg-white min-h-[calc(100vh-180px)] p-6'>
-        {/* এখানে ৫টি কম্পোনেন্ট লুপ হচ্ছে যেমন আপনার কোডে ছিল */}
         <div className='space-y-5'>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <ActiveComp key={index} />
-          ))}
+          <ActiveComp />
         </div>
       </div>
     </div>
