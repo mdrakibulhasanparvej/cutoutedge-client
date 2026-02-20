@@ -93,15 +93,16 @@ const DashboardLayout = () => {
                   address='design-online'
                 />
                 <MenuItem
+                  icon={MdOutlineDesignServices}
+                  label='Create a Project'
+                  address='create-project'
+                />
+                <MenuItem
                   icon={CgProfile}
                   label='My Profile'
                   address='profile'
                 />
 
-                {/* {dbUser?.role === "admin" && <AdminMenu />}
-                {dbUser?.role === "volunteer" && <VolunteerMenu />}
-                {dbUser?.role === "student" && <StudentsMenu />}
-                {dbUser?.role === "trainer" && <TrainerMenu />} */}
               </>
             )}
           </div>

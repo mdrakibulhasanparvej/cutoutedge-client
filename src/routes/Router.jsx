@@ -6,6 +6,8 @@ import Statistics from "../pages/Dashboard/common/Statistics";
 import DesignOnline from "../pages/Dashboard/DesignWork/DesignOnline";
 import ViewDetails from "../pages/Dashboard/DesignWork/ViewDetails";
 import Profile from "../pages/Dashboard/common/Profile";
+import CreateProject from "../pages/Dashboard/createProject/CreateProject";
+import ProjectDetails from "../pages/Dashboard/project-details/ProjectDetails";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +27,15 @@ const router = createBrowserRouter([
         element: <DesignOnline />,
       },
       {
-        path: "viewdetails",
+        path: "create-project",
+        element: <CreateProject />,
+      },
+      {
+        path: "project-details/:id",
+        element: <ProjectDetails />,
+      },
+      {
+        path: "view-details",
         element: <ViewDetails />,
       },
       {
