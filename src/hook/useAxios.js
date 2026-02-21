@@ -39,7 +39,7 @@ const useAxios = () => {
         // ৪. অটোমেটিক লগআউট লজিক (401 বা 403 এরর আসলে)
         if (status === 401 || status === 403) {
           await logOut();
-          navigate("/auth/login");
+          navigate("/");
         }
         return Promise.reject(error);
       },
