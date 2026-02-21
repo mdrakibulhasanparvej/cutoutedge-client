@@ -6,13 +6,13 @@ import {
   FiMoreVertical,
 } from "react-icons/fi";
 import { useQuery } from '@tanstack/react-query';
-import useAxios from "../../../hook/useAxios";
-import { calculateTime } from "../../../utils/calculateTime";
-import Deadline from "../common/deadline";
 import { Link } from "react-router";
+import { calculateTime } from "../../../../utils/calculateTime";
+import Deadline from "../../common/Deadline";
+import useAxiosSecure from "../../../../hook/useAxiosSecure";
 
 const Pending = () => {
-  const axios = useAxios();
+  const axiosSecure = useAxiosSecure();
 
   // const getStatusStyles = (status) => {
   //   switch (status) {
@@ -47,7 +47,7 @@ const Pending = () => {
   const { isPending, data: orders } = useQuery({
     queryKey: ["projects"],
     queryFn: async () => {
-      const res = await axios.get(`/files/orders`, {
+      const res = await axiosSecure.get(`/files/orders`, {
         headers: { "x-user-id": "6997518309071ee6a5465c46" }
       });
       return res.data.data || [];
