@@ -14,12 +14,17 @@ import {
   Maximize2,
   KanbanSquare,
 } from "lucide-react";
+import Pending from "./pending/Pending";
+import InProgress from "./in-progress/InProgress";
+import QualityControl from "./qc-1/QualityControl";
+import QualityControl2 from "./qc-2/QualityControl2";
+import Finished from "./finished/Finished";
 
-import Pending from "./Pending";
-import InProgress from "./InProgress";
-import QualityControl from "./QualityControl";
-import QualityControl2 from "./QualityControl2";
-import Finished from "./Finished";
+// import Pending from "./Pending";
+// import InProgress from "./in-progress/InProgress";
+// import QualityControl from "./qc-1/QualityControl";
+// import QualityControl2 from "./qc-2/QualityControl2";
+// import Finished from "./finished/Finished";
 
 const DesignOnline = () => {
   // ডিফল্ট ট্যাব 'Pending' রাখলাম

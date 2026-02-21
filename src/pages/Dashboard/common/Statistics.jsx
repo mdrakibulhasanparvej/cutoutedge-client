@@ -2,7 +2,7 @@ import React from "react";
 import useTitle from "../../../hook/useTitle";
 // import StatisticsPage from "../DesignWork/StatisticsPage"; // যদি প্রয়োজন হয়
 import useUser from "../../../hook/useUser";
-import StatisticsPage from "../DesignWork/StatisticsPage";
+import StatisticsPage from "../statistics/StatisticsPage";
 
 const Statistics = () => {
   useTitle("Statistics");

@@ -14,8 +14,8 @@ import {
 } from "lucide-react";
 
 // আপনার কম্পোনেন্টগুলো
-import Pending from "../DesignWork/Pending";
-import InProgress from "../DesignWork/InProgress";
+import Pending from "../DesignWork/pending/Pending";
+import InProgress from "../DesignWork/in-progress/InProgress";
 import StatsCard from "../../../component/shared/Cards/StatsCard";
 import useUser from "../../../hook/useUser"; // useUser ইম্পোর্ট করা হলো
 
