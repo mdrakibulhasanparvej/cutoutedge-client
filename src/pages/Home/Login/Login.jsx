@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useAuth from "../../../hook/useAuth";
 import toast from "react-hot-toast";
 
@@ -69,10 +69,11 @@ const Login = () => {
               })}
               type='email'
               placeholder='Enter email'
-              className={`w-full px-3 py-2 border-2 rounded-md outline-none transition-all text-sm ${errors.email
+              className={`w-full px-3 py-2 border-2 rounded-md outline-none transition-all text-sm ${
+                errors.email
                   ? "border-red-500 focus:border-red-500"
                   : "border-gray-200 focus:border-[#0F83B2]"
-                }`}
+              }`}
             />
             {errors.email && (
               <p className='text-red-500 text-[11px] mt-1 font-medium'>
@@ -89,10 +90,11 @@ const Login = () => {
               })}
               type='password'
               placeholder='Enter password'
-              className={`w-full px-3 py-2 border-2 rounded-md outline-none transition-all text-sm ${errors.password
+              className={`w-full px-3 py-2 border-2 rounded-md outline-none transition-all text-sm ${
+                errors.password
                   ? "border-red-500 focus:border-red-500"
                   : "border-gray-200 focus:border-[#0F83B2]"
-                }`}
+              }`}
             />
             {errors.password && (
               <p className='text-red-500 text-[11px] mt-1 font-medium'>
@@ -132,11 +134,12 @@ const Login = () => {
         </p>
         <p className='text-[10px] text-gray-400 font-medium'>
           Design & Developed by
-          <a
-            href='#'
-            className='ml-1 text-[#0F83B2] hover:underline transition-all font-bold'>
+          <Link
+            to='https://lazy-loader-five.vercel.app/about'
+            target='blank'
+            className='ml-1 text-[#0F83B2] hover:underline font-bold'>
             Lazy Loader
-          </a>
+          </Link>
         </p>
       </div>
     </div>

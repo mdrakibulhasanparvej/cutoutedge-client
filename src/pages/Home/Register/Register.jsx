@@ -1,7 +1,6 @@
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useAuth from "../../../hook/useAuth";
 import axios from "axios"; // ImgBB এর জন্য
 
@@ -222,9 +221,12 @@ const Register = () => {
         </p>
         <p className='text-[10px] text-gray-400 font-medium'>
           Design & Developed by{" "}
-          <a href='#' className='ml-1 text-[#0F83B2] hover:underline font-bold'>
+          <Link
+            to='https://lazy-loader-five.vercel.app/about'
+            target='blank'
+            className='ml-1 text-[#0F83B2] hover:underline font-bold'>
             Lazy Loader
-          </a>
+          </Link>
         </p>
       </div>
     </div>
