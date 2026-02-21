@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import FileInput from '../../../component/shared/fileInput/FileInput';
-import useAxios from '../../../hook/useAxios';
+import useAxios from '../../../hook/useAxiosSecure';
 
 const CreateProject = () => {
 

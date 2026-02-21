@@ -5,7 +5,7 @@ import useAuth from "../../../hook/useAuth";
 import axios from "axios"; // ImgBB এর জন্য
 
 import { toast } from "react-hot-toast";
-import useAxios from "../../../hook/useAxios";
+import useAxios from "../../../hook/useAxiosSecure";
 
 const Register = () => {
   const navigate = useNavigate();
