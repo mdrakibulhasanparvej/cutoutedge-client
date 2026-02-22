@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  FiClock,
-  FiDroplet,
-  FiImage,
-  FiMoreVertical,
-} from "react-icons/fi";
-import { useQuery } from '@tanstack/react-query';
+import { FiClock, FiDroplet, FiImage, FiMoreVertical } from "react-icons/fi";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
 import { calculateTime } from "../../../../utils/calculateTime";
 import Deadline from "../../common/Deadline";
@@ -48,7 +43,7 @@ const Pending = () => {
     queryKey: ["projects"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/files/orders`, {
-        headers: { "x-user-id": "6997518309071ee6a5465c46" }
+        headers: { "x-user-id": "6998833da6eb05728be75223" },
       });
       return res.data.data || [];
     },
@@ -56,24 +51,21 @@ const Pending = () => {
   });
 
   if (isPending) {
-    return <div className="p-4 text-gray-500">Loading orders...</div>;
+    return <div className='p-4 text-gray-500'>Loading orders...</div>;
   }
 
-
   return (
-    <div className="flex flex-col gap-4">
+    <div className='flex flex-col gap-4'>
       {orders.map((order) => {
-        const { createdAt, fileCount, orderDeadline, orderId, priority } = order;
+        const { createdAt, fileCount, orderDeadline, orderId, priority } =
+          order;
         const { minutesAgo, hoursAgo } = calculateTime(createdAt);
-
 
         return (
           <div
             key={orderId}
             className='group w-full flex flex-col sm:flex-row sm:items-center gap-4 px-4 py-4 bg-white border border-gray-200 rounded-md hover:shadow-md hover:-translate-y-0.5 transition-all'>
-
             <div className='flex items-center gap-3 min-w-32.5'>
-
               <span className='font-semibold text-gray-900 text-[14px]'>
                 {orderId}
               </span>
@@ -82,18 +74,28 @@ const Pending = () => {
             {/* Main content */}
             <div className='flex-1 min-w-0'>
               <div className='flex flex-wrap items-center gap-2'>
-                <h1 className="font-medium text-[14px] text-gray-900 truncate max-w-65 sm:max-w-full">Deadline:</h1>
+                <h1 className='font-medium text-[14px] text-gray-900 truncate max-w-65 sm:max-w-full'>
+                  Deadline:
+                </h1>
                 <h3 className='font-medium text-[14px] text-gray-900 truncate max-w-65 sm:max-w-full'>
-                  <Deadline createdAt={createdAt} orderDeadline={orderDeadline} />
+                  <Deadline
+                    createdAt={createdAt}
+                    orderDeadline={orderDeadline}
+                  />
                 </h3>
-
               </div>
 
               <div className='mt-2 flex flex-wrap items-center gap-4 text-xs text-gray-500'>
                 <div className='flex items-center gap-1'>
                   <FiClock size={14} />
 
-                  <span>created {hoursAgo === 0 ? `${minutesAgo}m` : `${hoursAgo}h ${minutesAgo}m`} ago</span>
+                  <span>
+                    created{" "}
+                    {hoursAgo === 0
+                      ? `${minutesAgo}m`
+                      : `${hoursAgo}h ${minutesAgo}m`}{" "}
+                    ago
+                  </span>
                 </div>
 
                 <div className='flex items-center gap-1'>
