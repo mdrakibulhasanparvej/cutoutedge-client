@@ -22,7 +22,6 @@ const QualityControl = ({
   },
   onApproveAll,
   onReview,
-  onReject,
 }) => {
   const approvalRate =
     Math.round((order.approvedCount / order.imagesCount) * 100) || 0;
@@ -39,7 +38,7 @@ const QualityControl = ({
         hover:shadow-md hover:-translate-y-0.5 transition-all
       '>
       {/* Left */}
-      <div className='flex items-center gap-3 min-w-[130px]'>
+      <div className='flex items-center gap-3 min-w-32.5'>
         <div className='relative h-3 w-3'>
           {hasIssues ? (
             <>
@@ -59,7 +58,7 @@ const QualityControl = ({
       {/* Main */}
       <div className='flex-1 min-w-0 space-y-2'>
         <div className='flex flex-wrap items-center gap-2'>
-          <h3 className='font-medium text-[14px] text-gray-900 truncate max-w-[260px] sm:max-w-full'>
+          <h3 className='font-medium text-[14px] text-gray-900 truncate max-w-65 sm:max-w-full'>
             {order.title}
           </h3>
 

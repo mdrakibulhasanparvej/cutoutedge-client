@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import useAuth from "../../../hook/useAuth";
-import toast from "react-hot-toast";
+import MyAlert from "../../Dashboard/common/MyAler";
 
 const Login = () => {
-  const { logIn, signInWithGoogle } = useAuth(); // signInWithGoogle যোগ করা হয়েছে
+  const { logIn } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -15,15 +15,21 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  // ইমেইল পাসওয়ার্ড লগইন
   const onSubmit = async (data) => {
     setLoading(true);
     try {
       await logIn(data.email, data.password);
-      toast.success("Login successfully 🎉", { duration: 1500 });
+      MyAlert({
+        title: "Welcome",
+        text: "You have successfully logged in"
+      });
       navigate("/dashboard");
     } catch (error) {
-      toast.error("Invalid email or password ❌", error);
+      console.log(error.message)
+      MyAlert({
+        title: "Something went wrong",
+        text: "please, try again."
+      });
     } finally {
       setLoading(false);
     }
@@ -52,7 +58,7 @@ const Login = () => {
       </div>
 
       {/* --- Login Card --- */}
-      <div className='bg-white w-full max-w-[400px] p-10 rounded-md border border-gray-200 shadow-sm'>
+      <div className='bg-white w-full max-w-100 p-10 rounded-md border border-gray-200 shadow-sm'>
         <h2 className='text-center text-lg font-semibold mb-6 text-[#42526E]'>
           Log in to continue
         </h2>
@@ -69,11 +75,10 @@ const Login = () => {
               })}
               type='email'
               placeholder='Enter email'
-              className={`w-full px-3 py-2 border-2 rounded-md outline-none transition-all text-sm ${
-                errors.email
-                  ? "border-red-500 focus:border-red-500"
-                  : "border-gray-200 focus:border-[#0F83B2]"
-              }`}
+              className={`w-full px-3 py-2 border-2 rounded-md outline-none transition-all text-sm ${errors.email
+                ? "border-red-500 focus:border-red-500"
+                : "border-gray-200 focus:border-[#0F83B2]"
+                }`}
             />
             {errors.email && (
               <p className='text-red-500 text-[11px] mt-1 font-medium'>
@@ -90,11 +95,10 @@ const Login = () => {
               })}
               type='password'
               placeholder='Enter password'
-              className={`w-full px-3 py-2 border-2 rounded-md outline-none transition-all text-sm ${
-                errors.password
-                  ? "border-red-500 focus:border-red-500"
-                  : "border-gray-200 focus:border-[#0F83B2]"
-              }`}
+              className={`w-full px-3 py-2 border-2 rounded-md outline-none transition-all text-sm ${errors.password
+                ? "border-red-500 focus:border-red-500"
+                : "border-gray-200 focus:border-[#0F83B2]"
+                }`}
             />
             {errors.password && (
               <p className='text-red-500 text-[11px] mt-1 font-medium'>
@@ -117,7 +121,7 @@ const Login = () => {
           <div className='flex items-center gap-1'>
             <span className='text-gray-400'>Don't have an account?</span>
             <a
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/auth/register")}
               className='text-[#0F83B2] font-bold hover:underline cursor-pointer'>
               Create an account
             </a>
@@ -127,7 +131,7 @@ const Login = () => {
 
       {/* Footer Branding */}
       <div className='mt-12 mb-4 flex flex-col items-center gap-2'>
-        <div className='w-16 h-[2px] bg-gray-200 mb-2 rounded-full'></div>
+        <div className='w-16 h-0.5 bg-gray-200 mb-2 rounded-full'></div>
         <p className='text-[10px] md:text-xs text-gray-400 uppercase tracking-[0.2em] font-medium text-center leading-relaxed'>
           © 2026 <span className='text-gray-600 font-bold'>CUTOUT EDGE</span> •
           All Rights Reserved.

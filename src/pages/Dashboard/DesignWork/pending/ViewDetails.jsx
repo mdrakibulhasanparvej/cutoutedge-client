@@ -76,7 +76,7 @@ const ViewDetails = ({
             </button>
             <div>
               <h2 className="text-xl font-bold text-gray-900">{order.id}</h2>
-              <p className="text-sm text-gray-600 truncate max-w-[300px] md:max-w-none">
+              <p className="text-sm text-gray-600 truncate max-w-75 md:max-w-none">
                 {order.title}
               </p>
             </div>
