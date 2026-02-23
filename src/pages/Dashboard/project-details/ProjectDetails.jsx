@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router";
 import useAxiosSecure from "../../../hook/useAxiosSecure";
 import FileDetailsCard from "./FileDetailsCard";
 import Deadline from "../common/Deadline";
-import { calculateTime } from "../../../utils/calculateTime";
 import {
   ChevronLeft,
   Clock,
@@ -16,19 +15,19 @@ import {
   Briefcase,
   User,
 } from "lucide-react";
+import useUser from "../../../hook/useUser";
 
 const ProjectDetails = () => {
   const navigate = useNavigate();
   const { orderId } = useParams();
   const axiosSecure = useAxiosSecure();
+  const { name } = useUser()
+
 
   const { isPending, data: order } = useQuery({
     queryKey: ["order", orderId],
     queryFn: async () => {
-      const res = await axiosSecure.get(
-        `/files/order/${encodeURIComponent(orderId)}`,
-        { headers: { "x-user-id": "6998833da6eb05728be75223" } },
-      );
+      const res = await axiosSecure.get(`/files/order/${encodeURIComponent(orderId)}`);
       return res.data || [];
     },
     staleTime: 60000,
@@ -48,6 +47,7 @@ const ProjectDetails = () => {
 
   const { instructions, categories, deadline, createdAt, priority, files } =
     order?.data || {};
+
 
   return (
     <div className='min-h-screen bg-[#F4F5F7] p-4 font-sans text-[#172B4D]'>
@@ -85,7 +85,7 @@ const ProjectDetails = () => {
                 </div>
               </div>
 
-              {/* TIMER BOX: আইকন ছাড়া শুধু টেক্সট ফোকাসড টাইমার */}
+
               <div className='bg-rose-50 border border-rose-100 rounded-md p-3'>
                 <p className='text-[10px] font-bold text-rose-400 uppercase leading-none mb-1.5 tracking-wider'>
                   Time Remaining
@@ -100,7 +100,7 @@ const ProjectDetails = () => {
                 <div className='flex items-center gap-2 text-gray-600'>
                   <User size={14} className='text-gray-400' />
                   <span className='font-medium truncate text-[11px]'>
-                    User: 6998833da6...
+                    User: {name}
                   </span>
                 </div>
                 <div className='flex items-center gap-2 text-gray-500 text-[11px]'>
@@ -128,10 +128,10 @@ const ProjectDetails = () => {
                     {cat}
                   </span>
                 )) || (
-                  <span className='text-gray-400 italic text-[11px]'>
-                    No category
-                  </span>
-                )}
+                    <span className='text-gray-400 italic text-[11px]'>
+                      No category
+                    </span>
+                  )}
               </div>
             </div>
 
@@ -196,10 +196,10 @@ const ProjectDetails = () => {
               </button>
             </div>
 
-            <div className='p-4 grid grid-cols-1 gap-3 max-h-[600px] overflow-y-auto custom-scrollbar bg-gray-50/50'>
+            <div className='p-4 grid grid-cols-1 gap-3 max-h-150 overflow-y-auto custom-scrollbar bg-gray-50/50'>
               {files && files.length > 0 ? (
                 files.map((file) => (
-                  <FileDetailsCard key={file._id} file={file} />
+                  <FileDetailsCard key={file._id} file={file} orderId={orderId} />
                 ))
               ) : (
                 <div className='text-center py-20 text-gray-400 italic bg-white rounded border border-dashed border-gray-200'>

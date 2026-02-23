@@ -12,10 +12,10 @@ import {
   FileCode,
 } from "lucide-react";
 import FileInput from "../../../component/shared/fileInput/FileInput";
-import useAxios from "../../../hook/useAxiosSecure";
+import useAxiosSecure from "../../../hook/useAxiosSecure";
 
 const CreateProject = () => {
-  const axios = useAxios();
+  const axiosSecure = useAxiosSecure()
   const [selectedFiles, setSelectedFiles] = useState([]);
 
   const {
@@ -24,7 +24,7 @@ const CreateProject = () => {
     watch,
     setValue,
     reset,
-    formState: { errors, isSubmitting }, // isSubmitting এখানে লোডিং স্টেট হ্যান্ডেল করবে
+    formState: { isSubmitting },
   } = useForm({
     defaultValues: {
       priority: "normal",
@@ -36,14 +36,13 @@ const CreateProject = () => {
   const formData = watch();
   const selectDeadline = watch("deadline");
 
-  // ফোল্ডার সিলেক্ট করলে প্রজেক্ট আইডি অটো সেট করার ফাংশন
   const handleFolderSelection = (files) => {
     const fileArray = Array.from(files);
     setSelectedFiles(fileArray);
 
     if (fileArray.length > 0) {
       const folderName = fileArray[0].webkitRelativePath.split("/")[0];
-      setValue("projectId", folderName); // অটো আইডি সেট
+      setValue("projectId", folderName)
     }
   };
 
@@ -135,9 +134,7 @@ const CreateProject = () => {
     };
 
     try {
-      const res = await axios.post("/files/register", finalData, {
-        headers: { "x-user-id": "6998833da6eb05728be75223" },
-      });
+      const res = await axiosSecure.post("/files/register", finalData);
 
       if (res.data) {
         await Swal.fire({
@@ -146,8 +143,8 @@ const CreateProject = () => {
           text: "Project created successfully!",
           confirmButtonColor: "#0F83B2",
         });
-        reset(); // ফর্ম খালি করা
-        setSelectedFiles([]); // ফাইল লিস্ট ক্লিয়ার করা
+        reset();
+        setSelectedFiles([])
       }
     } catch (err) {
       Swal.fire({
@@ -156,13 +153,14 @@ const CreateProject = () => {
         text: "Failed to create project!",
         confirmButtonColor: "#0F83B2",
       });
+      console.log(err.message)
     }
   };
 
   return (
     <div className='min-h-screen bg-white p-4 md:p-8 font-sans text-[#172B4D]'>
       <div className='max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8'>
-        {/* --- Left Side: Form Section --- */}
+
         <div className='lg:col-span-7 bg-white rounded-md shadow-sm border border-gray-200 overflow-hidden'>
           <div className='bg-[#091E42] p-4 text-white uppercase tracking-wider'>
             <h2 className='text-lg font-semibold flex items-center gap-2'>
@@ -171,12 +169,12 @@ const CreateProject = () => {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className='p-6 space-y-6'>
-            {/* File Upload Section */}
+
             <div className='bg-gray-50 p-4 rounded-md border border-dashed border-gray-300'>
               <FileInput onFilesSelect={handleFolderSelection} />
             </div>
 
-            {/* Project ID & Priority */}
+
             <div className='grid grid-cols-2 gap-4'>
               <div>
                 <label className='text-[11px] font-bold text-gray-500 uppercase flex items-center gap-1 mb-1'>
@@ -222,7 +220,7 @@ const CreateProject = () => {
               <label className='text-[11px] font-bold text-gray-500 uppercase flex items-center gap-1 mb-3'>
                 <Layers size={12} /> Service Categories
               </label>
-              <div className='space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar border rounded-md p-3 border-gray-100 bg-white'>
+              <div className='space-y-4 max-h-75 overflow-y-auto pr-2 custom-scrollbar border rounded-md p-3 border-gray-100 bg-white'>
                 {fullCategoryList.map((group, idx) => (
                   <div
                     key={idx}
@@ -281,15 +279,14 @@ const CreateProject = () => {
               </div>
             </div>
 
-            {/* Create Button with Loading State */}
+
             <button
               type='submit'
               disabled={isSubmitting}
               className={`w-full font-bold py-3 rounded-md transition-all shadow-md text-sm uppercase tracking-wider flex items-center justify-center gap-2
-                ${
-                  isSubmitting
-                    ? "bg-gray-400 cursor-not-allowed text-white"
-                    : "bg-[#0F83B2] hover:bg-[#0C6A8E] cursor-pointer text-white active:scale-95"
+                ${isSubmitting
+                  ? "bg-gray-400 cursor-not-allowed text-white"
+                  : "bg-[#0F83B2] hover:bg-[#0C6A8E] cursor-pointer text-white active:scale-95"
                 }`}>
               {isSubmitting ? (
                 <>
@@ -303,7 +300,7 @@ const CreateProject = () => {
           </form>
         </div>
 
-        {/* --- Right Side: Live Preview --- */}
+
         <div className='lg:col-span-5'>
           <div className='bg-white rounded-md shadow-sm border border-gray-200 sticky top-8 overflow-hidden'>
             <div className='px-4 py-3 border-b border-gray-100 flex justify-between items-center bg-gray-50'>
@@ -322,7 +319,7 @@ const CreateProject = () => {
                   Project Identifier
                 </label>
                 <h4 className='text-xl font-bold text-[#172B4D] border-l-4 border-[#0F83B2] pl-3 truncate'>
-                  {formData.projectId || "#00000"}
+                  {formData?.projectId}
                 </h4>
               </div>
 
@@ -355,7 +352,7 @@ const CreateProject = () => {
                 <label className='text-[10px] text-gray-400 font-bold uppercase block mb-2'>
                   Attached Files
                 </label>
-                <div className='bg-gray-50 border border-gray-100 rounded-md p-2 max-h-[140px] overflow-y-auto custom-scrollbar'>
+                <div className='bg-gray-50 border border-gray-100 rounded-md p-2 max-h-35 overflow-y-auto custom-scrollbar'>
                   {selectedFiles.length > 0 ? (
                     <div className='space-y-1'>
                       {selectedFiles.map((f, i) => (
@@ -375,7 +372,7 @@ const CreateProject = () => {
                 </div>
               </div>
 
-              {/* Categories Preview */}
+
               <div className='flex flex-wrap gap-1.5'>
                 {formData.categories?.length > 0 ? (
                   formData.categories.map((c) => (

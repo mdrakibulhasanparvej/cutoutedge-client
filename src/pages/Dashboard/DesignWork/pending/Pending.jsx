@@ -8,43 +8,10 @@ import useAxiosSecure from "../../../../hook/useAxiosSecure";
 
 const Pending = () => {
   const axiosSecure = useAxiosSecure();
-
-  // const getStatusStyles = (status) => {
-  //   switch (status) {
-  //     case "pending":
-  //       return "bg-amber-100 text-amber-800 border-amber-300";
-  //     case "in-progress":
-  //       return "bg-blue-100 text-blue-800 border-blue-300";
-  //     case "failed":
-  //       return "bg-red-100 text-red-800 border-red-300";
-  //     case "completed":
-  //       return "bg-green-100 text-green-800 border-green-300";
-  //     default:
-  //       return "bg-gray-100 text-gray-800 border-gray-300";
-  //   }
-  // };
-
-  // const getDotColor = (status) => {
-  //   switch (status) {
-  //     case "pending":
-  //       return "bg-amber-500";
-  //     case "processing":
-  //       return "bg-blue-500";
-  //     case "failed":
-  //       return "bg-red-500";
-  //     case "completed":
-  //       return "bg-green-500";
-  //     default:
-  //       return "bg-gray-400";
-  //   }
-  // };
-
   const { isPending, data: orders } = useQuery({
     queryKey: ["projects"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/files/orders`, {
-        headers: { "x-user-id": "6998833da6eb05728be75223" },
-      });
+      const res = await axiosSecure.get(`/files/orders`)
       return res.data.data || [];
     },
     staleTime: 60000,
@@ -56,7 +23,7 @@ const Pending = () => {
 
   return (
     <div className='flex flex-col gap-4'>
-      {orders.map((order) => {
+      {orders?.map((order) => {
         const { createdAt, fileCount, orderDeadline, orderId, priority } =
           order;
         const { minutesAgo, hoursAgo } = calculateTime(createdAt);

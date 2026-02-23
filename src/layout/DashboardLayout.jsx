@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, Outlet, useLocation } from "react-router";
+import { Link, Outlet, useLocation, useNavigate } from "react-router";
 import { CgProfile } from "react-icons/cg";
 // import { AnimatePresence, motion } from "framer-motion";
 
@@ -19,6 +19,7 @@ import { IoNotifications } from "react-icons/io5";
 import { FaBell } from "react-icons/fa";
 import useAuth from "../hook/useAuth";
 import useUser from "../hook/useUser";
+import MyAlert from "../pages/Dashboard/common/MyAler";
 
 // Hooks
 // import useAuth from "../hooks/useAuth";
@@ -38,9 +39,10 @@ import useUser from "../hook/useUser";
 
 const DashboardLayout = () => {
   // useTitle("Dashboard");
+  const navigate = useNavigate()
 
-  const { user, logOut } = useAuth();
-  const { avatar, userName, role } = useUser();
+  const { logOut } = useAuth();
+  const { name, role } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [notificationCount, setNotificationCount] = useState(5);
   // const location = useLocation();
@@ -57,19 +59,28 @@ const DashboardLayout = () => {
     setTheme(checked ? "dark" : "light");
   };
 
+  const handleLogOut = () => {
+    logOut()
+    navigate('/auth/login')
+    MyAlert({
+      title: "Success",
+      text: "You have been Logged out",
+    })
+  }
+
   // if (isLoading) return <SidebarSkeleton />;
 
   return (
     // Inside DashboardLayout.jsx
     <div className='min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors'>
-      <div className='flex h-screen overflow-hidden'>
+      <div className='flex overflow-hidden'>
         {/* SIDEBAR */}
         <aside
           className={`transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col border-r border-gray-200 dark:border-gray-700
         ${sidebarOpen ? "w-64 " : "w-0"} overflow-hidden`}>
           <div className='px-4 py-1  dark:border-gray-700 flex items-center justify-between'>
             <Link
-              to='/'
+              to='/dashboard'
               className={`flex items-center gap-3 ${sidebarOpen ? "opacity-100" : "opacity-0"}`}>
               <img src='/Logo-01-1-2048x418.webp' alt='Logo' className='' />
             </Link>
@@ -111,7 +122,7 @@ const DashboardLayout = () => {
           {sidebarOpen && (
             <Link
               to='/'
-              onClick={logOut}
+              onClick={handleLogOut}
               className='cursor-pointer text-[14px] px-2 m-4 flex items-center gap-3 py-1 rounded-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition'>
               <GrLogout />
               Logout
@@ -164,13 +175,13 @@ const DashboardLayout = () => {
               <div className='flex items-center gap-3'>
                 <div className='text-right hidden sm:block'>
                   <p className='text-xs font-bold text-gray-700 dark:text-gray-300'>
-                    Hey <span className='font-semibold'>{userName}</span>
+                    Hey <span className='font-semibold'>{name}</span>
                   </p>
                   <p className='text-xs text-gray-500'>{role}</p>
                 </div>
                 <Link to='profile'>
                   <img
-                    src={`${avatar} || https://avatars.githubusercontent.com/u/172835253?v=4`}
+                    src={`https://avatars.githubusercontent.com/u/172835253?v=4`}
                     className='w-6 h-6 rounded-full border border-red-800 object-cover'
                   />
                 </Link>

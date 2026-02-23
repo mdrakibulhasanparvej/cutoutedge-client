@@ -49,7 +49,7 @@ const QualityControl2 = ({
         hover:shadow-md hover:-translate-y-0.5 transition-all
       '>
       {/* Left */}
-      <div className='flex items-center gap-3 min-w-[130px]'>
+      <div className='flex items-center gap-3 min-w-32.5'>
         <div className='relative h-3 w-3'>
           {hasCriticalIssues ? (
             <>
@@ -68,7 +68,7 @@ const QualityControl2 = ({
       {/* Main */}
       <div className='flex-1 min-w-0 space-y-2'>
         <div className='flex flex-wrap items-center gap-2'>
-          <h3 className='font-medium text-[14px] text-gray-900 truncate max-w-[260px] sm:max-w-full'>
+          <h3 className='font-medium text-[14px] text-gray-900 truncate max-w-65 sm:max-w-full'>
             {order.title}
           </h3>
 
@@ -100,13 +100,12 @@ const QualityControl2 = ({
         {/* Progress */}
         <div className='w-full bg-gray-200 rounded-full h-2.5 overflow-hidden'>
           <div
-            className={`h-full rounded-full transition-all duration-700 ${
-              approvalRate >= 95
+            className={`h-full rounded-full transition-all duration-700 ${approvalRate >= 95
                 ? "bg-green-600"
                 : approvalRate >= 85
                   ? "bg-emerald-500"
                   : "bg-orange-500"
-            }`}
+              }`}
             style={{ width: `${approvalRate}%` }}
           />
         </div>

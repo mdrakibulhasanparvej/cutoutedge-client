@@ -1,21 +1,26 @@
 import React from "react";
-import { calculateTime } from "../../../utils/calculateTime";
-import { FileText, User, Clock, History, ExternalLink } from "lucide-react";
+import { FileText, User, Clock, History, ExternalLink, PlayCircleIcon } from "lucide-react";
+import StageLogModal from "./StageLogModal";
+import useAxiosSecure from "../../../hook/useAxiosSecure";
+import MyConfirmAlert from "../common/MyConfirmAlert";
+import MyAlert from "../common/MyAler";
+import useUser from "../../../hook/useUser";
 
-const DetailsCard = ({ file }) => {
+const DetailsCard = ({ file, orderId }) => {
+  const { userId } = useUser()
+  const axiosSecure = useAxiosSecure()
   const {
     _id,
     currentStage,
     assignedTo,
     filename,
-    stagelogs,
+    stageLogs,
     timeStartedAt,
-    updatedAt,
   } = file;
 
-  const { hoursAgo, minutesAgo } = calculateTime(updatedAt);
+  const { name } = assignedTo || {}
 
-  // স্টেজ অনুযায়ী কালার ব্যাজ (অপশনাল কিন্তু সুন্দর দেখায়)
+
   const getStageColor = (stage) => {
     const s = stage?.toLowerCase();
     if (s?.includes("done") || s?.includes("finish"))
@@ -25,9 +30,35 @@ const DetailsCard = ({ file }) => {
     return "bg-gray-100 text-gray-700 border-gray-200";
   };
 
+  const handleStartWork = async () => {
+
+    const data = {
+      orderId,
+      filename,
+      userId
+    }
+
+    const result = await MyConfirmAlert({
+      title: "Are you sure u want to start editing this file?",
+      text: "Your work timer will start if you click yes",
+      icon: "info"
+    })
+    if (result.isConfirmed) {
+      axiosSecure.post('/files/start', data)
+        .then(() => {
+          MyAlert({
+            title: "Success",
+            text: "you have started this design",
+            icon: "success"
+          })
+        })
+    }
+  }
+
+
   return (
     <div className='group w-full bg-white border border-gray-200 rounded-md p-4 shadow-sm hover:border-[#0F83B2] transition-all flex flex-col md:flex-row md:items-center justify-between gap-4'>
-      {/* Left Side: File Icon & Info */}
+      {/* File Icon & Info */}
       <div className='flex items-start gap-4 flex-1'>
         <div className='p-3 bg-gray-50 rounded text-gray-400 group-hover:text-[#0F83B2] group-hover:bg-blue-50 transition-colors'>
           <FileText size={24} />
@@ -52,11 +83,11 @@ const DetailsCard = ({ file }) => {
             <div className='flex items-center gap-1.5 text-gray-500'>
               <User size={14} className='text-gray-400' />
               <span className='font-medium text-gray-700'>
-                {assignedTo || "Unassigned"}
+                {name || "Unassigned"}
               </span>
             </div>
 
-            <div className='flex items-center gap-1.5 text-gray-500'>
+            {/* <div className='flex items-center gap-1.5 text-gray-500'>
               <Clock size={14} className='text-gray-400' />
               <span>
                 Updated{" "}
@@ -65,19 +96,18 @@ const DetailsCard = ({ file }) => {
                   : `${hoursAgo}h ${minutesAgo}m`}{" "}
                 ago
               </span>
-            </div>
+            </div> */}
 
             <div className='flex items-center gap-1.5 text-gray-500'>
               <History size={14} className='text-gray-400' />
-              <span>{stagelogs?.length || 0} Stage Logs</span>
+              <span>{stageLogs?.length || 0} Stage Logs</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Right Side: Action Button */}
       <div className='flex items-center gap-3 pl-14 md:pl-0'>
-        {/* Started Date (Small text) */}
+
         <div className='hidden lg:block text-right mr-2'>
           <p className='text-[10px] text-gray-400 uppercase font-bold'>
             Started At
@@ -89,13 +119,25 @@ const DetailsCard = ({ file }) => {
           </p>
         </div>
 
-        <button
-          onClick={() => console.log("Viewing stages for file:", _id)}
-          className='flex items-center gap-2 px-4 py-2 bg-white hover:bg-[#F4F5F7] text-[#172B4D] text-xs font-bold rounded border border-gray-300 transition-all active:scale-95 shadow-sm'>
-          <ExternalLink size={14} />
-          View Stages
-        </button>
+        <div className="space-y-1">
+          <button
+            onClick={() => document.getElementById("my_modal_2").showModal()}
+            className='flex items-center justify-center px-2 py-1 gap-px bg-white hover:bg-[#F4F5F7] text-[#172B4D] text-xs font-bold rounded border border-gray-300 transition-all active:scale-95 shadow-sm'>
+            <ExternalLink size={14} />
+            View Stages
+          </button>
+          <button
+            onClick={handleStartWork}
+            className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm'>
+            <PlayCircleIcon size={14} />
+            Start
+          </button>
+        </div>
       </div>
+
+      {/* Open the modal using document.getElementById('ID').showModal() method */}
+      <StageLogModal stageLogs={stageLogs} />
+
     </div>
   );
 };

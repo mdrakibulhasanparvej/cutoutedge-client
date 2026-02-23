@@ -2,17 +2,59 @@
 @import url("https://banglawebfonts.pages.dev/css/solaiman-lipi.css");
 @import "tailwindcss";
 @plugin "daisyui";
+
 @plugin "daisyui" {
   themes:
     light --default,
     dark --prefersdark;
   themes: light --default;
 }
+
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 * {
   font-family: "Poppins", sans-serif;
 }
 
 .bangla-font {
   font-family: "Solaiman Lipi", serif;
+}
+
+/* alert styling */
+.swift-popup {
+  border-radius: 1rem !important;
+  padding: 1.5rem !important;
+  box-shadow: 0 4px 20px oklch(0% 0 0 / 0.06);
+}
+
+.swift-title {
+  font-weight: 700;
+  color: oklch(25% 0.03 85);
+}
+
+.swift-text {
+  color: oklch(40% 0.03 85);
+  font-weight: 500;
+}
+
+.swift-btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  margin-right: 4px;
+}
+
+.swift-btn-cancel {
+  background: oklch(92% 0.02 85);
+  color: oklch(30% 0.04 85);
+  padding: 0.5rem 1.2rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.swift-btn-cancel:hover {
+  background: oklch(88% 0.03 85);
+  transform: translateY(-1px);
 }

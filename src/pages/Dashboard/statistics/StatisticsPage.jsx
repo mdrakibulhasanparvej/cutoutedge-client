@@ -10,9 +10,6 @@ import {
   FiArrowUpRight,
 } from "react-icons/fi";
 
-/* ================================
-   Stats Card
-================================ */
 const StatsCard = ({ title, value, icon: Icon, color, trend }) => (
   <div className='bg-white rounded-md border border-gray-200 p-4 hover:-translate-y-1 transition-all duration-300'>
     <div className='flex items-center justify-between'>
@@ -50,7 +47,7 @@ const StatusBar = ({ label, count, total, color }) => {
   const percentage = total > 0 ? Math.round((count / total) * 100) : 0;
 
   return (
-    <div className='w-full min-w-[140px]'>
+    <div className='w-full min-w-35'>
       <div className='flex justify-between text-xs md:text-sm mb-1.5'>
         <span className='font-medium'>{label}</span>
         <span className='text-gray-600'>

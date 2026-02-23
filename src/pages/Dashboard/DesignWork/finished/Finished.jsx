@@ -37,7 +37,7 @@ const Finished = ({
         hover:shadow-md hover:-translate-y-0.5 transition-all
       `}>
       {/* Status indicator + ID */}
-      <div className='flex items-center gap-3 min-w-[140px]'>
+      <div className='flex items-center gap-3 min-w-35'>
         <div className='h-2.5 w-2.5 rounded-full bg-green-500' />
         <span className='font-medium text-gray-900 text-[14px]'>
           {order.id}
@@ -115,7 +115,7 @@ const Finished = ({
         </button>
 
         <Link
-          to='/dashboard/viewdetails'
+          to='/dashboard/view-details'
           onClick={onViewDetails}
           className='flex items-center gap-1.5 rounded-lg border border-green-600 px-3.5 py-1
                    text-sm font-medium text-green-700 hover:bg-green-50 transition-colors'>
