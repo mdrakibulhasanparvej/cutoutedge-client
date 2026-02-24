@@ -121,7 +121,7 @@ const Login = () => {
           <div className='flex items-center gap-1'>
             <span className='text-gray-400'>Don't have an account?</span>
             <a
-              onClick={() => navigate("/auth/register")}
+              onClick={() => navigate("/register")}
               className='text-[#0F83B2] font-bold hover:underline cursor-pointer'>
               Create an account
             </a>

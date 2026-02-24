@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import { motion } from 'framer-motion'
 import {
   Briefcase,
   Network,
@@ -13,17 +13,16 @@ import {
   Users,
 } from "lucide-react";
 
-// আপনার কম্পোনেন্টগুলো
 import Pending from "../DesignWork/pending/Pending";
 import InProgress from "../DesignWork/in-progress/InProgress";
 import StatsCard from "../../../component/shared/Cards/StatsCard";
-import useUser from "../../../hook/useUser"; // useUser ইম্পোর্ট করা হলো
+import useUser from "../../../hook/useUser";
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
 
-  // useUser থেকে ডাটা আনা হলো
-  const { avatar, userName, userEmail, role, isLoading, dbUser } = useUser();
+
+  const { avatar, name, email, role, isLoading, age } = useUser();
 
   if (isLoading) {
     return (
@@ -40,13 +39,13 @@ const Profile = () => {
       {/* --- Top Banner Section --- */}
       <div className='bg-white border-b border-gray-200'>
         <div className='relative h-48 bg-[#091e42] overflow-hidden'>
-          <div className='absolute inset-0 opacity-40 bg-gradient-to-r from-blue-600 to-purple-600'></div>
+          <div className='absolute inset-0 opacity-40 bg-linear-to-r from-blue-600 to-purple-600'></div>
           <div className='absolute right-10 top-10 text-white text-right'>
             <h1 className='text-2xl font-bold tracking-widest uppercase'>
-              {userName || "User Name"} {/* ডাইনামিক নাম */}
+              {name || "User Name"}
             </h1>
             <p className='text-sm opacity-80 font-medium uppercase'>
-              {role || "Member"} {/* ডাইনামিক রোল */}
+              {role || "Member"}
             </p>
           </div>
         </div>
@@ -55,7 +54,7 @@ const Profile = () => {
           <div className='absolute -top-16 left-8'>
             <div className='w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-gray-100 shadow-sm'>
               <img
-                src={avatar || "https://via.placeholder.com/150"} // ডাইনামিক অ্যাভাটার
+                src={avatar || "https://via.placeholder.com/150"}
                 alt='Profile'
                 className='w-full h-full object-cover'
               />
@@ -64,7 +63,7 @@ const Profile = () => {
 
           <div className='pt-20 flex justify-between items-end'>
             <div>
-              <h2 className='text-2xl font-semibold'>{userName}</h2>
+              <h2 className='text-2xl font-semibold'>{name}</h2>
               <div className='flex gap-2 mt-1'>
                 <span className='px-2 py-0.5 text-xs rounded-md bg-blue-50 text-blue-700 font-medium border border-blue-100 capitalize'>
                   {role}
@@ -98,7 +97,7 @@ const Profile = () => {
               </div>
               <div className='flex items-center gap-3 italic'>
                 <Network size={16} className='text-gray-400' />{" "}
-                {dbUser?.age ? `${dbUser.age} years old` : "Age not set"}
+                {age ? `${age} years old` : "Age not set"}
               </div>
               <div className='flex items-center gap-3'>
                 <Building2 size={16} className='text-gray-400' /> Cutout Edge
@@ -109,7 +108,7 @@ const Profile = () => {
             </div>
           </section>
 
-          {/* ... Date Filter Section (অপরিবর্তিত) ... */}
+          {/* ... Date Filter Section ... */}
           <section className='bg-white p-5 rounded-md border border-gray-200 shadow-sm'>
             <h4 className='text-xs font-bold text-gray-500 uppercase tracking-wider mb-4'>
               Date Filter
@@ -142,7 +141,7 @@ const Profile = () => {
             </h4>
             <div className='flex items-center gap-3 text-sm text-blue-600 truncate'>
               <Mail size={16} className='text-gray-400 shrink-0' />
-              {userEmail} {/* ডাইনামিক ইমেইল */}
+              {email}
             </div>
           </section>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router"; // or "react-router-dom" depending on your version
+import { Link, useNavigate } from "react-router";
 import useAuth from "../../../hook/useAuth";
 import axios from "axios";
 import useAxios from "../../../hook/useAxiosSecure";
@@ -62,7 +62,7 @@ const Register = () => {
         text: "You have been registered. please login to move forward"
       })
 
-      navigate("/auth/login");
+      navigate("/");
     } catch (error) {
       console.error(error);
       MyAlert({
@@ -229,13 +229,14 @@ const Register = () => {
         <div className='mt-8 text-center text-sm'>
           <span className='text-gray-500'>Already have an account?</span>{" "}
           <a
-            onClick={() => navigate("/auth/login")}
+            onClick={() => navigate("/")}
             className='text-[#0F83B2] font-bold hover:underline cursor-pointer'>
             Log in
           </a>
         </div>
       </div>
-
+      
+      {/* footer */}
       <div className='mt-12 mb-4 flex flex-col items-center gap-2'>
         <div className='w-16 h-0.5 bg-gray-200 mb-2 rounded-full'></div>
         <p className='text-[10px] md:text-xs text-gray-400 uppercase tracking-[0.2em] font-medium text-center'>
