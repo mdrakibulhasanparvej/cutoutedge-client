@@ -34,7 +34,7 @@ const StageLogModal = ({ stageLogs }) => {
                                 {/* Content Details */}
                                 <div className="timeline-end timeline-box mb-6 border-none shadow-sm bg-gray-50 dark:bg-gray-700/50 p-4">
                                     <div className="flex flex-col gap-1">
-                                        <div className="flex justify-between items-center mb-1">
+                                        <div className="flex gap-2 justify-between items-center mb-1">
                                             <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
                                                 By: {handledBy?.email}
                                             </span>

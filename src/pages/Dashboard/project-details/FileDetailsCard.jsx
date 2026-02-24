@@ -1,12 +1,13 @@
 import React from "react";
-import { FileText, User, Clock, History, ExternalLink, PlayCircleIcon } from "lucide-react";
+import { FileText, User, Clock, History, ExternalLink, PlayCircleIcon, PauseCircle } from "lucide-react";
 import StageLogModal from "./StageLogModal";
 import useAxiosSecure from "../../../hook/useAxiosSecure";
 import MyConfirmAlert from "../common/MyConfirmAlert";
 import MyAlert from "../common/MyAler";
 import useUser from "../../../hook/useUser";
+import Timer from "../common/Timer";
 
-const DetailsCard = ({ file, orderId }) => {
+const FileDetailsCard = ({ file, orderId }) => {
   const { userId } = useUser()
   const axiosSecure = useAxiosSecure()
   const {
@@ -15,11 +16,10 @@ const DetailsCard = ({ file, orderId }) => {
     assignedTo,
     filename,
     stageLogs,
-    timeStartedAt,
+    timerStartedAt,
   } = file;
 
   const { name } = assignedTo || {}
-
 
   const getStageColor = (stage) => {
     const s = stage?.toLowerCase();
@@ -54,6 +54,13 @@ const DetailsCard = ({ file, orderId }) => {
         })
     }
   }
+
+  // const handleTimer = async (_id, status) => {
+  //   const data = {
+
+  //   }
+  //   // axiosSecure.patch(`/files/pause/${_id}?timer-status=${status}`,)
+  // }
 
 
   return (
@@ -108,29 +115,41 @@ const DetailsCard = ({ file, orderId }) => {
 
       <div className='flex items-center gap-3 pl-14 md:pl-0'>
 
-        <div className='hidden lg:block text-right mr-2'>
-          <p className='text-[10px] text-gray-400 uppercase font-bold'>
-            Started At
+        <div className='flex lg:block text-right mr-2'>
+          <p className='text-[10px] text-start text-gray-400 uppercase font-bold'>
+            Timer:
           </p>
           <p className='text-[11px] text-gray-600 font-medium'>
-            {timeStartedAt
-              ? new Date(timeStartedAt).toLocaleDateString("en-GB")
-              : "Pending"}
+            {timerStartedAt
+              ? <Timer startedAt={timerStartedAt} />
+              : "pending"}
           </p>
         </div>
 
         <div className="space-y-1">
+
+          <div>
+            {!assignedTo ?
+              <button
+                onClick={handleStartWork}
+                className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm'>
+                <PlayCircleIcon size={14} />
+                Start
+              </button>
+              :
+              <button
+                // onClick={handleTimer}
+                className='flex items-center justify-center px-2 py-1 gap-1 bg-yellow-400 hover:bg-yellow-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm'>
+                <PauseCircle size={14} />
+                Pause Timer
+              </button>
+            }
+          </div>
           <button
             onClick={() => document.getElementById("my_modal_2").showModal()}
             className='flex items-center justify-center px-2 py-1 gap-px bg-white hover:bg-[#F4F5F7] text-[#172B4D] text-xs font-bold rounded border border-gray-300 transition-all active:scale-95 shadow-sm'>
             <ExternalLink size={14} />
             View Stages
-          </button>
-          <button
-            onClick={handleStartWork}
-            className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm'>
-            <PlayCircleIcon size={14} />
-            Start
           </button>
         </div>
       </div>
@@ -142,4 +161,4 @@ const DetailsCard = ({ file, orderId }) => {
   );
 };
 
-export default DetailsCard;
+export default FileDetailsCard;

@@ -11,11 +11,11 @@ import Register from "../pages/auth/Register/Register";
 
 const router = createBrowserRouter([
   {
-    path: "/auth/login",
+    path: "/",
     element: <Login />,
   },
   {
-    path: "/auth/register",
+    path: "/register",
     element: <Register />,
   },
   {
