@@ -142,7 +142,7 @@ const DesignOnline = () => {
           <input
             type='text'
             placeholder='Search this board'
-            className='pl-3 pr-8 py-1.5 border border-gray-300 rounded focus:outline-none focus:border-blue-500 text-sm w-48'
+            className='pl-3 pr-8 py-1.5 border text-black border-gray-300 rounded focus:outline-none focus:border-blue-500 text-sm w-48'
           />
         </div>
 
