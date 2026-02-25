@@ -3,6 +3,7 @@ import { FiClock, FiImage, FiLoader, FiMoreVertical, FiXCircle } from "react-ico
 import useAxiosSecure from "../../../../hook/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { calculateTime } from "../../../../utils/calculateTime";
+import { Link } from "react-router";
 
 const InProgress = () => {
   const axiosSecure = useAxiosSecure();
@@ -12,7 +13,7 @@ const InProgress = () => {
     queryFn: async () => {
       const res = await axiosSecure.get('/files/orders');
       return res.data.data;
-    }
+    },
   });
 
   if (isLoading) return <div className="p-4 text-gray-500">Loading orders...</div>;
@@ -22,10 +23,10 @@ const InProgress = () => {
     <div className="space-y-4">
       {orders.map((order) => {
 
-        const { orderId, orderDeadline, fileCount, priority, createdAt, designComplete = 4.5 } = order || {}
+        const { orderId, fileCount, priority, createdAt, ongoingDesign = 3, designComplete = 4 } = order || {}
         const { hoursAgo, minutesAgo } = calculateTime(createdAt)
 
-        const progress = (designComplete / fileCount) * 100
+        const progress = parseFloat((ongoingDesign / fileCount) * 100).toFixed(2)
         const isAlmostDone = progress >= 90;
 
         return (
@@ -77,6 +78,14 @@ const InProgress = () => {
                     <FiImage size={14} />
                     <span>{fileCount} Total Files</span>
                   </div>
+                  <div className='flex items-center gap-1'>
+                    <FiImage size={14} />
+                    <span>{ongoingDesign} Files in progress</span>
+                  </div>
+                  <div className='flex items-center gap-1'>
+                    <FiImage size={14} />
+                    <span>{designComplete} Files completed</span>
+                  </div>
                 </div>
                 <div className='font-semibold'>{progress}%</div>
               </div>
@@ -84,13 +93,11 @@ const InProgress = () => {
 
             {/* Actions */}
             <div className='flex items-center gap-2 justify-end'>
-              <button className='flex items-center gap-1.5 rounded-lg border border-amber-600 px-4 py-1 text-sm font-medium text-amber-700 hover:bg-amber-50 transition'>
-                <FiLoader size={16} className='animate-spin' />
-                Pause
-              </button>
-              <button className='rounded-lg p-2 text-gray-500 hover:bg-gray-100 transition'>
-                <FiMoreVertical size={18} />
-              </button>
+              <Link
+                to={`/dashboard/order-details/${encodeURIComponent(orderId)}`}
+                className='flex items-center gap-1.5 rounded-lg bg-[#0F83B2] px-4 py-1 text-sm font-medium text-white hover:bg-[#0f99cf] duration-500 transition-colors cursor-pointer'>
+                View Details
+              </Link>
             </div>
           </div>
         );

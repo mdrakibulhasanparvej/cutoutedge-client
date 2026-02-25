@@ -1,40 +1,42 @@
-import { TimerIcon } from 'lucide-react';
+import { PauseCircle, TimerIcon } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 
-const Timer = ({ startedAt }) => {
-    const [elapsedTime, setElapsedTime] = useState(0);
+const Timer = ({ timerData }) => {
+    const { isRunning, startedAt, totalTimeMs } = timerData;
+    const [elapsedMs, setElapsedMs] = useState(totalTimeMs || 0);
 
     useEffect(() => {
-        if (!startedAt) return;
+        if (!isRunning || !startedAt) {
+            setElapsedMs(totalTimeMs || 0);
+            return;
+        }
+
         const startTime = new Date(startedAt).getTime();
+        const baseTime = totalTimeMs || 0;
 
         const intervalId = setInterval(() => {
-            const now = new Date().getTime();
-            setElapsedTime(Math.max(0, now - startTime));
+            const now = Date.now();
+            setElapsedMs(baseTime + (now - startTime));
         }, 1000);
 
         return () => clearInterval(intervalId);
-    }, [startedAt]);
+    }, [isRunning, startedAt, totalTimeMs]);
 
     const formatTime = (ms) => {
         const totalSeconds = Math.floor(ms / 1000);
-        const hours = Math.floor(totalSeconds / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
+        const hrs = Math.floor(totalSeconds / 3600);
+        const mins = Math.floor((totalSeconds % 3600) / 60);
+        const secs = totalSeconds % 60;
+        const pad = (n) => String(n).padStart(2, '0');
 
-        const pad = (num) => String(num).padStart(2, '0');
-
-        return hours > 0
-            ? `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
-            : `${pad(minutes)}:${pad(seconds)}`;
+        return hrs > 0 ? `${pad(hrs)}:${pad(mins)}:${pad(secs)}` : `${pad(mins)}:${pad(secs)}`;
     };
 
-    if (!startedAt) return null;
-
     return (
-        <div className="flex items-center gap-1.5 px-2.5 py-1 bg-gray-100 text-[#0F83B2] text-sm font-mono font-bold rounded-md border border-gray-200 shadow-sm w-26 shrink-0">
-            <div> <TimerIcon size={20} /></div>
-            <p>{formatTime(elapsedTime)}</p>
+        <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border shadow-sm shrink-0 font-mono font-bold
+            ${isRunning ? "bg-blue-50 text-blue-600 border-blue-200" : "bg-gray-100 text-gray-500 border-gray-200"}`}>
+            {isRunning ? <TimerIcon size={16} className="animate-pulse" /> : <PauseCircle size={16} />}
+            <p>{formatTime(elapsedMs)}</p>
         </div>
     );
 };
