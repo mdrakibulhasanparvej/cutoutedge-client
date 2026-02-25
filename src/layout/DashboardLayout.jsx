@@ -1,213 +1,167 @@
-import React, { useState, useEffect } from "react";
-import { Link, Outlet, useLocation, useNavigate } from "react-router";
-import { CgProfile } from "react-icons/cg";
-// import { AnimatePresence, motion } from "framer-motion";
+  import React, { useState } from "react";
+  import { Link, Outlet, useNavigate } from "react-router";
+  import { CgProfile } from "react-icons/cg";
+  import {
+    MdClose,
+    MdDarkMode,
+    MdLightMode,
+    MdMenu,
+    MdOutlineDesignServices,
+  } from "react-icons/md";
+  import { BsGraphUp } from "react-icons/bs";
+  import { GrLogout } from "react-icons/gr";
+  import { FaBell } from "react-icons/fa";
+  import MenuItem from "../component/Dashboard/MenuItem/MenuItem";
+  import useAuth from "../hook/useAuth";
+  import useUser from "../hook/useUser";
+  import MyAlert from "../pages/Dashboard/common/MyAler";
 
-// Icons
-import {
-  MdClose,
-  MdDarkMode,
-  MdLightMode,
-  MdMenu,
-  MdOutlineDesignServices,
-} from "react-icons/md";
-import { BsGraphUp } from "react-icons/bs";
-import { GrLogout } from "react-icons/gr";
-import MenuItem from "../component/Dashboard/MenuItem/MenuItem";
-import Navbar from "../component/shared/Navbar/Navbar";
-import { IoNotifications } from "react-icons/io5";
-import { FaBell } from "react-icons/fa";
-import useAuth from "../hook/useAuth";
-import useUser from "../hook/useUser";
-import MyAlert from "../pages/Dashboard/common/MyAler";
+  const DashboardLayout = () => {
+    const navigate = useNavigate();
+    // const location = useLocation();
+    const { logOut } = useAuth();
+    const { name, role, avatar } = useUser();
 
-// Hooks
-// import useAuth from "../hooks/useAuth";
-// import useUser from "../hooks/useUser";
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [notificationCount, setNotificationCount] = useState(5);
+    const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
-// components
-// import AdminMenu from "../components/Dashboard/Sidebar/Menu/AdminMenu";
-// import SidebarSkeleton from "../components/ui/Loading/Sidebar only/SidebarSkeleton";
+    const handleTheme = (isDark) => {
+      const newTheme = isDark ? "dark" : "light";
+      setTheme(newTheme);
+      document.documentElement.setAttribute("data-theme", newTheme);
+      localStorage.setItem("theme", newTheme);
+    };
 
-// Avatar
-// import avatarImg from "../assets/avater.jpg";
-// import logo from "../assets/Logo.png";
-// import useTitle from "../hooks/useTitle";
-// import StudentsMenu from "../components/Dashboard/Sidebar/Menu/StudentsMenu";
-// import TrainerMenu from "../components/Dashboard/Sidebar/Menu/TrainerMenu";
-// import VolunteerMenu from "../components/Dashboard/Sidebar/Menu/VolunteerMenu";
+    const handleLogOut = () => {
+      logOut();
+      navigate("/auth/login");
+      MyAlert({
+        title: "Success",
+        text: "You have been Logged out",
+      });
+    };
 
-const DashboardLayout = () => {
-  // useTitle("Dashboard");
-  const navigate = useNavigate()
-
-  const { logOut } = useAuth();
-  const { name, role, avatar } = useUser();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [notificationCount, setNotificationCount] = useState(5);
-  // const location = useLocation();
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-  // const [user, setUser] = useState(true);
-
-  // useEffect(() => {
-  //   const html = document.querySelector("html");
-  //   html.setAttribute("data-theme", theme);
-  //   localStorage.setItem("theme", theme);
-  // }, [theme]);
-
-  const handleTheme = (checked) => {
-    setTheme(checked ? "dark" : "light");
-  };
-
-  const handleLogOut = () => {
-    logOut()
-    navigate('/auth/login')
-    MyAlert({
-      title: "Success",
-      text: "You have been Logged out",
-    })
-  }
-
-  // if (isLoading) return <SidebarSkeleton />;
-
-  return (
-    // Inside DashboardLayout.jsx
-    <div className='min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors'>
-      <div className='flex overflow-hidden'>
-        {/* SIDEBAR */}
+    return (
+      <div className="h-screen w-full flex overflow-hidden bg-gray-100 dark:bg-gray-900 transition-colors font-sans">
+        {/* === SIDEBAR === */}
         <aside
-          className={`transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col border-r border-gray-200 dark:border-gray-700
-        ${sidebarOpen ? "w-64 " : "w-0"} overflow-hidden`}>
-          <div className='px-4 py-1  dark:border-gray-700 flex items-center justify-between'>
-            <Link
-              to='/dashboard'
-              className={`flex items-center gap-3 ${sidebarOpen ? "opacity-100" : "opacity-0"}`}>
-              <img src='/Logo-01-1-2048x418.webp' alt='Logo' className='' />
+          className={`transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col border-r border-gray-200 dark:border-gray-700 h-full shrink-0 z-30
+          ${sidebarOpen ? "w-64" : "w-0 lg:w-20"}`}
+        >
+          {/* Sidebar Header */}
+          <div className="h-16 flex items-center justify-between px-4 shrink-0 border-b border-gray-50 dark:border-gray-700">
+            <Link to="/dashboard" className={`flex items-center gap-3 transition-opacity duration-300 ${sidebarOpen ? "opacity-100" : "opacity-0 lg:opacity-100"}`}>
+              <img src="/Logo-01-1-2048x418.webp" alt="Logo" className="" />
             </Link>
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className='lg:hidden'>
-              <MdClose className='w-6 h-6 text-gray-600 dark:text-gray-300' />
+            <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1">
+              <MdClose className="w-6 h-6 text-gray-600 dark:text-gray-300" />
             </button>
           </div>
 
-          {/* Menu */}
-          <div className='flex-1 mt-6 overflow-y-auto px-3 space-y-2'>
-            {sidebarOpen && (
-              <>
-                <MenuItem
-                  icon={BsGraphUp}
-                  label='Statistics'
-                  address='/dashboard'
-                />
-                <MenuItem
-                  icon={MdOutlineDesignServices}
-                  label='Designs-online'
-                  address='design-online'
-                />
-                <MenuItem
-                  icon={MdOutlineDesignServices}
-                  label='Create a Project'
-                  address='create-project'
-                />
-                <MenuItem
-                  icon={CgProfile}
-                  label='My Profile'
-                  address='profile'
-                />
-              </>
-            )}
+          <div className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-3 space-y-2 custom-scrollbar">
+            <MenuItem
+              icon={BsGraphUp}
+              label={sidebarOpen ? "Statistics" : ""}
+              address="/dashboard"
+            />
+            <MenuItem
+              icon={MdOutlineDesignServices}
+              label={sidebarOpen ? "Designs-online" : ""}
+              address="design-online"
+            />
+            <MenuItem
+              icon={MdOutlineDesignServices}
+              label={sidebarOpen ? "Create a Project" : ""}
+              address="create-project"
+            />
+            <MenuItem
+              icon={CgProfile}
+              label={sidebarOpen ? "My Profile" : ""}
+              address="profile"
+            />
           </div>
 
-          {sidebarOpen && (
-            <Link
-              to='/'
+          {/* Sidebar Footer */}
+          <div className="p-4 border-t border-gray-100 dark:border-gray-700 shrink-0">
+            <button
               onClick={handleLogOut}
-              className='cursor-pointer text-[14px] px-2 m-4 flex items-center gap-3 py-1 rounded-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition'>
-              <GrLogout />
-              Logout
-            </Link>
-          )}
+              className={`w-full flex items-center gap-3 py-2.5 px-3 rounded-md text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 transition-all duration-200
+              ${!sidebarOpen && "justify-center"}`}
+            >
+              <GrLogout className="shrink-0" />
+              {sidebarOpen && <span className="text-sm font-medium">Logout</span>}
+            </button>
+          </div>
         </aside>
 
-        {/* MAIN */}
-        <div
-          className={`flex-1 flex flex-col overflow-hidden transition-all duration-300
-      ${sidebarOpen ? "ml-0" : "ml-0"}`}>
-          {/* TOP NAV */}
-          <header className='flex items-center justify-between pl-4 pr-6 py-1.5 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700'>
-            <button onClick={() => setSidebarOpen(!sidebarOpen)}>
-              <MdMenu className='w-7 h-7 text-gray-700 dark:text-gray-300' />
-            </button>
+        <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
 
-            <div className='flex items-center gap-4 ml-auto'>
-              <button className='relative'>
-                <FaBell size={20} className='text-gray-600' />
+          <header className="h-16 flex items-center justify-between px-4 lg:px-8 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shrink-0 z-20">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              >
+                <MdMenu className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+              </button>
+            </div>
 
+            <div className="flex items-center gap-2 lg:gap-5">
+              {/* Notifications */}
+              <button className="relative p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">
+                <FaBell size={18} className="text-gray-600 dark:text-gray-400" />
                 {notificationCount > 0 && (
-                  <span
-                    className='
-                          absolute -top-1 -right-1 
-                          min-w-2.5 h-4
-                         bg-red-500 text-white 
-                          text-[10px] font-bold 
-                          rounded-full 
-                          flex items-center justify-center 
-                          px-1
-                          border-2 border-white
-                          shadow-sm
-                        '>
+                  <span className="absolute top-1.5 right-1.5 min-w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1 border-2 t border-white dark:border-gray-800">
                     {notificationCount > 99 ? "99+" : notificationCount}
                   </span>
                 )}
               </button>
 
+              {/* Theme Toggle */}
               <button
                 onClick={() => handleTheme(theme !== "dark")}
-                className='p-1 rounded-md transition-colors'>
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+              >
                 {theme === "dark" ? (
-                  <MdDarkMode className='text-yellow-400 w-5 h-5' />
+                  <MdDarkMode className="text-yellow-400 w-5 h-5" />
                 ) : (
-                  <MdLightMode className='text-gray-800 w-5 h-5' />
+                  <MdLightMode className="text-gray-800 w-5 h-5" />
                 )}
               </button>
 
-              <div className='flex items-center gap-3'>
-                <div className='text-right hidden sm:block'>
-                  <p className='text-xs font-bold text-gray-700 dark:text-gray-300'>
-                    Hey <span className='font-semibold'>{name}</span>
+              {/* Vertical Divider */}
+              <div className="h-8 w-px bg-gray-200 dark:bg-gray-700 hidden sm:block"></div>
+
+              {/* User Profile */}
+              <div className="flex items-center gap-3">
+                <div className="text-right hidden md:block">
+                  <p className="text-xs font-bold text-gray-800 dark:text-gray-200 leading-none mb-1">
+                    {name}
                   </p>
-                  <p className='text-xs text-gray-500'>{role}</p>
+                  <p className="text-[10px] text-gray-500 uppercase tracking-tighter font-semibold">
+                    {role}
+                  </p>
                 </div>
-                <Link to='profile'>
+                <Link to="profile" className="shrink-0">
                   <img
-                    src={avatar}
-                    className='w-6 h-6 rounded-full border border-red-800 object-cover'
+                    src={avatar || "/avatar-placeholder.png"}
+                    alt="User"
+                    className="w-10 h-10 rounded-full border-2 border-[#0F83B2] object-cover hover:ring-2 hover:ring-[#0F83B2]/30 transition-all"
                   />
                 </Link>
               </div>
             </div>
           </header>
 
-          {/* Header */}
-          {/* <Navbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
-
-          {/* CONTENT */}
-          <div className='flex-1 overflow-hidden'>
-            <main
-              key={location.pathname}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.25 }}
-              className='h-full overflow-y-auto  bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100'>
+          <main className="flex-1 overflow-y-auto bg-[#F4F5F7] dark:bg-gray-900 custom-scrollbar">
+            <div className="min-h-full text-black">
               <Outlet />
-            </main>
-          </div>
+            </div>
+          </main>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
-export default DashboardLayout;
+  export default DashboardLayout;

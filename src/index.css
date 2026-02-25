@@ -20,41 +20,41 @@
   font-family: "Solaiman Lipi", serif;
 }
 
-/* alert styling */
-.swift-popup {
-  border-radius: 1rem !important;
-  padding: 1.5rem !important;
-  box-shadow: 0 4px 20px oklch(0% 0 0 / 0.06);
+/* Fix button container spacing */
+.swal2-actions {
+  gap: 0.5rem !important;
+  margin-top: 1.25rem !important;
 }
 
-.swift-title {
-  font-weight: 700;
-  color: oklch(25% 0.03 85);
-}
-
-.swift-text {
-  color: oklch(40% 0.03 85);
-  font-weight: 500;
-}
-
+/* Base button (shared) */
 .swift-btn {
-  padding: 0.5rem 1.2rem;
-  border-radius: 0.75rem;
-  font-weight: 600;
-  transition: all 0.25s ease;
-  margin-right: 4px;
+  padding: 0.55rem 1.4rem !important;
+  border-radius: 0.75rem !important;
+  font-weight: 600 !important;
+  transition: all 0.25s ease !important;
+  border: none !important;
 }
 
+/* CONFIRM BUTTON (Primary) */
+.swift-btn-confirm {
+  background: linear-gradient(135deg, #0F83B2, #3b82f6) !important;
+  color: white !important;
+  box-shadow: 0 6px 16px rgba(15, 131, 178, 0.25);
+}
+
+.swift-btn-confirm:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(15, 131, 178, 0.35);
+}
+
+/* CANCEL BUTTON */
 .swift-btn-cancel {
-  background: oklch(92% 0.02 85);
-  color: oklch(30% 0.04 85);
-  padding: 0.5rem 1.2rem;
-  border-radius: 0.75rem;
-  font-weight: 600;
-  transition: all 0.25s ease;
+  background: oklch(92% 0.02 85) !important;
+  color: oklch(30% 0.04 85) !important;
+  border: 1px solid oklch(88% 0.02 85) !important;
 }
 
 .swift-btn-cancel:hover {
-  background: oklch(88% 0.03 85);
+  background: oklch(88% 0.03 85) !important;
   transform: translateY(-1px);
 }

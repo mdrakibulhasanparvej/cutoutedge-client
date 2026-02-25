@@ -17,8 +17,8 @@ const MyConfirmAlert = async ({ title, text, icon, confirmText }) => {
             popup: "swift-popup",
             title: "swift-title",
             htmlContainer: "swift-text",
-            confirmButton: "swift-btn my-gradient hover-gradient",
-            cancelButton: "swift-btn-cancel",
+            confirmButton: "swift-btn swift-btn-confirm", // FIXED
+            cancelButton: "swift-btn swift-btn-cancel",   // also add base class
         },
 
         buttonsStyling: false,
