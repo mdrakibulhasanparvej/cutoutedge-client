@@ -1,14 +1,14 @@
-import React from "react";
+import React, { memo } from "react";
 import { FileText, User, Clock, History, ExternalLink, PlayCircleIcon, PauseCircle } from "lucide-react";
-import StageLogModal from "./StageLogModal";
 import useAxiosSecure from "../../../hook/useAxiosSecure";
 import MyConfirmAlert from "../common/MyConfirmAlert";
 import MyAlert from "../common/MyAler";
 import useUser from "../../../hook/useUser";
 import Timer from "../common/Timer";
 
-const FileDetailsCard = ({ file, orderId }) => {
-  const { userId } = useUser()
+const FileDetailsCard = memo(({ file, orderId, refetch, onViewLogs }) => {
+
+  const { userId, role } = useUser()
   const axiosSecure = useAxiosSecure()
   const {
     _id,
@@ -16,10 +16,17 @@ const FileDetailsCard = ({ file, orderId }) => {
     assignedTo,
     filename,
     stageLogs,
-    timerStartedAt,
   } = file;
-
   const { name } = assignedTo || {}
+
+  const timerData = stageLogs.find(s => s?.stage === currentStage)?.timer
+
+  // role based permissions
+  const isAssignedUser = assignedTo?._id === userId;
+  const isAdminOrIncharge = role === 'admin' || role === 'incharge'
+  const canViewTimer = isAssignedUser || isAdminOrIncharge
+
+  // functions
 
   const getStageColor = (stage) => {
     const s = stage?.toLowerCase();
@@ -44,14 +51,24 @@ const FileDetailsCard = ({ file, orderId }) => {
       icon: "info"
     })
     if (result.isConfirmed) {
-      axiosSecure.post('/files/start', data)
-        .then(() => {
-          MyAlert({
-            title: "Success",
-            text: "you have started this design",
-            icon: "success"
+      try {
+        axiosSecure.post('/files/start', data)
+          .then(() => {
+            MyAlert({
+              title: "Success",
+              text: "you have started this design",
+              icon: "success"
+            })
+            refetch()
           })
+      } catch (err) {
+        MyAlert({
+          title: "error",
+          text: "Something went wrong, please try again",
+          icon: "error"
         })
+        console.log(err.message)
+      }
     }
   }
 
@@ -115,20 +132,19 @@ const FileDetailsCard = ({ file, orderId }) => {
 
       <div className='flex items-center gap-3 pl-14 md:pl-0'>
 
-        <div className='flex lg:block text-right mr-2'>
+        {canViewTimer && <div className='flex lg:block text-right mr-2'>
           <p className='text-[10px] text-start text-gray-400 uppercase font-bold'>
-            Timer:
+            Work Timer:
           </p>
-          <p className='text-[11px] text-gray-600 font-medium'>
-            {timerStartedAt
-              ? <Timer startedAt={timerStartedAt} />
-              : "pending"}
-          </p>
-        </div>
+          <div className='text-[11px] text-gray-600 font-medium w-24'>
+            <Timer timerData={timerData} />
+          </div>
+        </div>}
 
+        {/* User actions */}
         <div className="space-y-1">
 
-          <div>
+          {!isAdminOrIncharge && <div>
             {!assignedTo ?
               <button
                 onClick={handleStartWork}
@@ -142,23 +158,18 @@ const FileDetailsCard = ({ file, orderId }) => {
                 className='flex items-center justify-center px-2 py-1 gap-1 bg-yellow-400 hover:bg-yellow-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm'>
                 <PauseCircle size={14} />
                 Pause Timer
-              </button>
-            }
-          </div>
+              </button>}
+          </div>}
           <button
-            onClick={() => document.getElementById("my_modal_2").showModal()}
+            onClick={() => onViewLogs(stageLogs)}
             className='flex items-center justify-center px-2 py-1 gap-px bg-white hover:bg-[#F4F5F7] text-[#172B4D] text-xs font-bold rounded border border-gray-300 transition-all active:scale-95 shadow-sm'>
             <ExternalLink size={14} />
             View Stages
           </button>
         </div>
       </div>
-
-      {/* Open the modal using document.getElementById('ID').showModal() method */}
-      <StageLogModal stageLogs={stageLogs} />
-
     </div>
   );
-};
+});
 
 export default FileDetailsCard;

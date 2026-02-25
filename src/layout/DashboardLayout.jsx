@@ -42,7 +42,7 @@ const DashboardLayout = () => {
   const navigate = useNavigate()
 
   const { logOut } = useAuth();
-  const { name, role } = useUser();
+  const { name, role, avatar } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [notificationCount, setNotificationCount] = useState(5);
   // const location = useLocation();
@@ -181,7 +181,7 @@ const DashboardLayout = () => {
                 </div>
                 <Link to='profile'>
                   <img
-                    src={`https://avatars.githubusercontent.com/u/172835253?v=4`}
+                    src={avatar}
                     className='w-6 h-6 rounded-full border border-red-800 object-cover'
                   />
                 </Link>

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import useAxiosSecure from "../../../hook/useAxiosSecure";
 import FileDetailsCard from "./FileDetailsCard";
@@ -16,22 +16,28 @@ import {
   User,
 } from "lucide-react";
 import useUser from "../../../hook/useUser";
+import StageLogModal from "./StageLogModal";
 
 const ProjectDetails = () => {
+  const [selectedLogs, setSelectedLogs] = useState(null)
+  const [filterStatus, setFilterStatus] = useState("all");
   const navigate = useNavigate();
   const { orderId } = useParams();
   const axiosSecure = useAxiosSecure();
   const { name } = useUser()
 
+  // Filter the files based on the selected status
 
-  const { isPending, data: order } = useQuery({
-    queryKey: ["order", orderId],
+
+  const { isPending, data: order, refetch } = useQuery({
+    queryKey: ["order", orderId, filterStatus],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/files/order/${encodeURIComponent(orderId)}`);
+      const res = await axiosSecure.get(`/files/order/${encodeURIComponent(orderId)}?status=${filterStatus}`);
       return res.data || [];
     },
     staleTime: 60000,
   });
+
 
   if (isPending)
     return (
@@ -47,6 +53,11 @@ const ProjectDetails = () => {
 
   const { instructions, categories, deadline, createdAt, priority, files } =
     order?.data || {};
+
+  const filteredFiles = files?.filter((file) => {
+    if (filterStatus === "all") return true;
+    return file.currentStage === filterStatus;
+  });
 
 
   return (
@@ -100,7 +111,7 @@ const ProjectDetails = () => {
                 <div className='flex items-center gap-2 text-gray-600'>
                   <User size={14} className='text-gray-400' />
                   <span className='font-medium truncate text-[11px]'>
-                    User: {name}
+                    Created By: {name}
                   </span>
                 </div>
                 <div className='flex items-center gap-2 text-gray-500 text-[11px]'>
@@ -167,6 +178,7 @@ const ProjectDetails = () => {
 
         {/* === RIGHT AREA === */}
         <div className='lg:col-span-9 space-y-5'>
+          {/* instructions */}
           <div className='bg-white rounded border border-gray-200 shadow-sm overflow-hidden'>
             <div className='p-4 bg-gray-50 border-b border-gray-100 flex justify-between items-center'>
               <h3 className='flex items-center gap-2 text-[12px] font-bold text-gray-500 uppercase tracking-widest'>
@@ -186,6 +198,40 @@ const ProjectDetails = () => {
             </div>
           </div>
 
+          {/* === SORTING & FILTERING BAR === */}
+          <div className='bg-white rounded border border-gray-200 shadow-sm p-3 flex flex-wrap items-center justify-between gap-4'>
+            <div className='flex items-center gap-2'>
+              <div className='p-1.5 bg-blue-50 rounded-md text-[#0F83B2]'>
+                <Layers size={16} />
+              </div>
+              <div>
+                <h4 className='text-[11px] font-black uppercase tracking-wider text-gray-400 leading-none'>
+                  Workflow Filter
+                </h4>
+                <p className='text-[10px] text-gray-500 font-medium'>
+                  Showing {filteredFiles?.length || 0} of {files?.length || 0} files
+                </p>
+              </div>
+            </div>
+
+            <div className='flex items-center gap-2'>
+              <label className='text-[10px] font-bold text-gray-400 uppercase'>Sort By Stage:</label>
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className='bg-gray-50 border border-gray-200 text-gray-700 text-xs font-bold rounded px-3 py-1.5 focus:outline-none focus:border-[#0F83B2] cursor-pointer transition-colors'
+              >
+                <option value="all">All Files</option>
+                <option value="pending">Pending</option>
+                <option value="in-progress">In-Progress</option>
+                <option value="qc1">QC 1 (Checker)</option>
+                <option value="qc2">QC 2 (Final)</option>
+                <option value="finished">Finished</option>
+              </select>
+            </div>
+          </div>
+
+          {/* files */}
           <div className='bg-white rounded border border-gray-200 shadow-sm overflow-hidden flex flex-col'>
             <div className='p-4 bg-[#091E42] flex justify-between items-center text-white'>
               <h3 className='text-[12px] font-bold uppercase tracking-widest flex items-center gap-2 text-blue-200'>
@@ -199,7 +245,16 @@ const ProjectDetails = () => {
             <div className='p-4 grid grid-cols-1 gap-3 max-h-150 overflow-y-auto custom-scrollbar bg-gray-50/50'>
               {files && files.length > 0 ? (
                 files.map((file) => (
-                  <FileDetailsCard key={file._id} file={file} orderId={orderId} />
+                  <FileDetailsCard
+                    key={file._id}
+                    file={file}
+                    orderId={orderId}
+                    refetch={refetch}
+                    onViewLogs={(logs) => {
+                      setSelectedLogs(logs)
+                      document.getElementById('logs_modal').showModal()
+                    }}
+                  />
                 ))
               ) : (
                 <div className='text-center py-20 text-gray-400 italic bg-white rounded border border-dashed border-gray-200'>
@@ -210,6 +265,8 @@ const ProjectDetails = () => {
           </div>
         </div>
       </div>
+      {/* Open the modal using document.getElementById('ID').showModal() method */}
+      <StageLogModal id={`logs_modal`} stageLogs={selectedLogs} />
     </div>
   );
 };

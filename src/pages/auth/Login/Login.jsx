@@ -27,6 +27,7 @@ const Login = () => {
     } catch (error) {
       console.log(error.message)
       MyAlert({
+        icon: "error",
         title: "Something went wrong",
         text: "please, try again."
       });
