@@ -190,9 +190,7 @@ const Profile = () => {
                 {[
                   "Pending",
                   "In-Progress",
-                  "Finished",
-                  "Completed",
-                  "Rejected",
+                  "qc-1"
                 ].map((tab) => (
                   <Tab
                     key={tab}

@@ -8,6 +8,7 @@ import ProjectDetails from "../pages/Dashboard/project-details/ProjectDetails";
 import Profile from '../pages/Dashboard/common/Profile'
 import Login from "../pages/auth/Login/Login";
 import Register from "../pages/auth/Register/Register";
+import OrdersProvider from "../provider/OrdersProvider";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,9 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: (
       <PrivateRoutes>
-        <DashboardLayout />
+        <OrdersProvider>
+          <DashboardLayout />
+        </OrdersProvider>
       </PrivateRoutes>
     ),
     children: [

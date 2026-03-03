@@ -1,32 +1,19 @@
 import React from "react";
 import { FiClock, FiDroplet, FiImage, FiMoreVertical } from "react-icons/fi";
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
 import { calculateTime } from "../../../../utils/calculateTime";
 import Deadline from "../../common/Deadline";
-import useAxiosSecure from "../../../../hook/useAxiosSecure";
+import useOrders from "../../../../hook/useOrders";
 
 const Pending = () => {
-  const axiosSecure = useAxiosSecure();
-  const { isPending, data: orders } = useQuery({
-    queryKey: ["projects"],
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/files/orders`)
-      return res.data.data || [];
-    },
-    staleTime: 60000,
-  });
-
-  if (isPending) {
-    return <div className='p-4 text-gray-500'>Loading orders...</div>;
-  }
+  const { orders } = useOrders()
 
   return (
     <div className='flex flex-col gap-4'>
       {orders?.map((order) => {
         const { createdAt, fileCount, orderDeadline, orderId, priority } =
           order;
-        const { minutesAgo, hoursAgo } = calculateTime(createdAt);
+        const { minutesAgo, hoursAgo, daysAgo } = calculateTime(createdAt);
 
         return (
           <div
@@ -58,9 +45,11 @@ const Pending = () => {
 
                   <span>
                     created{" "}
-                    {hoursAgo === 0
-                      ? `${minutesAgo}m`
-                      : `${hoursAgo}h ${minutesAgo}m`}{" "}
+                    {!daysAgo < 3 ? `${daysAgo}d` :
+                      hoursAgo === 0 ? `${minutesAgo}m`
+                        : `${hoursAgo}h ${minutesAgo}m`
+                    }
+                    {" "}
                     ago
                   </span>
                 </div>

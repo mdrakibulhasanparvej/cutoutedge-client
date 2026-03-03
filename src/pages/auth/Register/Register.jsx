@@ -36,7 +36,7 @@ const Register = () => {
         `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_imgBB_host}`,
         formData
       );
-      const photoURL = imgRes.data.data.url;
+      const photoURL = imgRes?.data.data.url || null;
 
       await createUser(data.email, data.password);
 
@@ -52,7 +52,7 @@ const Register = () => {
 
       const updateProfile = {
         displayName: data.name,
-        photoURL
+        // photoURL
       }
 
       await updateUserProfile(updateProfile);
@@ -192,8 +192,8 @@ const Register = () => {
                 {...register("role")}
                 className='w-full mt-1 px-3 py-2 border-2 border-gray-200 rounded-md outline-none text-sm bg-white focus:border-[#0F83B2] cursor-pointer'>
                 <option value='designer'>Designer</option>
-                <option value='qc-1'>QC-1</option>
-                <option value='qc-2'>QC-2</option>
+                <option value='qc1'>QC-1</option>
+                <option value='qc2'>QC-2</option>
                 <option value='incharge'>Incharge</option>
               </select>
             </div>
@@ -205,7 +205,7 @@ const Register = () => {
               Profile Photo
             </label>
             <input
-              {...register("photo", { required: "Profile photo is required" })}
+              {...register("photo")}
               type='file'
               className={`w-full mt-1 text-xs file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-[#0F83B2] hover:file:bg-gray-200 cursor-pointer ${errors.photo ? "border border-red-500 rounded-md" : ""
                 }`}
@@ -235,7 +235,7 @@ const Register = () => {
           </a>
         </div>
       </div>
-      
+
       {/* footer */}
       <div className='mt-12 mb-4 flex flex-col items-center gap-2'>
         <div className='w-16 h-0.5 bg-gray-200 mb-2 rounded-full'></div>
