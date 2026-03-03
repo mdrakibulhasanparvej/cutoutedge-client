@@ -5,6 +5,7 @@ import MyConfirmAlert from "../common/MyConfirmAlert";
 import MyAlert from "../common/MyAler";
 import useUser from "../../../hook/useUser";
 import Timer from "../common/Timer";
+import WorkActions from "../common/WorkActions";
 
 const FileDetailsCard = memo(({ file, orderId, refetch, onViewLogs }) => {
 
@@ -17,9 +18,11 @@ const FileDetailsCard = memo(({ file, orderId, refetch, onViewLogs }) => {
     filename,
     stageLogs,
   } = file;
+  console.log(file)
   const { name } = assignedTo || {}
 
   const timerData = stageLogs.find(s => s?.stage === currentStage)?.timer
+  // const isRunning = stageLogs.find(s => s?.stage === currentStage)?.timer?.isRunning
 
   // role based permissions
   const isAssignedUser = assignedTo?._id === userId;
@@ -37,46 +40,93 @@ const FileDetailsCard = memo(({ file, orderId, refetch, onViewLogs }) => {
     return "bg-gray-100 text-gray-700 border-gray-200";
   };
 
-  const handleStartWork = async () => {
+  // const handleStartWork = async () => {
 
-    const data = {
-      orderId,
-      filename,
-      userId
-    }
-
-    const result = await MyConfirmAlert({
-      title: "Are you sure u want to start editing this file?",
-      text: "Your work timer will start if you click yes",
-      icon: "info"
-    })
-    if (result.isConfirmed) {
-      try {
-        axiosSecure.post('/files/start', data)
-          .then(() => {
-            MyAlert({
-              title: "Success",
-              text: "you have started this design",
-              icon: "success"
-            })
-            refetch()
-          })
-      } catch (err) {
-        MyAlert({
-          title: "error",
-          text: "Something went wrong, please try again",
-          icon: "error"
-        })
-        console.log(err.message)
-      }
-    }
-  }
-
-  // const handleTimer = async (_id, status) => {
   //   const data = {
-
+  //     orderId,
+  //     filename,
+  //     userId
   //   }
-  //   // axiosSecure.patch(`/files/pause/${_id}?timer-status=${status}`,)
+
+  //   const result = await MyConfirmAlert({
+  //     title: "Are you sure u want to start editing this file?",
+  //     text: "Your work timer will start if you click yes",
+  //     icon: "info"
+  //   })
+  //   if (result.isConfirmed) {
+  //     try {
+  //       axiosSecure.post('/files/start', data)
+  //         .then(() => {
+  //           MyAlert({
+  //             title: "Success",
+  //             text: "you have started this design",
+  //             icon: "success"
+  //           })
+  //           refetch()
+  //         })
+  //     } catch (err) {
+  //       MyAlert({
+  //         title: "error",
+  //         text: "Something went wrong, please try again",
+  //         icon: "error"
+  //       })
+  //       console.log(err.message)
+  //     }
+  //   }
+  // }
+
+  // const handleTimer = async () => {
+  //   try {
+  //     const data = {
+  //       orderId,
+  //       filename,
+  //       userId
+  //     }
+  //     console.log(data)
+  //     axiosSecure.post(`/files/pause`, data)
+  //       .then(() => {
+  //         MyAlert({
+  //           title: "Success",
+  //           text: "you have started this design",
+  //           icon: "success"
+  //         })
+  //         refetch()
+  //       })
+  //   } catch (err) {
+  //     MyAlert({
+  //       title: "error",
+  //       text: "Something went wrong, please try again",
+  //       icon: "error"
+  //     })
+  //     console.log(err.message)
+  //   }
+  // }
+
+  // const handleStartTimer = async () => {
+  //   try {
+  //     const data = {
+  //       orderId,
+  //       filename,
+  //       userId
+  //     }
+  //     console.log(data)
+  //     axiosSecure.post(`/files/resume`, data)
+  //       .then(() => {
+  //         MyAlert({
+  //           title: "Success",
+  //           text: "you have started the timer",
+  //           icon: "success"
+  //         })
+  //         refetch()
+  //       })
+  //   } catch (err) {
+  //     MyAlert({
+  //       title: "error",
+  //       text: "Something went wrong, please try again",
+  //       icon: "error"
+  //     })
+  //     console.log(err.message)
+  //   }
   // }
 
 
@@ -143,26 +193,11 @@ const FileDetailsCard = memo(({ file, orderId, refetch, onViewLogs }) => {
 
         {/* User actions */}
         <div className="space-y-1">
+          <WorkActions file={file} orderId={orderId} refetch={refetch} />
 
-          {!isAdminOrIncharge && <div>
-            {!assignedTo ?
-              <button
-                onClick={handleStartWork}
-                className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm'>
-                <PlayCircleIcon size={14} />
-                Start
-              </button>
-              :
-              <button
-                // onClick={handleTimer}
-                className='flex items-center justify-center px-2 py-1 gap-1 bg-yellow-400 hover:bg-yellow-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm'>
-                <PauseCircle size={14} />
-                Pause Timer
-              </button>}
-          </div>}
           <button
             onClick={() => onViewLogs(stageLogs)}
-            className='flex items-center justify-center px-2 py-1 gap-px bg-white hover:bg-[#F4F5F7] text-[#172B4D] text-xs font-bold rounded border border-gray-300 transition-all active:scale-95 shadow-sm'>
+            className='flex items-center justify-center px-2 py-1 gap-px bg-white hover:bg-[#F4F5F7] text-[#172B4D] text-xs font-bold rounded border border-gray-300 transition-all active:scale-95 shadow-sm w-full cursor-pointer'>
             <ExternalLink size={14} />
             View Stages
           </button>

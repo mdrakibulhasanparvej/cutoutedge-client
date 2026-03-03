@@ -1,23 +1,11 @@
 import React from "react";
 import { FiClock, FiImage, FiLoader, FiMoreVertical, FiXCircle } from "react-icons/fi";
-import useAxiosSecure from "../../../../hook/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
 import { calculateTime } from "../../../../utils/calculateTime";
 import { Link } from "react-router";
+import useOrders from "../../../../hook/useOrders";
 
 const InProgress = () => {
-  const axiosSecure = useAxiosSecure();
-
-  const { data: orders = [], isLoading } = useQuery({
-    queryKey: ["order", "in-progress"],
-    queryFn: async () => {
-      const res = await axiosSecure.get('/files/orders');
-      return res.data.data;
-    },
-  });
-
-  if (isLoading) return <div className="p-4 text-gray-500">Loading orders...</div>;
-  if (orders.length === 0) return <div className="p-4 text-gray-500">No active orders found.</div>;
+  const { orders } = useOrders()
 
   return (
     <div className="space-y-4">
