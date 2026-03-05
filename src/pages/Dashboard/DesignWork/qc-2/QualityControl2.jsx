@@ -1,172 +1,113 @@
 import React from "react";
-import {
-  FiCheckCircle,
-  FiXCircle,
-  FiAlertTriangle,
-  FiClock,
-  FiMoreVertical,
-  FiEye,
-  FiRotateCcw,
-} from "react-icons/fi";
+import { FiCheckCircle, FiXCircle, FiClock, FiEye } from "react-icons/fi";
+import useOrders from "../../../../hook/useOrders";
+import LoadingSpinner from "../../../../component/Loading/LoadingSpinner";
+import { calculateTime } from "../../../../utils/calculateTime";
+import { Link } from "react-router";
 
-const QualityControl2 = ({
-  order = {
-    id: "#4568",
-    title: "Bundle of product photos - Round 2",
-    completedQc1At: "2 hours ago",
-    imagesCount: 47,
-    approvedCount: 38,
-    rejectedCount: 9,
-    needsReworkCount: 4,
-    status: "quality-control-2",
-    priority: "high",
-    criticalIssues: 2,
-  },
-  onFinalApprove,
-  onReviewDetails,
-  onSendBack,
-}) => {
-  const approvalRate =
-    Math.round((order.approvedCount / order.imagesCount) * 100) || 0;
+const QualityControl2 = () => {
 
-  const hasCriticalIssues = order.criticalIssues > 0;
-  const hasRework = order.needsReworkCount > 0;
+  const { orders, isPending } = useOrders()
 
-  const statusColor = hasCriticalIssues
-    ? "bg-red-600"
-    : hasRework
-      ? "bg-amber-600"
-      : "bg-indigo-600";
+  if (isPending) return <LoadingSpinner text={"Wait for orders"} />
 
   return (
-    <div
-      className='
-        group w-full
-        flex flex-col sm:flex-row
-        sm:items-center gap-4
-        px-4 py-4
-        bg-white border border-gray-200 rounded-md
-        hover:shadow-md hover:-translate-y-0.5 transition-all
-      '>
-      {/* Left */}
-      <div className='flex items-center gap-3 min-w-32.5'>
-        <div className='relative h-3 w-3'>
-          {hasCriticalIssues ? (
-            <>
-              <div className='absolute inset-0 rounded-full bg-red-500 animate-ping opacity-30' />
-              <div className='relative h-3 w-3 rounded-full bg-red-600' />
-            </>
-          ) : (
-            <div className={`h-3 w-3 rounded-full ${statusColor}`} />
-          )}
-        </div>
-        <span className='font-semibold text-gray-900 text-[14px]'>
-          {order.id}
-        </span>
-      </div>
+    <div className="space-y-4">
 
-      {/* Main */}
-      <div className='flex-1 min-w-0 space-y-2'>
-        <div className='flex flex-wrap items-center gap-2'>
-          <h3 className='font-medium text-[14px] text-gray-900 truncate max-w-65 sm:max-w-full'>
-            {order.title}
-          </h3>
+      {orders.map((order, index) => {
+        const { orderId, fileCount, priority, createdAt, stageCounts } = order || {}
+        const { qc2, done, rejected = 0 } = stageCounts || {}
+        const { daysAgo, hoursAgo, minutesAgo } = calculateTime(createdAt)
 
-          <span className='inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium bg-indigo-100 text-indigo-800 border-indigo-300'>
-            QC-2 • Final Review
-          </span>
+        const progress = parseFloat((done / fileCount) * 100).toFixed(2)
+        const isAlmostDone = progress >= 90
 
-          {hasCriticalIssues && (
-            <span className='inline-flex items-center gap-1 rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800'>
-              <FiAlertTriangle size={13} />
-              {order.criticalIssues} critical
-            </span>
-          )}
+        return (
+          <div key={index}
+            className='group w-full flex flex-col sm:flex-row sm:items-center gap-4 px-4 py-4 bg-white border border-gray-200 rounded-md hover:shadow-md hover:-translate-y-0.5 transition-all'>
 
-          {hasRework && (
-            <span className='inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800'>
-              <FiRotateCcw size={13} />
-              {order.needsReworkCount} rework
-            </span>
-          )}
+            {/* Left */}
+            <div className='flex items-center gap-3 min-w-32.5'>
 
-          {order.priority === "high" && (
-            <span className='inline-flex items-center rounded bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700'>
-              High Priority
-            </span>
-          )}
-        </div>
+              {/* animation dot */}
+              <div className='relative h-3 w-3'>
+                <div className='absolute inset-0 rounded-full bg-red-500 animate-ping opacity-30' />
+                <div className='relative h-3 w-3 rounded-full bg-red-600' />
+              </div>
 
-        {/* Progress */}
-        <div className='w-full bg-gray-200 rounded-full h-2.5 overflow-hidden'>
-          <div
-            className={`h-full rounded-full transition-all duration-700 ${approvalRate >= 95
-                ? "bg-green-600"
-                : approvalRate >= 85
-                  ? "bg-emerald-500"
-                  : "bg-orange-500"
-              }`}
-            style={{ width: `${approvalRate}%` }}
-          />
-        </div>
-
-        <div className='flex flex-wrap items-center justify-between text-xs text-gray-600'>
-          <div className='flex flex-wrap items-center gap-4'>
-            <div className='flex items-center gap-1'>
-              <FiClock size={14} />
-              <span>QC-1 done {order.completedQc1At}</span>
+              {/* title */}
+              <span className='font-semibold text-gray-900 text-[14px]'>
+                {orderId}
+              </span>
             </div>
 
-            <div className='flex items-center gap-4'>
-              <div className='flex items-center gap-1 text-green-700'>
-                <FiCheckCircle size={14} />
-                <span>{order.approvedCount} approved</span>
+            {/* Main */}
+            <div className='flex-1 min-w-0 space-y-2'>
+              {/* upper metadata */}
+              <div className='flex flex-wrap items-center gap-2 text-xs text-gray-600'>
+                <span>
+                  created{" "}
+                  {daysAgo > 3 ? `${daysAgo}d` :
+                    hoursAgo === 0 ? `${minutesAgo}m`
+                      : `${hoursAgo}h ${minutesAgo}m`
+                  }
+                  {" "}ago
+                </span>
+
+                <span className='inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium bg-indigo-100 text-indigo-800 border-indigo-300'>
+                  QC-2 • Final Review
+                </span>
+
+                <span className={`inline-flex items-center rounded  px-2 py-0.5 text-xs font-medium ${priority === 'high' ? "bg-red-50 text-red-700" : priority === 'medium' ? "bg-amber-50 text-amber-700" : "bg-green-500 text-white"}`}>
+                  Priority: {priority}
+                </span>
               </div>
-              <div className='flex items-center gap-1 text-red-700'>
-                <FiXCircle size={14} />
-                <span>{order.rejectedCount} rejected</span>
+
+              {/* Progress bar */}
+              <div className='w-full bg-gray-200 rounded-full h-2.5 overflow-hidden'>
+                <div
+                  className={`h-full rounded-full transition-all duration-700 ${isAlmostDone ? "bg-green-500" : "bg-red-500"}`}
+                  style={{ width: `${progress}%` }}
+                />
               </div>
+
+              {/* lower metadata */}
+              <div className='flex flex-wrap items-center justify-between text-xs text-gray-600'>
+                <div className='flex flex-wrap items-center gap-4'>
+                  <div className='flex items-center gap-1'>
+                    <FiClock size={14} />
+                    <span>QC-1 Approved: {qc2 + done}</span>
+                  </div>
+
+                  <div className='flex items-center gap-4'>
+                    <div className='flex items-center gap-1 text-green-700'>
+                      <FiCheckCircle size={14} />
+                      <span>{done} Completed</span>
+                    </div>
+                    <div className='flex items-center gap-1 text-red-700'>
+                      <FiXCircle size={14} />
+                      <span>{rejected} rejected</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='font-semibold'>{progress}%</div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className='flex items-center gap-2 justify-end'>
+              <Link
+                to={`/dashboard/order-details/${encodeURIComponent(orderId)}`}
+                className='flex items-center gap-1.5 rounded-lg bg-[#0F83B2] px-4 py-1 text-sm font-medium text-white hover:bg-[#0f99cf] duration-500 transition-colors cursor-pointer'>
+                <FiEye size={16} />
+                View Details
+              </Link>
             </div>
           </div>
-
-          <div className='font-semibold'>{approvalRate}%</div>
-        </div>
-      </div>
-
-      {/* Actions */}
-      <div className='flex flex-wrap items-center gap-2 justify-end sm:justify-start'>
-        <button
-          onClick={onReviewDetails}
-          className='flex items-center gap-1.5 rounded-lg bg-[#0F83B2] px-4 py-1
-            text-sm font-medium text-white hover:bg-indigo-700 transition'>
-          <FiEye size={16} />
-          Review
-        </button>
-
-        <button
-          onClick={onFinalApprove}
-          disabled={hasCriticalIssues || approvalRate < 90}
-          className='flex items-center gap-1.5 rounded-lg bg-green-600 px-4 py-1
-            text-sm font-medium text-white hover:bg-green-700 transition
-            disabled:opacity-50 disabled:cursor-not-allowed'>
-          <FiCheckCircle size={16} />
-          Final Approve
-        </button>
-
-        <button
-          onClick={onSendBack}
-          className='flex items-center gap-1.5 rounded-lg border border-amber-600 px-4 py-1
-            text-sm font-medium text-amber-700 hover:bg-amber-50 transition'>
-          <FiRotateCcw size={16} />
-          Send Back
-        </button>
-
-        <button
-          className='rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition'
-          title='More actions'>
-          <FiMoreVertical size={18} />
-        </button>
-      </div>
+        )
+      })
+      }
     </div>
   );
 };

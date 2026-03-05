@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { FiClock, FiDroplet, FiEye, FiImage, FiMoreVertical } from "react-icons/fi";
 import { Link } from "react-router";
 import { calculateTime } from "../../../../utils/calculateTime";
@@ -8,13 +8,9 @@ import NoOrders from "../../../../component/Loading/NoOrders";
 import LoadingSpinner from "../../../../component/Loading/LoadingSpinner";
 
 const Pending = () => {
-  const { orders, noOrders, isPending, refetch } = useOrders()
+  const { orders, noOrders, isPending } = useOrders()
 
-  useEffect(() => {
-    refetch()
-  }, [orders, refetch])
-
-  if (isPending) return <LoadingSpinner />
+  if (isPending) return <LoadingSpinner text={"Wait for Orders"} />
   if (noOrders) return <NoOrders />
 
   return (

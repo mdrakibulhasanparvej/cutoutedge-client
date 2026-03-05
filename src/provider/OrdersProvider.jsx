@@ -3,14 +3,14 @@ import React from 'react';
 import useAxiosSecure from '../hook/useAxiosSecure';
 import { OrderContext } from '../context/orderContext';
 import useUser from '../hook/useUser';
-import LoadingSpinner from '../component/Loading/LoadingSpinner';
 
 const OrdersProvider = ({ children }) => {
-    const { isLoading: userLoading } = useUser()
+    const { isLoading: userLoading, userId } = useUser()
     const axiosSecure = useAxiosSecure()
 
     const { isPending, isLoading, data: orders = [], refetch } = useQuery({
-        queryKey: ["orders"],
+        queryKey: ["orders", userId],
+        enabled: !userLoading,
         queryFn: async () => {
             const res = await axiosSecure.get(`/files/orders`)
             return res.data.data;
@@ -18,7 +18,6 @@ const OrdersProvider = ({ children }) => {
         staleTime: 60000,
     });
 
-    if (userLoading) return <LoadingSpinner />
 
     const noOrders = orders.length === 0
 

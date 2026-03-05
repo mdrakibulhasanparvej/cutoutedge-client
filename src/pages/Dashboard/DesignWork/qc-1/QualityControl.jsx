@@ -10,7 +10,7 @@ const QualityControl = () => {
   const { orders } = useOrders()
 
   return (
-    <div>
+    <div className="space-y-4">
       {orders.map((order, index) => {
         const { createdAt, fileCount, orderId, stageCounts, priority } = order
 
