@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import useUser from '../../../hook/useUser';
 import useAxiosSecure from '../../../hook/useAxiosSecure';
 import MyConfirmAlert from './MyConfirmAlert';
 import MyAlert from './MyAler';
-import { CheckLine, ChevronsRight, PauseCircleIcon, PlayCircleIcon } from 'lucide-react';
+import { Check, ChevronsRight, PauseCircle, PlayCircle, TimerIcon, XCircle } from 'lucide-react';
+import ActionButton from './ActionButton';
+import toast from 'react-hot-toast';
+import RejectionModal from './RejectionModal';
 
 const WorkActions = ({ file, orderId, refetch }) => {
+    const rejectionModalRef = useRef(null)
+    const [rejectionReason, setRejectionReason] = useState("")
     const { userId, role } = useUser()
     const axiosSecure = useAxiosSecure()
     const {
@@ -17,13 +22,11 @@ const WorkActions = ({ file, orderId, refetch }) => {
 
     const isTimerRunning = stageLogs.find(s => s?.stage === currentStage)?.timer?.isRunning
 
-    // role based permissions
     const isAdminOrIncharge = role === 'admin' || role === 'incharge'
     const isDesigner = role === 'designer'
     const isQC1 = role === 'qc1'
     const isQC2 = role === 'qc2'
 
-    // stage based access
     const pending = currentStage === 'pending'
     const isInProgress = currentStage === 'in-progress'
     const isInQC1 = currentStage === 'qc1'
@@ -31,295 +34,274 @@ const WorkActions = ({ file, orderId, refetch }) => {
 
     const isAssignedUser = userId === assignedTo?._id
 
-    // Work Start-finish
     const handleStartDesigning = async () => {
-
-        const data = {
-            orderId,
-            filename,
-            userId
-        }
-
+        const data = { orderId, filename, userId }
         const result = await MyConfirmAlert({
-            title: "Are you sure u want to start editing this file?",
-            text: "Your work timer will start if you click yes",
+            title: "Start Designing?",
+            text: "Your work timer will start upon confirmation.",
             icon: "info"
         })
         if (result.isConfirmed) {
             try {
-                axiosSecure.post('/files/start', data)
-                    .then(() => {
-                        MyAlert({
-                            title: "Success",
-                            text: "you have started this design",
-                            icon: "success"
-                        })
-                        refetch()
-                    })
+                await axiosSecure.post('/files/start', data)
+                MyAlert({ title: "Success", text: "Design started successfully", icon: "success" })
+                refetch()
             } catch (err) {
-                MyAlert({
-                    title: "error",
-                    text: "Something went wrong, please try again",
-                    icon: "error"
-                })
                 console.log(err.message)
+                MyAlert({ title: "Error", text: "Something went wrong", icon: "error" })
             }
         }
     }
 
     const handleFinishDesigning = async () => {
-        const data = {
-            orderId,
-            filename,
-            targetStage: "qc1",
-            role
-        }
+        const data = { orderId, filename, targetStage: "qc1", role }
         const result = await MyConfirmAlert({
-            title: "Are you sure?",
-            text: "you want to submit your work?"
+            title: "Submit Work?",
+            text: "File will be moved to quality check 1."
         })
         if (result.isConfirmed) {
             try {
                 const res = await axiosSecure.post('/files/finish', data)
                 if (res.data.success) {
-                    MyAlert({
-                        title: "success",
-                        text: "File moved for quality-checking-1"
-                    })
+                    MyAlert({ title: "Success", text: "File submitted for QC1" })
                     refetch()
                 }
             } catch (err) {
-                MyAlert({
-                    title: "error",
-                    text: "Something went wrong, please try again",
-                    icon: "error"
-                })
                 console.log(err.message)
+                MyAlert({ title: "Error", text: "Something went wrong", icon: "error" })
             }
         }
     }
 
-    const handleStartQC = async () => {
-        const data = {
-            orderId,
-            filename,
-            userId
-        }
-
+    const handleStartQC = async (stageName) => {
+        const data = { orderId, filename, userId }
         const result = await MyConfirmAlert({
-            title: "Are you sure?",
-            text: "You want to start quality checking for this file? Your work timer will start if you click yes.",
+            title: `Start ${stageName}?`,
+            text: "Your work timer will start upon confirmation.",
             icon: "info"
         })
         if (result.isConfirmed) {
             try {
-                axiosSecure.post('/files/qc/start', data)
-                    .then(() => {
-                        MyAlert({
-                            title: "Success",
-                            text: "you have started this design",
-                            icon: "success"
-                        })
-                        refetch()
-                    })
+                await axiosSecure.post('/files/qc/start', data)
+                MyAlert({ title: "Success", text: `Started ${stageName}`, icon: "success" })
+                refetch()
             } catch (err) {
-                MyAlert({
-                    title: "error",
-                    text: "Something went wrong, please try again",
-                    icon: "error"
-                })
                 console.log(err.message)
+                MyAlert({ title: "Error", text: "Something went wrong", icon: "error" })
             }
         }
     }
 
-    const handleFinishQC = async () => {
-        const data = {
-            orderId,
-            filename,
-            targetStage: "qc2",
-            role
-        }
+    const handleFinishQC = async (targetStage) => {
+        let msgTarget = targetStage === 'done' ? 'completed stage' : targetStage;
+        const data = { orderId, filename, targetStage, role }
         const result = await MyConfirmAlert({
-            title: "Are you sure?",
-            text: "you want to Approve quality-check-1"
+            title: "Approve File?",
+            text: `File will be moved to ${msgTarget}.`
         })
         if (result.isConfirmed) {
             try {
                 const res = await axiosSecure.post('/files/qc/finish', data)
                 if (res.data.success) {
-                    MyAlert({
-                        title: "success",
-                        text: "File moved for quality-checking-2"
-                    })
+                    MyAlert({ title: "Success", text: "File approved successfully" })
                     refetch()
                 }
             } catch (err) {
-                MyAlert({
-                    title: "error",
-                    text: "Something went wrong, please try again",
-                    icon: "error"
-                })
                 console.log(err.message)
+                MyAlert({ title: "Error", text: "Something went wrong", icon: "error" })
             }
         }
     }
 
-
-    // timer start-pause
+    const handleReject = async () => {
+        const data = {
+            filename,
+            orderId,
+            reason: rejectionReason
+        }
+        try {
+            const res = await axiosSecure.patch('/files/reject', data)
+            if (res.data.success) {
+                rejectionModalRef.current.close()
+                setRejectionReason("")
+                MyAlert({ title: "Success", text: "File rejected" })
+                refetch()
+            }
+        } catch (err) {
+            console.log(err.message)
+            MyAlert({ title: "Error", text: "Something went wrong", icon: "error" })
+        }
+    }
 
     const handlePauseTimer = async () => {
         try {
-            const data = {
-                orderId,
-                filename,
-                userId
-            }
-
-            axiosSecure.post(`/files/pause`, data)
-                .then(() => {
-                    MyAlert({
-                        title: "Success",
-                        text: "you have started this design",
-                        icon: "success"
-                    })
-                    refetch()
+            await axiosSecure.post(`/files/pause`, { orderId, filename, userId })
+            toast.success("Timer Paused",
+                {
+                    icon: <TimerIcon />,
+                    position: "top-right",
+                    style: {
+                        backgroundColor: '#0ea5e9',
+                        color: '#fff',
+                    }
                 })
+            refetch()
         } catch (err) {
-            MyAlert({
-                title: "error",
-                text: "Something went wrong, please try again",
-                icon: "error"
-            })
             console.log(err.message)
+            toast.error("Failed to pause timer", {
+                icon: <TimerIcon />,
+                position: "top-right",
+                style: {
+                    backgroundColor: '#0ea5e9',
+                    color: '#fff',
+                }
+            })
         }
     }
 
     const handleStartTimer = async () => {
         try {
-            const data = {
-                orderId,
-                filename,
-                userId
-            }
-
-            axiosSecure.post(`/files/resume`, data)
-                .then(() => {
-                    MyAlert({
-                        title: "Success",
-                        text: "you have started the timer",
-                        icon: "success"
-                    })
-                    refetch()
+            await axiosSecure.post(`/files/resume`, { orderId, filename, userId })
+            toast.success("Timer Started",
+                {
+                    icon: <TimerIcon />,
+                    position: "top-right",
+                    style: {
+                        backgroundColor: '#0ea5e9',
+                        color: '#fff',
+                    }
                 })
+            refetch()
         } catch (err) {
-            MyAlert({
-                title: "error",
-                text: "Something went wrong, please try again",
-                icon: "error"
-            })
             console.log(err.message)
+            toast.success("Failed to start timer",
+                {
+                    icon: <TimerIcon />,
+                    position: "top-right",
+                    style: {
+                        backgroundColor: '#0ea5e9',
+                        color: '#fff',
+                    }
+                })
         }
     }
 
+    if (isAdminOrIncharge) return null;
+
     return (
-        <div className='w-full'>
-            {!isAdminOrIncharge &&
-                <div className='space-y-1'>
-                    {/* action buttons for designer */}
-                    <div>
-                        {isDesigner &&
-                            <div>
-                                {pending &&
-                                    < button
-                                        onClick={handleStartDesigning}
-                                        className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm cursor-pointer'>
-                                        Start Designing
-                                        <ChevronsRight size={14} />
-                                    </button>
-                                }
-                                {isInProgress &&
-                                    < button
-                                        onClick={handleFinishDesigning}
-                                        className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm cursor-pointer'>
-                                        <CheckLine size={14} />
-                                        Finish Designing
-                                    </button>
-                                }
-                            </div>
-                        }
-                    </div>
+        <div className="w-full space-y-1">
 
-                    {/* action buttons for qc1 */}
-                    <div>
-                        {isQC1 && isInQC1 &&
-                            <div>
-                                {!assignedTo &&
-                                    < button
-                                        onClick={handleStartQC}
-                                        className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm cursor-pointer'>
-                                        Start quality check
-                                        <ChevronsRight size={14} />
-                                    </button>
-                                }
-                                {assignedTo &&
-                                    < button
-                                        onClick={handleFinishQC}
-                                        className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm cursor-pointer'>
-                                        <CheckLine size={14} />
-                                        Approve
-                                    </button>
-                                }
-                            </div>
-                        }
-                    </div>
-
-                    {/* action buttons for qc2 */}
-                    <div>
-                        {isQC2 && isInQC2 &&
-                            <div>
-                                {!assignedTo ?
-                                    < button
-                                        onClick={handleStartQC}
-                                        className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm cursor-pointer'>
-                                        Start quality check-2
-                                        <ChevronsRight size={14} />
-                                    </button>
-                                    :
-                                    < button
-                                        onClick={handleFinishQC}
-                                        className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm cursor-pointer'>
-                                        <CheckLine size={14} />
-                                        Final Approve
-                                    </button>
-                                }
-                            </div>
-                        }
-                    </div>
-
-                    {/* timer start pause for all */}
-                    {isAssignedUser &&
-                        < div >
-                            {!isTimerRunning ?
-                                <button
-                                    onClick={handleStartTimer}
-                                    className='flex items-center justify-center px-2 py-1 gap-1 bg-red-400 hover:bg-red-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm cursor-pointer'>
-                                    <PlayCircleIcon size={14} />
-                                    Start Timer
-                                </button>
-                                :
-                                <button
-                                    onClick={handlePauseTimer}
-                                    className='flex items-center justify-center px-2 py-1 gap-1 bg-yellow-400 hover:bg-yellow-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm cursor-pointer'>
-                                    <PauseCircleIcon size={14} />
-                                    Pause Timer
-                                </button>
-                            }
-                        </div>
-                    }
+            {/* designing Actions */}
+            {isDesigner && (
+                <div>
+                    {pending && (
+                        <ActionButton
+                            onClick={handleStartDesigning}
+                            icon={ChevronsRight}
+                            text="Start Designing"
+                            variant="success"
+                            iconPosition="right"
+                        />
+                    )}
+                    {isInProgress && (
+                        <ActionButton
+                            onClick={handleFinishDesigning}
+                            icon={Check}
+                            text="Finish Designing"
+                            variant="success"
+                        />
+                    )}
                 </div>
-            }
-        </div >
+            )}
+
+            {/* QC1 Actions */}
+            {isQC1 && isInQC1 && (
+                <div>
+                    {!assignedTo ? (
+                        <ActionButton
+                            onClick={() => handleStartQC('QC1')}
+                            icon={ChevronsRight}
+                            text="Start QC1"
+                            variant="success"
+                            iconPosition="right"
+                        />
+                    ) : (
+                        <div className="flex gap-2 w-full">
+                            <ActionButton
+                                onClick={() => handleFinishQC('qc2')}
+                                icon={Check}
+                                text="Approve"
+                                variant="success"
+                            />
+                            <ActionButton
+                                onClick={() => { rejectionModalRef.current.showModal() }}
+                                icon={XCircle}
+                                text="Reject"
+                                variant="reject"
+                            />
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {isQC2 && isInQC2 && (
+                <div>
+                    {!assignedTo ? (
+                        <ActionButton
+                            onClick={() => handleStartQC('QC2')}
+                            icon={ChevronsRight}
+                            text="Start QC2"
+                            variant="success"
+                            iconPosition="right"
+                        />
+                    ) : (
+                        <div className="flex gap-2 w-full">
+                            <ActionButton
+                                onClick={() => handleFinishQC('done')}
+                                icon={Check}
+                                text="Approve"
+                                variant="success"
+                            />
+                            <ActionButton
+                                onClick={() => { rejectionModalRef.current.showModal() }}
+                                icon={XCircle}
+                                text="Reject"
+                                variant="reject"
+                            />
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {isAssignedUser && (
+                <div>
+                    {!isTimerRunning ? (
+                        <ActionButton
+                            onClick={handleStartTimer}
+                            icon={PlayCircle}
+                            text="Start Timer"
+                            variant="primary"
+                        />
+                    ) : (
+                        <ActionButton
+                            onClick={handlePauseTimer}
+                            icon={PauseCircle}
+                            text="Pause Timer"
+                            variant="warning"
+                        />
+                    )}
+                </div>
+            )}
+
+            {/* Rejection Modal */}
+            <RejectionModal
+                rejectionModalRef={rejectionModalRef}
+                rejectionReason={rejectionReason}
+                setRejectionReason={setRejectionReason}
+                handleReject={handleReject}
+                filename={filename}
+            />
+        </div>
     );
 };
 

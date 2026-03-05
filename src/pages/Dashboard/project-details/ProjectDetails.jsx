@@ -26,9 +26,6 @@ const ProjectDetails = () => {
   const axiosSecure = useAxiosSecure();
   const { name } = useUser()
 
-  // Filter the files based on the selected status
-
-
   const { isPending, data: order, refetch } = useQuery({
     queryKey: ["order", orderId],
     queryFn: async () => {
@@ -37,7 +34,6 @@ const ProjectDetails = () => {
     },
     staleTime: 60000,
   });
-
 
   if (isPending)
     return (
@@ -257,7 +253,7 @@ const ProjectDetails = () => {
                 ))
               ) : (
                 <div className='text-center py-20 text-gray-400 italic bg-white rounded border border-dashed border-gray-200'>
-                  No files found for this project.
+                  No files found for this {filterStatus === 'all' ? "project" : "Stage"}.
                 </div>
               )}
             </div>

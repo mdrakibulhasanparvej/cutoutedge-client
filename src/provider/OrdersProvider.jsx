@@ -20,9 +20,6 @@ const OrdersProvider = ({ children }) => {
 
     if (userLoading) return <LoadingSpinner />
 
-
-    console.log(orders)
-
     const noOrders = orders.length === 0
 
     const ordersInfo = {
