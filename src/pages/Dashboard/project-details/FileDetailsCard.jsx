@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 import { FileText, User, Clock, History, ExternalLink, PlayCircleIcon, PauseCircle } from "lucide-react";
-import useAxiosSecure from "../../../hook/useAxiosSecure";
 import MyConfirmAlert from "../common/MyConfirmAlert";
 import MyAlert from "../common/MyAler";
 import useUser from "../../../hook/useUser";
@@ -10,7 +9,6 @@ import WorkActions from "../common/WorkActions";
 const FileDetailsCard = memo(({ file, orderId, refetch, onViewLogs }) => {
 
   const { userId, role } = useUser()
-  const axiosSecure = useAxiosSecure()
   const {
     _id,
     currentStage,
@@ -18,11 +16,9 @@ const FileDetailsCard = memo(({ file, orderId, refetch, onViewLogs }) => {
     filename,
     stageLogs,
   } = file;
-  console.log(file)
   const { name } = assignedTo || {}
 
   const timerData = stageLogs.find(s => s?.stage === currentStage)?.timer
-  // const isRunning = stageLogs.find(s => s?.stage === currentStage)?.timer?.isRunning
 
   // role based permissions
   const isAssignedUser = assignedTo?._id === userId;
@@ -33,9 +29,9 @@ const FileDetailsCard = memo(({ file, orderId, refetch, onViewLogs }) => {
 
   const getStageColor = (stage) => {
     const s = stage?.toLowerCase();
-    if (s?.includes("done") || s?.includes("finish"))
+    if (s === "done" || s === "finish")
       return "bg-green-100 text-green-700 border-green-200";
-    if (s?.includes("progress") || s?.includes("working"))
+    if (s === "progress" || s === "working")
       return "bg-blue-100 text-blue-700 border-blue-200";
     return "bg-gray-100 text-gray-700 border-gray-200";
   };
@@ -160,17 +156,6 @@ const FileDetailsCard = memo(({ file, orderId, refetch, onViewLogs }) => {
                 {name || "Unassigned"}
               </span>
             </div>
-
-            {/* <div className='flex items-center gap-1.5 text-gray-500'>
-              <Clock size={14} className='text-gray-400' />
-              <span>
-                Updated{" "}
-                {hoursAgo === 0
-                  ? `${minutesAgo}m`
-                  : `${hoursAgo}h ${minutesAgo}m`}{" "}
-                ago
-              </span>
-            </div> */}
 
             <div className='flex items-center gap-1.5 text-gray-500'>
               <History size={14} className='text-gray-400' />

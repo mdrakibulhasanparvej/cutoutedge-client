@@ -30,9 +30,9 @@ const ProjectDetails = () => {
 
 
   const { isPending, data: order, refetch } = useQuery({
-    queryKey: ["order", orderId, filterStatus],
+    queryKey: ["order", orderId],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/files/order/${encodeURIComponent(orderId)}?status=${filterStatus}`);
+      const res = await axiosSecure.get(`/files/order/${encodeURIComponent(orderId)}`);
       return res.data || [];
     },
     staleTime: 60000,
@@ -58,7 +58,6 @@ const ProjectDetails = () => {
     if (filterStatus === "all") return true;
     return file.currentStage === filterStatus;
   });
-
 
   return (
     <div className='min-h-screen bg-[#F4F5F7] p-4 font-sans text-[#172B4D]'>
@@ -176,7 +175,7 @@ const ProjectDetails = () => {
           </div>
         </div>
 
-        {/* === RIGHT AREA === */}
+        {/*  RIGHT AREA  */}
         <div className='lg:col-span-9 space-y-5'>
           {/* instructions */}
           <div className='bg-white rounded border border-gray-200 shadow-sm overflow-hidden'>
@@ -198,7 +197,7 @@ const ProjectDetails = () => {
             </div>
           </div>
 
-          {/* === SORTING & FILTERING BAR === */}
+          {/*  SORTING & FILTERING BAR  */}
           <div className='bg-white rounded border border-gray-200 shadow-sm p-3 flex flex-wrap items-center justify-between gap-4'>
             <div className='flex items-center gap-2'>
               <div className='p-1.5 bg-blue-50 rounded-md text-[#0F83B2]'>
@@ -226,7 +225,7 @@ const ProjectDetails = () => {
                 <option value="in-progress">In-Progress</option>
                 <option value="qc1">QC 1 (Checker)</option>
                 <option value="qc2">QC 2 (Final)</option>
-                <option value="finished">Finished</option>
+                <option value="done">Finished</option>
               </select>
             </div>
           </div>
@@ -243,8 +242,8 @@ const ProjectDetails = () => {
             </div>
 
             <div className='p-4 grid grid-cols-1 gap-3 max-h-150 overflow-y-auto custom-scrollbar bg-gray-50/50'>
-              {files && files.length > 0 ? (
-                files.map((file) => (
+              {filteredFiles && filteredFiles.length > 0 ? (
+                filteredFiles.map((file) => (
                   <FileDetailsCard
                     key={file._id}
                     file={file}

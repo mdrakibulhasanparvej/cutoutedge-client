@@ -1,5 +1,5 @@
 import React from "react";
-import { FiClock, FiImage, FiLoader, FiMoreVertical, FiXCircle } from "react-icons/fi";
+import { FiClock, FiEye, FiImage, FiLoader, FiMoreVertical, FiXCircle } from "react-icons/fi";
 import { calculateTime } from "../../../../utils/calculateTime";
 import { Link } from "react-router";
 import useOrders from "../../../../hook/useOrders";
@@ -11,10 +11,11 @@ const InProgress = () => {
     <div className="space-y-4">
       {orders.map((order) => {
 
-        const { orderId, fileCount, priority, createdAt, ongoingDesign = 3, designComplete = 4 } = order || {}
+        const { orderId, fileCount, priority, createdAt, stageCounts } = order || {}
         const { hoursAgo, minutesAgo } = calculateTime(createdAt)
+        const { qc1, qc2, done, "in-progress": inProgress } = stageCounts || {}
 
-        const progress = parseFloat((ongoingDesign / fileCount) * 100).toFixed(2)
+        const progress = parseFloat((done / fileCount) * 100).toFixed(2)
         const isAlmostDone = progress >= 90;
 
         return (
@@ -68,11 +69,11 @@ const InProgress = () => {
                   </div>
                   <div className='flex items-center gap-1'>
                     <FiImage size={14} />
-                    <span>{ongoingDesign} Files in progress</span>
+                    <span>{inProgress} Files Designing</span>
                   </div>
                   <div className='flex items-center gap-1'>
                     <FiImage size={14} />
-                    <span>{designComplete} Files completed</span>
+                    <span>{qc1 + qc2 + done} Files Design complete</span>
                   </div>
                 </div>
                 <div className='font-semibold'>{progress}%</div>
@@ -84,6 +85,7 @@ const InProgress = () => {
               <Link
                 to={`/dashboard/order-details/${encodeURIComponent(orderId)}`}
                 className='flex items-center gap-1.5 rounded-lg bg-[#0F83B2] px-4 py-1 text-sm font-medium text-white hover:bg-[#0f99cf] duration-500 transition-colors cursor-pointer'>
+                <FiEye size={16} />
                 View Details
               </Link>
             </div>

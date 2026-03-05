@@ -54,7 +54,7 @@ const Profile = () => {
           <div className='absolute -top-16 left-8'>
             <div className='w-32 h-32 rounded-full border-4 border-white overflow-hidden bg-gray-100 shadow-sm'>
               <img
-                src={avatar || "https://via.placeholder.com/150"}
+                src={avatar}
                 alt='Profile'
                 className='w-full h-full object-cover'
               />

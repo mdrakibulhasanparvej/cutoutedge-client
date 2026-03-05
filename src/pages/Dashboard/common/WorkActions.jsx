@@ -17,21 +17,22 @@ const WorkActions = ({ file, orderId, refetch }) => {
 
     const isTimerRunning = stageLogs.find(s => s?.stage === currentStage)?.timer?.isRunning
 
-    // console.log(file)
-
     // role based permissions
     const isAdminOrIncharge = role === 'admin' || role === 'incharge'
     const isDesigner = role === 'designer'
     const isQC1 = role === 'qc1'
     const isQC2 = role === 'qc2'
+
+    // stage based access
     const pending = currentStage === 'pending'
     const isInProgress = currentStage === 'in-progress'
+    const isInQC1 = currentStage === 'qc1'
+    const isInQC2 = currentStage === 'qc2'
 
     const isAssignedUser = userId === assignedTo?._id
 
-
-    // api callings
-    const handleStartWork = async () => {
+    // Work Start-finish
+    const handleStartDesigning = async () => {
 
         const data = {
             orderId,
@@ -98,6 +99,72 @@ const WorkActions = ({ file, orderId, refetch }) => {
         }
     }
 
+    const handleStartQC = async () => {
+        const data = {
+            orderId,
+            filename,
+            userId
+        }
+
+        const result = await MyConfirmAlert({
+            title: "Are you sure?",
+            text: "You want to start quality checking for this file? Your work timer will start if you click yes.",
+            icon: "info"
+        })
+        if (result.isConfirmed) {
+            try {
+                axiosSecure.post('/files/qc/start', data)
+                    .then(() => {
+                        MyAlert({
+                            title: "Success",
+                            text: "you have started this design",
+                            icon: "success"
+                        })
+                        refetch()
+                    })
+            } catch (err) {
+                MyAlert({
+                    title: "error",
+                    text: "Something went wrong, please try again",
+                    icon: "error"
+                })
+                console.log(err.message)
+            }
+        }
+    }
+
+    const handleFinishQC = async () => {
+        const data = {
+            orderId,
+            filename,
+            targetStage: "qc2",
+            role
+        }
+        const result = await MyConfirmAlert({
+            title: "Are you sure?",
+            text: "you want to Approve quality-check-1"
+        })
+        if (result.isConfirmed) {
+            try {
+                const res = await axiosSecure.post('/files/qc/finish', data)
+                if (res.data.success) {
+                    MyAlert({
+                        title: "success",
+                        text: "File moved for quality-checking-2"
+                    })
+                    refetch()
+                }
+            } catch (err) {
+                MyAlert({
+                    title: "error",
+                    text: "Something went wrong, please try again",
+                    icon: "error"
+                })
+                console.log(err.message)
+            }
+        }
+    }
+
 
     // timer start-pause
 
@@ -108,7 +175,7 @@ const WorkActions = ({ file, orderId, refetch }) => {
                 filename,
                 userId
             }
-            console.log(data)
+
             axiosSecure.post(`/files/pause`, data)
                 .then(() => {
                     MyAlert({
@@ -135,7 +202,7 @@ const WorkActions = ({ file, orderId, refetch }) => {
                 filename,
                 userId
             }
-            console.log(data)
+
             axiosSecure.post(`/files/resume`, data)
                 .then(() => {
                     MyAlert({
@@ -165,7 +232,7 @@ const WorkActions = ({ file, orderId, refetch }) => {
                             <div>
                                 {pending &&
                                     < button
-                                        onClick={handleStartWork}
+                                        onClick={handleStartDesigning}
                                         className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm cursor-pointer'>
                                         Start Designing
                                         <ChevronsRight size={14} />
@@ -185,22 +252,45 @@ const WorkActions = ({ file, orderId, refetch }) => {
 
                     {/* action buttons for qc1 */}
                     <div>
-                        {isQC1 &&
+                        {isQC1 && isInQC1 &&
                             <div>
-                                {pending &&
+                                {!assignedTo &&
                                     < button
-                                        onClick={handleStartWork}
+                                        onClick={handleStartQC}
                                         className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm cursor-pointer'>
                                         Start quality check
                                         <ChevronsRight size={14} />
                                     </button>
                                 }
-                                {isInProgress &&
+                                {assignedTo &&
                                     < button
-                                        onClick={handleFinishDesigning}
+                                        onClick={handleFinishQC}
                                         className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm cursor-pointer'>
                                         <CheckLine size={14} />
-                                        Finish Designing
+                                        Approve
+                                    </button>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    {/* action buttons for qc2 */}
+                    <div>
+                        {isQC2 && isInQC2 &&
+                            <div>
+                                {!assignedTo ?
+                                    < button
+                                        onClick={handleStartQC}
+                                        className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm cursor-pointer'>
+                                        Start quality check-2
+                                        <ChevronsRight size={14} />
+                                    </button>
+                                    :
+                                    < button
+                                        onClick={handleFinishQC}
+                                        className='flex items-center justify-center px-2 py-1 gap-px bg-green-400 hover:bg-green-500 text-white text-xs font-bold rounded-md w-full transition-all active:scale-95 shadow-sm cursor-pointer'>
+                                        <CheckLine size={14} />
+                                        Final Approve
                                     </button>
                                 }
                             </div>
@@ -225,7 +315,8 @@ const WorkActions = ({ file, orderId, refetch }) => {
                                     Pause Timer
                                 </button>
                             }
-                        </div>}
+                        </div>
+                    }
                 </div>
             }
         </div >
