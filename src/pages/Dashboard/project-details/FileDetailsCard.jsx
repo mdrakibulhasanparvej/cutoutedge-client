@@ -16,7 +16,8 @@ const FileDetailsCard = memo(({ file, orderId, refetch, onViewLogs }) => {
   } = file;
   const { name } = assignedTo || {};
 
-  const timerData = stageLogs.find(s => s?.stage === currentStage)?.timer;
+  const currentStageLog = [...stageLogs].reverse().find(s => s?.stage === currentStage)
+  const timerData = currentStageLog?.timer
 
   // role based permissions
   const isAssignedUser = assignedTo?._id === userId;

@@ -20,7 +20,9 @@ const WorkActions = ({ file, orderId, refetch }) => {
         stageLogs,
     } = file;
 
-    const isTimerRunning = stageLogs.find(s => s?.stage === currentStage)?.timer?.isRunning
+
+    const currentStageLog = [...stageLogs].reverse().find(s => s.stage === currentStage)
+    const isTimerRunning = currentStageLog?.timer?.isRunning
 
     const isAdminOrIncharge = role === 'admin' || role === 'incharge'
     const isDesigner = role === 'designer'

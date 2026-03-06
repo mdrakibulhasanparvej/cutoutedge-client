@@ -1,3 +1,4 @@
+import { XCircle } from 'lucide-react';
 import React from 'react';
 import { TiTick } from "react-icons/ti";
 
@@ -21,15 +22,21 @@ const StageLogModal = ({ id, stageLogs }) => {
                                 {i !== 0 && <hr className="bg-primary" />}
 
                                 {/* Stage Title */}
-                                <div className="timeline-start font-mono text-sm font-bold uppercase text-primary">
+                                <div className={`timeline-start font-mono text-sm font-bold uppercase ${!note ? "text-primary" : "text-red-500"}`}>
                                     {stage}
                                 </div>
 
                                 {/* The Icon/Tick Node */}
                                 <div className="timeline-middle">
-                                    <div className="bg-primary text-white rounded-full p-1 shadow-md">
-                                        <TiTick size={16} />
-                                    </div>
+                                    {!note ?
+                                        <div className="bg-primary text-white rounded-full p-1 shadow-md">
+                                            <TiTick size={16} />
+                                        </div>
+                                        :
+                                        <div className="bg-red-500 text-white rounded-full p-1 shadow-md">
+                                            <XCircle size={16} />
+                                        </div>
+                                    }
                                 </div>
 
                                 {/* Content Details */}
