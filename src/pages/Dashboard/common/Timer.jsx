@@ -1,5 +1,5 @@
-import { PauseCircle, TimerIcon } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import { PauseCircle, TimerIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Timer = ({ timerData }) => {
     const { isRunning, startedAt, totalTimeMs } = timerData;
@@ -10,15 +10,12 @@ const Timer = ({ timerData }) => {
             setElapsedMs(totalTimeMs || 0);
             return;
         }
-
         const startTime = new Date(startedAt).getTime();
         const baseTime = totalTimeMs || 0;
-
         const intervalId = setInterval(() => {
             const now = Date.now();
             setElapsedMs(baseTime + (now - startTime));
         }, 1000);
-
         return () => clearInterval(intervalId);
     }, [isRunning, startedAt, totalTimeMs]);
 
@@ -28,17 +25,31 @@ const Timer = ({ timerData }) => {
         const mins = Math.floor((totalSeconds % 3600) / 60);
         const secs = totalSeconds % 60;
         const pad = (n) => String(n).padStart(2, '0');
-
         return hrs > 0 ? `${pad(hrs)}:${pad(mins)}:${pad(secs)}` : `${pad(mins)}:${pad(secs)}`;
     };
 
     return (
-        <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border shadow-sm shrink-0 font-mono font-bold
-            ${isRunning ? "bg-blue-50 text-blue-600 border-blue-200" : "bg-gray-100 text-gray-500 border-gray-200"}`}>
-            {isRunning ? <TimerIcon size={16} className="animate-pulse" /> : <PauseCircle size={16} />}
-            <p>{formatTime(elapsedMs)}</p>
+        <div className={`flex flex-col items-center justify-center w-full py-2 px-3 rounded-md border transition-all duration-300
+            ${isRunning
+                ? "bg-blue-50 border-blue-200 text-blue-700 shadow-sm"
+                : "bg-slate-50 border-slate-200 text-slate-500"}`}>
+
+            <div className="flex items-center gap-2 mb-0.5">
+                {isRunning ? (
+                    <TimerIcon size={14} className="animate-pulse" />
+                ) : (
+                    <PauseCircle size={14} />
+                )}
+                <span className="text-[10px] uppercase font-black tracking-widest opacity-70">
+                    {isRunning ? "Live Session" : "Paused"}
+                </span>
+            </div>
+
+            <p className="text-lg font-mono font-bold tabular-nums tracking-tighter leading-none">
+                {formatTime(elapsedMs)}
+            </p>
         </div>
     );
 };
 
-export default Timer;
+export default Timer

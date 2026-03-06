@@ -1,17 +1,22 @@
 import React from "react";
-import { FiClock, FiDroplet, FiImage, FiMoreVertical } from "react-icons/fi";
+import { FiClock, FiDroplet, FiEye, FiImage, FiMoreVertical } from "react-icons/fi";
 import { Link } from "react-router";
 import { calculateTime } from "../../../../utils/calculateTime";
 import Deadline from "../../common/Deadline";
 import useOrders from "../../../../hook/useOrders";
+import NoOrders from "../../../../component/Loading/NoOrders";
+import LoadingSpinner from "../../../../component/Loading/LoadingSpinner";
 
 const Pending = () => {
-  const { orders } = useOrders()
+  const { orders, noOrders, isPending } = useOrders()
+
+  if (isPending) return <LoadingSpinner text={"Wait for Orders"} />
+  if (noOrders) return <NoOrders />
 
   return (
     <div className='flex flex-col gap-4'>
       {orders?.map((order) => {
-        const { createdAt, fileCount, orderDeadline, orderId, priority } =
+        const { createdAt, fileCount, orderDeadline, orderId, priority, stageCounts } =
           order;
         const { minutesAgo, hoursAgo, daysAgo } = calculateTime(createdAt);
 
@@ -40,12 +45,13 @@ const Pending = () => {
               </div>
 
               <div className='mt-2 flex flex-wrap items-center gap-4 text-xs text-gray-500'>
-                <div className='flex items-center gap-1'>
-                  <FiClock size={14} />
 
+                <div className='flex items-center gap-1'>
+
+                  <FiClock size={14} />
                   <span>
                     created{" "}
-                    {!daysAgo < 3 ? `${daysAgo}d` :
+                    {daysAgo > 3 ? `${daysAgo}d` :
                       hoursAgo === 0 ? `${minutesAgo}m`
                         : `${hoursAgo}h ${minutesAgo}m`
                     }
@@ -56,7 +62,12 @@ const Pending = () => {
 
                 <div className='flex items-center gap-1'>
                   <FiImage size={14} />
-                  <span>{fileCount} files</span>
+                  <span>Total Files: {fileCount} </span>
+                </div>
+
+                <div className='flex items-center gap-1'>
+                  <FiImage size={14} />
+                  <span>Pending Files: {stageCounts?.pending} </span>
                 </div>
 
                 <div className='flex items-center gap-1'>
@@ -71,6 +82,7 @@ const Pending = () => {
               <Link
                 to={`/dashboard/order-details/${encodeURIComponent(orderId)}`}
                 className='flex items-center gap-1.5 rounded-lg bg-[#0F83B2] px-4 py-1 text-sm font-medium text-white hover:bg-[#0f99cf] duration-500 transition-colors  cursor-pointer'>
+                <FiEye size={16} />
                 View Details
               </Link>
             </div>

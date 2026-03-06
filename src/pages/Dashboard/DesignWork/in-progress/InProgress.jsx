@@ -1,5 +1,5 @@
 import React from "react";
-import { FiClock, FiImage, FiLoader, FiMoreVertical, FiXCircle } from "react-icons/fi";
+import { FiClock, FiEye, FiImage, FiLoader, FiMoreVertical, FiXCircle } from "react-icons/fi";
 import { calculateTime } from "../../../../utils/calculateTime";
 import { Link } from "react-router";
 import useOrders from "../../../../hook/useOrders";
@@ -11,10 +11,11 @@ const InProgress = () => {
     <div className="space-y-4">
       {orders.map((order) => {
 
-        const { orderId, fileCount, priority, createdAt, ongoingDesign = 3, designComplete = 4 } = order || {}
-        const { hoursAgo, minutesAgo } = calculateTime(createdAt)
+        const { orderId, fileCount, priority, createdAt, stageCounts } = order || {}
+        const { daysAgo, hoursAgo, minutesAgo } = calculateTime(createdAt)
+        const { qc1, qc2, done, "in-progress": inProgress } = stageCounts || {}
 
-        const progress = parseFloat((ongoingDesign / fileCount) * 100).toFixed(2)
+        const progress = parseFloat((done / fileCount) * 100).toFixed(2)
         const isAlmostDone = progress >= 90;
 
         return (
@@ -34,12 +35,24 @@ const InProgress = () => {
             {/* Main: Title & Progress */}
             <div className='flex-1 min-w-0 space-y-2'>
               <div className='flex flex-wrap items-center gap-2'>
-                <h3 className='font-medium text-[14px] text-gray-900 truncate max-w-65'>
-                  Order for {fileCount} Files
-                </h3>
+                <div className='flex items-center gap-1 text-xs text-gray-600'>
+                  <FiClock size={14} />
+                  <span>
+                    created{" "}
+                    {daysAgo > 3 ? `${daysAgo}d` :
+                      hoursAgo === 0 ? `${minutesAgo}m`
+                        : `${hoursAgo}h ${minutesAgo}m`
+                    }
+                    {" "}ago
+                  </span>
+                </div>
 
-                <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${priority === 'high' ? 'bg-red-100 text-red-600 border-red-300' : priority === 'medium' ? "bg-blue-100 text-blue-600 border-blue-300" : "bg-green-100 text-green-600 border-green-300"}`}>
-                  {priority.charAt(0).toUpperCase() + order.priority.slice(1)} Priority
+                <span className='inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-800 border border-gray-300'>
+                  In-progress
+                </span>
+
+                <span className={`inline-flex items-center rounded  px-2 py-0.5 text-xs font-medium ${priority === 'high' ? "bg-red-50 text-red-700" : priority === 'medium' ? "bg-amber-50 text-amber-700" : "bg-green-500 text-white"}`}>
+                  Priority: {priority}
                 </span>
               </div>
 
@@ -54,25 +67,18 @@ const InProgress = () => {
               {/* Meta Info */}
               <div className='flex flex-wrap items-center justify-between text-xs text-gray-600'>
                 <div className='flex flex-wrap items-center gap-4'>
-                  <div className='flex items-center gap-1'>
-                    <FiClock size={14} />
-                    <span>created{" "}
-                      {hoursAgo === 0
-                        ? `${minutesAgo}m`
-                        : `${hoursAgo}h ${minutesAgo}m`}{" "}
-                      ago</span>
-                  </div>
+
                   <div className='flex items-center gap-1'>
                     <FiImage size={14} />
                     <span>{fileCount} Total Files</span>
                   </div>
                   <div className='flex items-center gap-1'>
                     <FiImage size={14} />
-                    <span>{ongoingDesign} Files in progress</span>
+                    <span>{inProgress} Files Designing</span>
                   </div>
                   <div className='flex items-center gap-1'>
                     <FiImage size={14} />
-                    <span>{designComplete} Files completed</span>
+                    <span>{qc1 + qc2 + done} Files Design complete</span>
                   </div>
                 </div>
                 <div className='font-semibold'>{progress}%</div>
@@ -84,6 +90,7 @@ const InProgress = () => {
               <Link
                 to={`/dashboard/order-details/${encodeURIComponent(orderId)}`}
                 className='flex items-center gap-1.5 rounded-lg bg-[#0F83B2] px-4 py-1 text-sm font-medium text-white hover:bg-[#0f99cf] duration-500 transition-colors cursor-pointer'>
+                <FiEye size={16} />
                 View Details
               </Link>
             </div>

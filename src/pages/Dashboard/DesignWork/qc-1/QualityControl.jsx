@@ -1,12 +1,6 @@
 import React from "react";
 import {
-  FiCheckCircle,
-  FiXCircle,
-  FiAlertCircle,
-  FiClock,
-  FiMoreVertical,
-  FiEye,
-  FiImage,
+  FiCheckCircle, FiXCircle, FiAlertCircle, FiClock, FiMoreVertical, FiEye, FiImage,
 } from "react-icons/fi";
 import useOrders from "../../../../hook/useOrders";
 import { calculateTime } from "../../../../utils/calculateTime";
@@ -15,13 +9,15 @@ import { Link } from "react-router";
 const QualityControl = () => {
   const { orders } = useOrders()
 
-
   return (
-    <div>
+    <div className="space-y-4">
       {orders.map((order, index) => {
-        const { createdAt, fileCount, orderId, priority, onQc1 = 3, completed = 1 } = order
+        const { createdAt, fileCount, orderId, stageCounts, priority } = order
+
         const { minutesAgo, hoursAgo, daysAgo } = calculateTime(createdAt);
-        const progress = parseFloat((onQc1 / fileCount) * 100).toFixed(2)
+        const { qc1: onQC1, done, qc2 } = stageCounts || {}
+
+        const progress = parseFloat((done / fileCount) * 100).toFixed(2)
         const isAlmostDone = progress >= 90;
 
         return (
@@ -42,7 +38,7 @@ const QualityControl = () => {
                 <h3 className='font-medium text-sm text-gray-500 truncate flex gap-1 items-center'>
                   <FiClock />
                   created{" "}
-                  {!daysAgo < 3 ? `${daysAgo}d` :
+                  {daysAgo > 3 ? `${daysAgo}d` :
                     hoursAgo === 0 ? `${minutesAgo}m`
                       : `${hoursAgo}h ${minutesAgo}m`
                   }
@@ -77,11 +73,11 @@ const QualityControl = () => {
                   </div>
                   <div className='flex items-center gap-1'>
                     <FiImage size={14} />
-                    <span>{onQc1} Files in checking</span>
+                    <span>{onQC1} Files in checking</span>
                   </div>
                   <div className='flex items-center gap-1'>
                     <FiImage size={14} />
-                    <span>{completed} Files completed</span>
+                    <span>{qc2 + done} Files passed QC-1</span>
                   </div>
                 </div>
                 <div className='font-semibold'>{progress}%</div>
@@ -94,7 +90,7 @@ const QualityControl = () => {
                 to={`/dashboard/order-details/${encodeURIComponent(orderId)}`}
                 className='flex items-center gap-1.5 rounded-lg bg-[#0F83B2] px-4 py-1 text-sm font-medium text-white hover:bg-[#0f99cf] duration-500 transition-colors  cursor-pointer'>
                 <FiEye size={16} />
-                Review
+                View Details
               </Link>
             </button>
 

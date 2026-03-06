@@ -13,17 +13,18 @@ import {
 } from "lucide-react";
 import FileInput from "../../../component/shared/fileInput/FileInput";
 import useAxiosSecure from "../../../hook/useAxiosSecure";
+import { useNavigate } from "react-router";
 
 const CreateProject = () => {
   const axiosSecure = useAxiosSecure()
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const navigate = useNavigate()
 
   const {
     register,
     handleSubmit,
     watch,
     setValue,
-    reset,
     formState: { isSubmitting },
   } = useForm({
     defaultValues: {
@@ -143,7 +144,7 @@ const CreateProject = () => {
           text: "Project created successfully!",
           confirmButtonColor: "#0F83B2",
         });
-        reset();
+        navigate('/dashboard/design-online')
         setSelectedFiles([])
       }
     } catch (err) {

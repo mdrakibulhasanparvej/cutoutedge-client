@@ -38,7 +38,6 @@ const Register = () => {
       );
       const photoURL = imgRes?.data.data.url || null;
 
-      await createUser(data.email, data.password);
 
       const userInfo = {
         name: data.name,
@@ -52,8 +51,10 @@ const Register = () => {
 
       const updateProfile = {
         displayName: data.name,
-        // photoURL
+        photoURL
       }
+
+      await createUser(data.email, data.password);
 
       await updateUserProfile(updateProfile);
 
