@@ -4,7 +4,7 @@ import "./index.css";
 import { RouterProvider } from "react-router";
 import router from "./routes/Router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import AuthProvider from "./provider/AuthProvider";
+import AuthProvider from "./providers/AuthProvider";
 import { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient();

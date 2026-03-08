@@ -1,14 +1,15 @@
 import { createBrowserRouter } from "react-router";
 import PrivateRoutes from "./PrivateRoutes";
-import DashboardLayout from "../layout/DashboardLayout";
-import Statistics from "../pages/Dashboard/common/Statistics";
-import DesignOnline from '../pages/Dashboard/DesignWork/DesignOnline'
-import CreateProject from "../pages/Dashboard/createProject/CreateProject";
-import ProjectDetails from "../pages/Dashboard/project-details/ProjectDetails";
-import Profile from '../pages/Dashboard/common/Profile'
-import Login from "../pages/auth/Login/Login";
-import Register from "../pages/auth/Register/Register";
-import OrdersProvider from "../provider/OrdersProvider";
+import DashboardLayout from "../layouts/DashboardLayout";
+import Statistics from "../dashboard-pages/statistics/Statistics";
+import DesignOnline from '../dashboard-pages/Design-online/DesignOnline'
+import CreateProject from "../dashboard-pages/create-project/CreateProject";
+import ProjectDetails from "../components/project-details/ProjectDetails";
+import Profile from '../dashboard-pages/profile/Profile'
+import UserManagement from "../dashboard-pages/user-management/UserManagement";
+import Login from "../auth/Login/Login";
+import Register from "../auth/Register/Register";
+import OrdersProvider from "../providers/OrdersProvider";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "user-management",
+        element: <UserManagement />,
       },
     ],
   },

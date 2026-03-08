@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router";
-import useAuth from "../hook/useAuth";
-import DashboardSkeleton from "../component/Loading/DashboardSkeleton";
+import useAuth from "../hooks/useAuth";
+import DashboardSkeleton from "../components/Loading/DashboardSkeleton";
 
 const PrivateRoutes = ({ children }) => {
   const { user, loading } = useAuth();
