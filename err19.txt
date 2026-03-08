@@ -1,0 +1,32 @@
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+/*! 🌼 daisyUI 5.5.14 */
+[32m✓[39m 1135 modules transformed.
+\nFound 2 warnings while optimizing generated CSS:
+
+Issue #1:
+[2m│ }[22m
+[2m│ @layer base {[22m
+[2m│[22m   @property --radialprogress {
+[2m┆[22m            [33m[2m^--[22m Unknown at rule: @property[39m
+[2m┆[22m
+[2m│     syntax: "<percentage>";[22m
+[2m│     inherits: true;[22m
+
+Issue #2:
+[2m│ }[22m
+[2m│ @layer base {[22m
+[2m│[22m   @property --radialprogress {
+[2m┆[22m            [33m[2m^--[22m Unknown at rule: @property[39m
+[2m┆[22m
+[2m│     syntax: "<percentage>";[22m
+[2m│     inherits: true;[22m
+
+[31m✗[39m Build failed in 2.58s
+[31merror during build:
+[31mCould not resolve "../../../../utils/calculateTime" from "src/dashboard-pages/Design-online/pending/Pending.jsx"[31m
+file: [36mE:/Project/09 Frontend+Backend/06 CutoutEdge/cutoutedge-client/src/dashboard-pages/Design-online/pending/Pending.jsx[31m
+    at getRollupError (file:///E:/Project/09%20Frontend+Backend/06%20CutoutEdge/cutoutedge-client/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+    at error (file:///E:/Project/09%20Frontend+Backend/06%20CutoutEdge/cutoutedge-client/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
+    at ModuleLoader.handleInvalidResolvedId (file:///E:/Project/09%20Frontend+Backend/06%20CutoutEdge/cutoutedge-client/node_modules/rollup/dist/es/shared/node-entry.js:21567:24)
+    at file:///E:/Project/09%20Frontend+Backend/06%20CutoutEdge/cutoutedge-client/node_modules/rollup/dist/es/shared/node-entry.js:21527:26[39m

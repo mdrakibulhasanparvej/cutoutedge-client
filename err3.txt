@@ -1,0 +1,40 @@
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+/*! 🌼 daisyUI 5.5.14 */
+[32m✓[39m 75 modules transformed.
+\nFound 2 warnings while optimizing generated CSS:
+
+Issue #1:
+[2m│ }[22m
+[2m│ @layer base {[22m
+[2m│[22m   @property --radialprogress {
+[2m┆[22m            [33m[2m^--[22m Unknown at rule: @property[39m
+[2m┆[22m
+[2m│     syntax: "<percentage>";[22m
+[2m│     inherits: true;[22m
+
+Issue #2:
+[2m│ }[22m
+[2m│ @layer base {[22m
+[2m│[22m   @property --radialprogress {
+[2m┆[22m            [33m[2m^--[22m Unknown at rule: @property[39m
+[2m┆[22m
+[2m│     syntax: "<percentage>";[22m
+[2m│     inherits: true;[22m
+
+[31m✗[39m Build failed in 927ms
+[31merror during build:
+[31m[vite]: Rollup failed to resolve import "react-hooks-form" from "E:/Project/09 Frontend+Backend/06 CutoutEdge/cutoutedge-client/src/dashboard-pages/create-project/CreateProject.jsx".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`[31m
+    at viteLog (file:///E:/Project/09%20Frontend+Backend/06%20CutoutEdge/cutoutedge-client/node_modules/vite/dist/node/chunks/config.js:33635:57)
+    at file:///E:/Project/09%20Frontend+Backend/06%20CutoutEdge/cutoutedge-client/node_modules/vite/dist/node/chunks/config.js:33669:73
+    at onwarn (file:///E:/Project/09%20Frontend+Backend/06%20CutoutEdge/cutoutedge-client/node_modules/@vitejs/plugin-react/dist/index.js:89:7)
+    at file:///E:/Project/09%20Frontend+Backend/06%20CutoutEdge/cutoutedge-client/node_modules/vite/dist/node/chunks/config.js:33669:28
+    at onRollupLog (file:///E:/Project/09%20Frontend+Backend/06%20CutoutEdge/cutoutedge-client/node_modules/vite/dist/node/chunks/config.js:33664:63)
+    at onLog (file:///E:/Project/09%20Frontend+Backend/06%20CutoutEdge/cutoutedge-client/node_modules/vite/dist/node/chunks/config.js:33467:4)
+    at file:///E:/Project/09%20Frontend+Backend/06%20CutoutEdge/cutoutedge-client/node_modules/rollup/dist/es/shared/node-entry.js:20939:32
+    at Object.logger [as onLog] (file:///E:/Project/09%20Frontend+Backend/06%20CutoutEdge/cutoutedge-client/node_modules/rollup/dist/es/shared/node-entry.js:22825:9)
+    at ModuleLoader.handleInvalidResolvedId (file:///E:/Project/09%20Frontend+Backend/06%20CutoutEdge/cutoutedge-client/node_modules/rollup/dist/es/shared/node-entry.js:21569:26)
+    at file:///E:/Project/09%20Frontend+Backend/06%20CutoutEdge/cutoutedge-client/node_modules/rollup/dist/es/shared/node-entry.js:21527:26[39m
