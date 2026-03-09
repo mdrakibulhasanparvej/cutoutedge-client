@@ -27,10 +27,10 @@ import Finished from "./finished/Finished";
 // import Finished from "./finished/Finished";
 
 const DesignOnline = () => {
-  // ডিফল্ট ট্যাব 'Pending' রাখলাম
+  // ডিফল্ট ট্যাব 'Pending'
   const [activeTab, setActiveTab] = useState("Pending");
 
-  // আপনার কম্পোনেন্টগুলোকে স্ক্রিনশটের নাম অনুযায়ী ম্যাপ করা হয়েছে
+  // কম্পোনেন্টগুলোকে নাম অনুযায়ী ম্যাপ করা হয়েছে
   const tabData = [
     { label: "Pending", icon: Clock, Comp: Pending },
     { label: "InProgress", icon: PlayCircle, Comp: InProgress },
@@ -44,7 +44,7 @@ const DesignOnline = () => {
   const ActiveComp = activeItem ? activeItem.Comp : Pending;
 
   return (
-    <div className='min-h-screen bg-white'>
+    <div className='min-h-screen bg-gray-50 dark:bg-gray-900'>
       {/* --- Top Header Section (Screenshot Style) --- */}
       <div className='flex items-center justify-between px-6 py-4'>
         <div className='flex items-center gap-4'>
@@ -55,29 +55,21 @@ const DesignOnline = () => {
 
           {/* Title Area */}
           <div>
-            <div className='flex items-center gap-2 text-sm text-gray-500 mb-0.5'>
+            <div className='flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-0.5'>
               <span>Dashboard</span>
               <span>/</span>
               <span>Work Space</span>
             </div>
             <div className='flex items-center gap-3'>
-              <h1 className='font-semibold text-xl text-gray-900 tracking-tight'>
+              <h1 className='font-semibold text-xl text-gray-800 dark:text-gray-100 tracking-tight'>
                 Work Space
               </h1>
-              {/* Team/People Icon */}
-              <button className='p-1 hover:bg-gray-100 rounded text-gray-500'>
-                <Users size={18} />
-              </button>
-              {/* Menu Dots */}
-              <button className='p-1 hover:bg-gray-100 rounded text-gray-500'>
-                <MoreHorizontal size={18} />
-              </button>
             </div>
           </div>
         </div>
 
         {/* Right Side Tools */}
-        <div className='flex items-center gap-3 text-gray-500'>
+        {/* <div className='flex items-center gap-3 text-gray-500'>
           <button className='p-2 hover:bg-gray-100 rounded transition-colors'>
             <Share2 size={20} />
           </button>
@@ -87,12 +79,12 @@ const DesignOnline = () => {
           <button className='p-2 hover:bg-gray-100 rounded transition-colors'>
             <Maximize2 size={20} />
           </button>
-        </div>
+        </div> */}
       </div>
 
       {/* --- Tab Navigation Bar (Updated) --- */}
-      <div className='flex items-center px-6 border-b border-gray-200 overflow-x-auto no-scrollbar'>
-        <div className='flex items-center gap-6 w-full cursor-pointer'>
+      <div className='flex items-center px-6 border-b border-gray-200 dark:border-gray-700 overflow-x-auto no-scrollbar'>
+        <div className='flex items-center gap-6 w-full'>
           {tabData.map((tab) => {
             const isActive = activeTab === tab.label;
             const Icon = tab.icon;
@@ -103,10 +95,11 @@ const DesignOnline = () => {
                 onClick={() => setActiveTab(tab.label)}
                 className={`
                     group cursor-pointer  flex items-center gap-2 py-3 border-b-[3px] transition-all whitespace-nowrap text-[15px]
-                    ${isActive
-                    ? "border-[#0F83B2] text-[#0F83B2] font-medium" // Active: Blue color & border
-                    : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-t-md px-1" // Inactive
-                  }
+                    ${
+                      isActive
+                        ? "border-[#0F83B2] text-[#0F83B2] font-medium" // Active: Blue color & border
+                        : "border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-t-md px-1" // Inactive
+                    }
                 `}>
                 <Icon
                   size={18}
@@ -122,7 +115,7 @@ const DesignOnline = () => {
           })}
 
           {/* "More" Dropdown & Plus Button (Visual Only) */}
-          <div className='flex items-center gap-2 ml-auto pl-4'>
+          {/* <div className='flex items-center gap-2 ml-auto pl-4'>
             <button className='flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm font-medium transition-colors'>
               More{" "}
               <span className='bg-gray-300 text-gray-800 text-xs px-1.5 rounded-full'>
@@ -132,7 +125,7 @@ const DesignOnline = () => {
             <button className='p-1.5 hover:bg-gray-200 rounded text-gray-600'>
               <Plus size={20} />
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -142,33 +135,22 @@ const DesignOnline = () => {
           <input
             type='text'
             placeholder='Search this board'
-            className='pl-3 pr-8 py-1.5 border text-black border-gray-300 rounded focus:outline-none focus:border-blue-500 text-sm w-48'
+            className='pl-3 pr-8 py-1.5 border bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 text-sm w-48'
           />
         </div>
 
-        <div className='flex -space-x-2'>
-          {/* Dummy User Avatars */}
-          <div className='w-8 h-8 rounded-full bg-blue-500 border-2 border-white text-white text-xs flex items-center justify-center'>
-            AB
-          </div>
-          <div className='w-8 h-8 rounded-full bg-green-500 border-2 border-white text-white text-xs flex items-center justify-center'>
-            CD
-          </div>
-          <button className='w-8 h-8 rounded-full bg-gray-100 border-2 border-white text-gray-500 flex items-center justify-center hover:bg-gray-200'>
-            +
+        <div className='flex items-center gap-2'>
+          <button className='flex items-center gap-1 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded text-sm font-medium transition-colors'>
+            Filter
+          </button>
+          <button className='flex items-center gap-1 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded text-sm font-medium transition-colors'>
+            Sort
           </button>
         </div>
-        <span className='text-gray-300'>|</span>
-        <button className='text-gray-600 text-sm font-medium hover:underline'>
-          Only my issues
-        </button>
-        <button className='text-gray-600 text-sm font-medium hover:underline'>
-          Recently updated
-        </button>
       </div>
 
       {/* --- Main Content Area --- */}
-      <div className='bg-white min-h-[calc(100vh-180px)] p-6'>
+      <div className='bg-gray-50 dark:bg-gray-900 min-h-[calc(100vh-180px)] p-6'>
         <div className='space-y-5'>
           <ActiveComp />
         </div>

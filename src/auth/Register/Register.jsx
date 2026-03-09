@@ -34,10 +34,9 @@ const Register = () => {
       formData.append("image", data.photo[0]);
       const imgRes = await axios.post(
         `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_imgBB_host}`,
-        formData
+        formData,
       );
       const photoURL = imgRes?.data.data.url || null;
-
 
       const userInfo = {
         name: data.name,
@@ -51,8 +50,8 @@ const Register = () => {
 
       const updateProfile = {
         displayName: data.name,
-        photoURL
-      }
+        photoURL,
+      };
 
       await createUser(data.email, data.password);
 
@@ -60,8 +59,8 @@ const Register = () => {
 
       MyAlert({
         title: "Congratulations",
-        text: "You have been registered. please login to move forward"
-      })
+        text: "You have been registered. please login to move forward",
+      });
 
       navigate("/");
     } catch (error) {
@@ -69,7 +68,7 @@ const Register = () => {
       MyAlert({
         title: "Registration failed",
         text: "please, try again.",
-        icon: "error"
+        icon: "error",
       });
     } finally {
       setIsRegistering(false);
@@ -104,13 +103,16 @@ const Register = () => {
               {...register("name", { required: "Full name is required" })}
               type='text'
               placeholder='Enter your name'
-              className={`w-full mt-1 px-3 py-2 border-2 rounded-md outline-none text-sm transition-all ${errors.name
-                ? "border-red-500"
-                : "border-gray-200 focus:border-[#0F83B2]"
-                }`}
+              className={`w-full mt-1 px-3 py-2 border-2 rounded-md outline-none text-sm transition-all ${
+                errors.name
+                  ? "border-red-500"
+                  : "border-gray-200 focus:border-[#0F83B2]"
+              }`}
             />
             {errors.name && (
-              <p className="text-red-500 text-[10px] mt-1 ml-1 font-medium">{errors.name.message}</p>
+              <p className='text-red-500 text-[10px] mt-1 ml-1 font-medium'>
+                {errors.name.message}
+              </p>
             )}
           </div>
 
@@ -124,18 +126,21 @@ const Register = () => {
                 required: "Email is required",
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address"
-                }
+                  message: "Invalid email address",
+                },
               })}
               type='email'
               placeholder='Enter email'
-              className={`w-full mt-1 px-3 py-2 border-2 rounded-md outline-none text-sm transition-all ${errors.email
-                ? "border-red-500"
-                : "border-gray-200 focus:border-[#0F83B2]"
-                }`}
+              className={`w-full mt-1 px-3 py-2 border-2 rounded-md outline-none text-sm transition-all ${
+                errors.email
+                  ? "border-red-500"
+                  : "border-gray-200 focus:border-[#0F83B2]"
+              }`}
             />
             {errors.email && (
-              <p className="text-red-500 text-[10px] mt-1 ml-1 font-medium">{errors.email.message}</p>
+              <p className='text-red-500 text-[10px] mt-1 ml-1 font-medium'>
+                {errors.email.message}
+              </p>
             )}
           </div>
 
@@ -149,18 +154,21 @@ const Register = () => {
                 required: "Password is required",
                 minLength: {
                   value: 6,
-                  message: "Password must be at least 6 characters"
+                  message: "Password must be at least 6 characters",
                 },
               })}
               type='password'
               placeholder='Create password'
-              className={`w-full mt-1 px-3 py-2 border-2 rounded-md outline-none text-sm transition-all ${errors.password
-                ? "border-red-500"
-                : "border-gray-200 focus:border-[#0F83B2]"
-                }`}
+              className={`w-full mt-1 px-3 py-2 border-2 rounded-md outline-none text-sm transition-all ${
+                errors.password
+                  ? "border-red-500"
+                  : "border-gray-200 focus:border-[#0F83B2]"
+              }`}
             />
             {errors.password && (
-              <p className="text-red-500 text-[10px] mt-1 ml-1 font-medium">{errors.password.message}</p>
+              <p className='text-red-500 text-[10px] mt-1 ml-1 font-medium'>
+                {errors.password.message}
+              </p>
             )}
           </div>
 
@@ -174,13 +182,16 @@ const Register = () => {
                 {...register("age", { required: "Age is required" })}
                 type='number'
                 placeholder='Age'
-                className={`w-full mt-1 px-3 py-2 border-2 rounded-md outline-none text-sm transition-all ${errors.age
-                  ? "border-red-500"
-                  : "border-gray-200 focus:border-[#0F83B2]"
-                  }`}
+                className={`w-full mt-1 px-3 py-2 border-2 rounded-md outline-none text-sm transition-all ${
+                  errors.age
+                    ? "border-red-500"
+                    : "border-gray-200 focus:border-[#0F83B2]"
+                }`}
               />
               {errors.age && (
-                <p className="text-red-500 text-[10px] mt-1 ml-1 font-medium">{errors.age.message}</p>
+                <p className='text-red-500 text-[10px] mt-1 ml-1 font-medium'>
+                  {errors.age.message}
+                </p>
               )}
             </div>
 
@@ -208,21 +219,25 @@ const Register = () => {
             <input
               {...register("photo")}
               type='file'
-              className={`w-full mt-1 text-xs file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-[#0F83B2] hover:file:bg-gray-200 cursor-pointer ${errors.photo ? "border border-red-500 rounded-md" : ""
-                }`}
+              className={`w-full mt-1 text-xs file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-[#0F83B2] hover:file:bg-gray-200 cursor-pointer ${
+                errors.photo ? "border border-red-500 rounded-md" : ""
+              }`}
             />
             {errors.photo && (
-              <p className="text-red-500 text-[10px] mt-1 ml-1 font-medium">{errors.photo.message}</p>
+              <p className='text-red-500 text-[10px] mt-1 ml-1 font-medium'>
+                {errors.photo.message}
+              </p>
             )}
           </div>
 
           <button
             disabled={isRegistering}
             type='submit'
-            className={`w-full font-bold py-2.5 rounded-md transition-all active:scale-[0.98] shadow-sm text-white mt-2 ${isRegistering
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-[#0F83B2] hover:bg-[#03678e] cursor-pointer"
-              }`}>
+            className={`w-full font-bold py-2.5 rounded-md transition-all active:scale-[0.98] shadow-sm text-white mt-2 ${
+              isRegistering
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-[#0F83B2] hover:bg-[#03678e] cursor-pointer"
+            }`}>
             {isRegistering ? "Registering..." : "Create Account"}
           </button>
         </form>
@@ -247,7 +262,7 @@ const Register = () => {
         <p className='text-[10px] text-gray-400 font-medium'>
           Design & Developed by{" "}
           <Link
-            to='https://lazy-loader-five.vercel.app/about'
+            to='https://lazy-loader-five.vercel.app'
             target='blank'
             className='ml-1 text-[#0F83B2] hover:underline font-bold'>
             Lazy Loader

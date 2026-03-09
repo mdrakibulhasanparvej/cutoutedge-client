@@ -38,7 +38,7 @@ const ViewDetails = ({
   onDownload,
 }) => {
   const approvalRate = Math.round(
-    (order.approvedCount / order.imagesCount) * 100
+    (order.approvedCount / order.imagesCount) * 100,
   );
   const navigate = useNavigate();
 
@@ -63,42 +63,42 @@ const ViewDetails = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[95vh] overflow-hidden flex flex-col">
+    <div className='fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4'>
+      <div className='bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[95vh] overflow-hidden flex flex-col'>
         {/* Header */}
-        <div className="px-6 py-4 border-b flex items-center justify-between bg-gray-50">
-          <div className="flex items-center gap-4">
+        <div className='px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gray-50 dark:bg-gray-800'>
+          <div className='flex items-center gap-4'>
             <button
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-gray-200 transition-colors"
-            >
+              className='p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'>
               <FiArrowLeft size={20} />
             </button>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">{order.id}</h2>
-              <p className="text-sm text-gray-600 truncate max-w-75 md:max-w-none">
+              <h2 className='text-xl font-bold text-gray-800 dark:text-gray-100'>
+                {order.id}
+              </h2>
+              <p className='text-sm text-gray-600 dark:text-gray-400 truncate max-w-75 md:max-w-none'>
                 {order.title}
               </p>
             </div>
           </div>
 
           <span
-            className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${currentStatus.color}`}
-          >
+            className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${currentStatus.color}`}>
             {currentStatus.label}
           </span>
         </div>
 
         {/* Content - scrollable */}
-        <div className="p-6 overflow-y-auto flex-1">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className='p-6 overflow-y-auto flex-1 bg-white dark:bg-gray-800'>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
             {/* Timeline / Key Dates */}
-            <div className="col-span-full md:col-span-2 lg:col-span-1">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <FiCalendar className="text-blue-600" />
+            <div className='col-span-full md:col-span-2 lg:col-span-1'>
+              <h3 className='text-lg font-semibold mb-4 flex items-center gap-2 text-gray-800 dark:text-gray-100'>
+                <FiCalendar className='text-blue-600' />
                 Timeline
               </h3>
-              <div className="space-y-4">
+              <div className='space-y-4'>
                 {[
                   {
                     label: "Created",
@@ -121,13 +121,17 @@ const ViewDetails = ({
                     icon: FiClock,
                   },
                 ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <div className="mt-1 text-blue-600">
+                  <div key={i} className='flex items-start gap-3'>
+                    <div className='mt-1 text-blue-600'>
                       {<item.icon size={18} />}
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">{item.label}</p>
-                      <p className="font-medium">{item.value}</p>
+                      <p className='text-sm text-gray-600 dark:text-gray-400'>
+                        {item.label}
+                      </p>
+                      <p className='font-medium text-gray-800 dark:text-gray-100'>
+                        {item.value}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -135,40 +139,50 @@ const ViewDetails = ({
             </div>
 
             {/* Stats Grid */}
-            <div className="col-span-full md:col-span-2 lg:col-span-2">
-              <h3 className="text-lg font-semibold mb-4">Results Summary</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                <div className="bg-gray-50 rounded-lg p-4 text-center">
-                  <p className="text-2xl font-bold text-gray-900">
+            <div className='col-span-full md:col-span-2 lg:col-span-2'>
+              <h3 className='text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100'>
+                Results Summary
+              </h3>
+              <div className='grid grid-cols-2 sm:grid-cols-3 gap-4'>
+                <div className='bg-gray-50 dark:bg-gray-700/40 rounded-lg p-4 text-center'>
+                  <p className='text-2xl font-bold text-gray-800 dark:text-gray-100'>
                     {order.imagesCount}
                   </p>
-                  <p className="text-sm text-gray-600">Total Images</p>
+                  <p className='text-sm text-gray-600 dark:text-gray-400'>
+                    Total Images
+                  </p>
                 </div>
-                <div className="bg-green-50 rounded-lg p-4 text-center">
-                  <p className="text-2xl font-bold text-green-700">
+                <div className='bg-green-50 dark:bg-green-900/20 rounded-lg p-4 text-center'>
+                  <p className='text-2xl font-bold text-green-700 dark:text-green-400'>
                     {order.approvedCount}
                   </p>
-                  <p className="text-sm text-green-700">Approved</p>
+                  <p className='text-sm text-green-700 dark:text-green-400'>
+                    Approved
+                  </p>
                 </div>
-                <div className="bg-red-50 rounded-lg p-4 text-center">
-                  <p className="text-2xl font-bold text-red-700">
+                <div className='bg-red-50 dark:bg-red-900/20 rounded-lg p-4 text-center'>
+                  <p className='text-2xl font-bold text-red-700 dark:text-red-400'>
                     {order.rejectedCount}
                   </p>
-                  <p className="text-sm text-red-700">Rejected</p>
+                  <p className='text-sm text-red-700 dark:text-red-400'>
+                    Rejected
+                  </p>
                 </div>
               </div>
 
               {/* Approval Rate Bar */}
-              <div className="mt-6">
-                <div className="flex justify-between text-sm mb-1.5">
-                  <span className="font-medium">Overall Approval Rate</span>
-                  <span className="font-bold text-green-700">
+              <div className='mt-6'>
+                <div className='flex justify-between text-sm mb-1.5'>
+                  <span className='font-medium text-gray-800 dark:text-gray-100'>
+                    Overall Approval Rate
+                  </span>
+                  <span className='font-bold text-green-700 dark:text-green-400'>
                     {approvalRate}%
                   </span>
                 </div>
-                <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                <div className='h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden'>
                   <div
-                    className="h-full bg-green-500 transition-all duration-1000"
+                    className='h-full bg-green-500 transition-all duration-1000'
                     style={{ width: `${approvalRate}%` }}
                   />
                 </div>
@@ -177,25 +191,31 @@ const ViewDetails = ({
           </div>
 
           {/* Additional Info */}
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className='mt-8 grid grid-cols-1 md:grid-cols-2 gap-6'>
             <div>
-              <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                <FiUser className="text-indigo-600" />
+              <h3 className='text-lg font-semibold mb-3 flex items-center gap-2 text-gray-800 dark:text-gray-100'>
+                <FiUser className='text-indigo-600' />
                 Processing Info
               </h3>
-              <div className="space-y-2 text-sm">
+              <div className='space-y-2 text-sm'>
                 <p>
-                  <span className="text-gray-600">Priority:</span>{" "}
-                  <span className="font-medium">
+                  <span className='text-gray-600 dark:text-gray-400'>
+                    Priority:
+                  </span>{" "}
+                  <span className='font-medium text-gray-800 dark:text-gray-100'>
                     {order.priority === "high" ? "High" : "Normal"}
                   </span>
                 </p>
                 <p>
-                  <span className="text-gray-600">Assigned to:</span>{" "}
-                  <span className="font-medium">{order.assignedTo}</span>
+                  <span className='text-gray-600 dark:text-gray-400'>
+                    Assigned to:
+                  </span>{" "}
+                  <span className='font-medium text-gray-800 dark:text-gray-100'>
+                    {order.assignedTo}
+                  </span>
                 </p>
                 {order.qcIssues > 0 && (
-                  <p className="flex items-center gap-2 text-amber-700">
+                  <p className='flex items-center gap-2 text-amber-700'>
                     <FiAlertTriangle size={16} />
                     <span>{order.qcIssues} issues flagged during QC</span>
                   </p>
@@ -205,11 +225,11 @@ const ViewDetails = ({
 
             {order.notes && (
               <div>
-                <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                  <FiFileText className="text-blue-600" />
+                <h3 className='text-lg font-semibold mb-3 flex items-center gap-2 text-gray-800 dark:text-gray-100'>
+                  <FiFileText className='text-blue-600' />
                   Notes
                 </h3>
-                <p className="text-gray-700 whitespace-pre-line text-sm">
+                <p className='text-gray-700 dark:text-gray-300 whitespace-pre-line text-sm'>
                   {order.notes}
                 </p>
               </div>
@@ -218,21 +238,19 @@ const ViewDetails = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="px-6 py-4 border-t bg-gray-50 flex flex-col sm:flex-row gap-3 justify-end">
+        <div className='px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex flex-col sm:flex-row gap-3 justify-end'>
           <button
             onClick={() => navigate(-1)}
-            className="px-5 py-2.5 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors"
-          >
+            className='px-5 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors'>
             Close
           </button>
 
           <button
             onClick={onDownload}
             disabled={!order.outputUrl}
-            className="px-6 py-2.5 rounded-lg bg-green-600 text-white font-medium 
-                     hover:bg-green-700 transition-colors flex items-center gap-2 justify-center
-                     disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+            className='px-6 py-2.5 rounded-lg bg-green-600 dark:bg-green-700 text-white font-medium 
+                     hover:bg-green-700 dark:hover:bg-green-600 transition-colors flex items-center gap-2 justify-center
+                     disabled:opacity-50 disabled:cursor-not-allowed'>
             <FiDownload size={18} />
             Download Final Files
           </button>

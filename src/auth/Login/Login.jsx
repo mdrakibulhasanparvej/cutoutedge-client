@@ -143,7 +143,7 @@ const Login = () => {
         <p className='text-[10px] text-gray-400 font-medium'>
           Design & Developed by
           <Link
-            to='https://lazy-loader-five.vercel.app/about'
+            to='https://lazy-loader-five.vercel.app'
             target='blank'
             className='ml-1 text-[#0F83B2] hover:underline font-bold'>
             Lazy Loader

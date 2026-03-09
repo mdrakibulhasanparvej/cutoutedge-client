@@ -73,7 +73,8 @@ const DashboardLayout = () => {
           {role === "admin" && <AdminMenu sidebarOpen={sidebarOpen} />}
           {role === "designer" && <DesignerMenu sidebarOpen={sidebarOpen} />}
           {role === "incharge" && <AdminMenu sidebarOpen={sidebarOpen} />}
-          {role === "qc" && <DesignerMenu sidebarOpen={sidebarOpen} />}
+          {role === "qc1" ||
+            (role === "qc2" && <DesignerMenu sidebarOpen={sidebarOpen} />)}
         </div>
 
         {/* Sidebar Footer */}

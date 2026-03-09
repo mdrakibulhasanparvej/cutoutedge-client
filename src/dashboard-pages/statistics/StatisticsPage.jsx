@@ -11,11 +11,13 @@ import {
 } from "react-icons/fi";
 
 const StatsCard = ({ title, value, icon: Icon, color, trend }) => (
-  <div className='bg-white rounded-md border border-gray-200 p-4 hover:-translate-y-1 transition-all duration-300'>
+  <div className='bg-white dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-700 p-4 hover:-translate-y-1 transition-all duration-300'>
     <div className='flex items-center justify-between'>
       <div>
-        <p className='text-sm text-gray-500 font-medium'>{title}</p>
-        <p className='text-2xl md:text-3xl font-bold mt-1 text-gray-900'>
+        <p className='text-sm text-gray-500 dark:text-gray-400 font-medium'>
+          {title}
+        </p>
+        <p className='text-2xl dark:text-gray-200 md:text-3xl font-bold mt-1 text-gray-900'>
           {value}
         </p>
       </div>
@@ -49,8 +51,8 @@ const StatusBar = ({ label, count, total, color }) => {
   return (
     <div className='w-full min-w-35'>
       <div className='flex justify-between text-xs md:text-sm mb-1.5'>
-        <span className='font-medium'>{label}</span>
-        <span className='text-gray-600'>
+        <span className='font-medium dark:text-gray-200'>{label}</span>
+        <span className='text-gray-600 dark:text-gray-400'>
           {count} • {percentage}%
         </span>
       </div>
@@ -87,11 +89,13 @@ const StatisticsPage = ({
   const totalActive = stats.pending + stats.processing + stats.qc1 + stats.qc2;
 
   return (
-    <div className='max-w-7xl mx-auto px-4 py-8 bg-white'>
+    <div className='max-w-7xl mx-auto px-4 py-8 bg-white rounded-sm dark:bg-gray-800 '>
       {/* Header */}
       <div className='mb-8'>
-        <h1 className='text-xl font-bold text-gray-900'>Workflow Statistics</h1>
-        <p className='text-xs  text-gray-600 mt-1'>
+        <h1 className='text-xl font-bold text-gray-900 dark:text-white'>
+          Workflow Statistics
+        </h1>
+        <p className='text-xs  text-gray-600 dark:text-gray-300 mt-1'>
           Overview of all image processing orders •{" "}
           {new Date().toLocaleDateString()}
         </p>
@@ -103,13 +107,13 @@ const StatisticsPage = ({
           title='Total Orders'
           value={stats.totalOrders}
           icon={FiImage}
-          color='bg-indigo-600'
+          color='bg-[#0065b2]'
         />
         <StatsCard
           title='Active Orders'
           value={totalActive}
           icon={FiLoader}
-          color='bg-blue-600'
+          color='bg-[#62c8f3]'
         />
         <StatsCard
           title='Completed Today'
@@ -127,8 +131,8 @@ const StatisticsPage = ({
       </div>
 
       {/* Pipeline */}
-      <div className='bg-white rounded-md border border-gray-200 p-6 mb-10'>
-        <h2 className='text-lg font-semibold mb-5 flex items-center gap-2'>
+      <div className='bg-white dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-700 p-6 mb-10'>
+        <h2 className='text-lg dark:text-gray-200 font-semibold mb-5 flex items-center gap-2'>
           <FiPlayCircle className='text-blue-600' />
           Current Pipeline Status
         </h2>
@@ -170,35 +174,35 @@ const StatisticsPage = ({
       {/* Bottom Grid */}
       <div className='grid grid-cols-1 xl:grid-cols-2 gap-6'>
         {/* Quality */}
-        <div className='bg-white rounded-md border border-gray-200 p-6 '>
-          <h3 className='text-lg font-semibold mb-5 flex items-center gap-2'>
+        <div className='bg-white dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-700 p-6 '>
+          <h3 className='text-lg dark:text-gray-200 font-semibold mb-5 flex items-center gap-2'>
             <FiCheckCircle className='text-green-600' />
             Quality Overview
           </h3>
 
           <div className='space-y-5'>
             <div className='flex justify-between text-sm'>
-              <span>Approval Rate</span>
+              <span className='dark:text-gray-300'>Approval Rate</span>
               <span className='text-xl font-bold text-green-700'>
                 {Math.round((stats.approvedImages / stats.totalImages) * 100)}%
               </span>
             </div>
             <div className='flex justify-between text-sm'>
-              <span>Rejected Images</span>
+              <span className='dark:text-gray-300'>Rejected Images</span>
               <span className='text-xl font-bold text-red-600'>
                 {stats.totalImages - stats.approvedImages}
               </span>
             </div>
             <div className='flex justify-between text-sm'>
-              <span>Critical Issues (QC-2)</span>
+              <span className='dark:text-gray-300'>Critical Issues (QC-2)</span>
               <span className='text-xl font-bold text-amber-700'>~12</span>
             </div>
           </div>
         </div>
 
         {/* Alerts */}
-        <div className='bg-white rounded-md border border-gray-200 p-6'>
-          <h3 className='text-lg font-semibold mb-5 flex items-center gap-2'>
+        <div className='bg-white dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-700 p-6'>
+          <h3 className='text-lg dark:text-gray-200 font-semibold mb-5 flex items-center gap-2'>
             <FiAlertTriangle className='text-amber-600' />
             Current Alerts
           </h3>
