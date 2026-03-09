@@ -1,5 +1,11 @@
 import React from "react";
-import { FiClock, FiDroplet, FiEye, FiImage, FiMoreVertical } from "react-icons/fi";
+import {
+  FiClock,
+  FiDroplet,
+  FiEye,
+  FiImage,
+  FiMoreVertical,
+} from "react-icons/fi";
 import { Link } from "react-router";
 import { calculateTime } from "../../../utils/calculateTime";
 import Deadline from "../../../components/shared/timers/Deadline";
@@ -8,24 +14,30 @@ import NoOrders from "../../../components/Loading/NoOrders";
 import LoadingSpinner from "../../../components/Loading/LoadingSpinner";
 
 const Pending = () => {
-  const { orders, noOrders, isPending } = useOrders()
+  const { orders, noOrders, isPending } = useOrders();
 
-  if (isPending) return <LoadingSpinner text={"Wait for Orders"} />
-  if (noOrders) return <NoOrders />
+  if (isPending) return <LoadingSpinner text={"Wait for Orders"} />;
+  if (noOrders) return <NoOrders />;
 
   return (
     <div className='flex flex-col gap-4'>
       {orders?.map((order) => {
-        const { createdAt, fileCount, orderDeadline, orderId, priority, stageCounts } =
-          order;
+        const {
+          createdAt,
+          fileCount,
+          orderDeadline,
+          orderId,
+          priority,
+          stageCounts,
+        } = order;
         const { minutesAgo, hoursAgo, daysAgo } = calculateTime(createdAt);
 
         return (
           <div
             key={orderId}
-            className='group w-full flex flex-col sm:flex-row sm:items-center gap-4 px-4 py-4 bg-white border border-gray-200 rounded-md hover:shadow-md hover:-translate-y-0.5 transition-all'>
+            className='group w-full flex flex-col sm:flex-row sm:items-center gap-4 px-4 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md hover:shadow-md hover:-translate-y-0.5 transition-all'>
             <div className='flex items-center gap-3 min-w-32.5'>
-              <span className='font-semibold text-gray-900 text-[14px]'>
+              <span className='font-semibold text-gray-800 dark:text-gray-100 text-[14px]'>
                 {orderId}
               </span>
             </div>
@@ -33,10 +45,10 @@ const Pending = () => {
             {/* Main content */}
             <div className='flex-1 min-w-0'>
               <div className='flex flex-wrap items-center gap-2'>
-                <h1 className='font-medium text-[14px] text-gray-900 truncate max-w-65 sm:max-w-full'>
+                <h1 className='font-medium text-[14px] text-gray-800 dark:text-gray-100 truncate max-w-65 sm:max-w-full'>
                   Deadline:
                 </h1>
-                <h3 className='font-medium text-[14px] text-gray-900 truncate max-w-65 sm:max-w-full'>
+                <h3 className='font-medium text-[14px] text-gray-800 dark:text-gray-100 truncate max-w-65 sm:max-w-full'>
                   <Deadline
                     createdAt={createdAt}
                     orderDeadline={orderDeadline}
@@ -44,18 +56,16 @@ const Pending = () => {
                 </h3>
               </div>
 
-              <div className='mt-2 flex flex-wrap items-center gap-4 text-xs text-gray-500'>
-
+              <div className='mt-2 flex flex-wrap items-center gap-4 text-xs text-gray-600 dark:text-gray-400'>
                 <div className='flex items-center gap-1'>
-
                   <FiClock size={14} />
                   <span>
                     created{" "}
-                    {daysAgo > 3 ? `${daysAgo}d` :
-                      hoursAgo === 0 ? `${minutesAgo}m`
-                        : `${hoursAgo}h ${minutesAgo}m`
-                    }
-                    {" "}
+                    {daysAgo > 3
+                      ? `${daysAgo}d`
+                      : hoursAgo === 0
+                        ? `${minutesAgo}m`
+                        : `${hoursAgo}h ${minutesAgo}m`}{" "}
                     ago
                   </span>
                 </div>

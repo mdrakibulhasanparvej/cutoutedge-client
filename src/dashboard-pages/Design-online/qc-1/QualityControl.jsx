@@ -1,33 +1,38 @@
 import React from "react";
 import {
-  FiCheckCircle, FiXCircle, FiAlertCircle, FiClock, FiMoreVertical, FiEye, FiImage,
+  FiCheckCircle,
+  FiXCircle,
+  FiAlertCircle,
+  FiClock,
+  FiMoreVertical,
+  FiEye,
+  FiImage,
 } from "react-icons/fi";
 import useOrders from "../../../hooks/useOrders";
 import { calculateTime } from "../../../utils/calculateTime";
 import { Link } from "react-router";
 
 const QualityControl = () => {
-  const { orders } = useOrders()
+  const { orders } = useOrders();
 
   return (
-    <div className="space-y-4">
+    <div className='space-y-4'>
       {orders.map((order, index) => {
-        const { createdAt, fileCount, orderId, stageCounts, priority } = order
+        const { createdAt, fileCount, orderId, stageCounts, priority } = order;
 
         const { minutesAgo, hoursAgo, daysAgo } = calculateTime(createdAt);
-        const { qc1: onQC1, done, qc2 } = stageCounts || {}
+        const { qc1: onQC1, done, qc2 } = stageCounts || {};
 
-        const progress = parseFloat((done / fileCount) * 100).toFixed(2)
+        const progress = parseFloat((done / fileCount) * 100).toFixed(2);
         const isAlmostDone = progress >= 90;
 
         return (
           <div
             key={index}
-            className='group w-full flex flex-col sm:flex-row sm:items-center gap-4 px-4 py-4 bg-white border border-gray-200 rounded-md hover:shadow-md hover:-translate-y-0.5 transition-all'>
-
+            className='group w-full flex flex-col sm:flex-row sm:items-center gap-4 px-4 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md hover:shadow-md hover:-translate-y-0.5 transition-all'>
             {/* Left */}
             <div className='flex items-center gap-3 min-w-32.5'>
-              <span className='font-semibold text-gray-900 text-[14px]'>
+              <span className='font-semibold text-gray-800 dark:text-gray-100 text-[14px]'>
                 {orderId}
               </span>
             </div>
@@ -35,14 +40,14 @@ const QualityControl = () => {
             {/* Main */}
             <div className='flex-1 min-w-0 space-y-2'>
               <div className='flex flex-wrap items-center gap-2'>
-                <h3 className='font-medium text-sm text-gray-500 truncate flex gap-1 items-center'>
+                <h3 className='font-medium text-sm text-gray-600 dark:text-gray-400 truncate flex gap-1 items-center'>
                   <FiClock />
                   created{" "}
-                  {daysAgo > 3 ? `${daysAgo}d` :
-                    hoursAgo === 0 ? `${minutesAgo}m`
-                      : `${hoursAgo}h ${minutesAgo}m`
-                  }
-                  {" "}
+                  {daysAgo > 3
+                    ? `${daysAgo}d`
+                    : hoursAgo === 0
+                      ? `${minutesAgo}m`
+                      : `${hoursAgo}h ${minutesAgo}m`}{" "}
                   ago
                 </h3>
 
@@ -50,14 +55,13 @@ const QualityControl = () => {
                   Quality Control
                 </span>
 
-
-                <span className={`inline-flex items-center rounded  px-2 py-0.5 text-xs font-medium ${priority === 'high' ? "bg-red-50 text-red-700" : priority === 'medium' ? "bg-amber-50 text-amber-700" : "bg-green-500 text-white"}`}>
+                <span
+                  className={`inline-flex items-center rounded  px-2 py-0.5 text-xs font-medium ${priority === "high" ? "bg-red-50 text-red-700" : priority === "medium" ? "bg-amber-50 text-amber-700" : "bg-green-500 text-white"}`}>
                   Priority: {priority}
                 </span>
-
               </div>
 
-              <div className='w-full bg-gray-200 rounded-full h-2.5 overflow-hidden'>
+              <div className='w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden'>
                 <div
                   className={`h-full rounded-full transition-all duration-700 ${isAlmostDone ? "bg-green-500" : "bg-amber-400"}`}
                   style={{ width: `${progress}%` }}
@@ -65,7 +69,7 @@ const QualityControl = () => {
               </div>
 
               {/* Meta Info */}
-              <div className='flex flex-wrap items-center justify-between text-xs text-gray-600'>
+              <div className='flex flex-wrap items-center justify-between text-xs text-gray-600 dark:text-gray-400'>
                 <div className='flex flex-wrap items-center gap-4'>
                   <div className='flex items-center gap-1'>
                     <FiImage size={14} />
@@ -93,11 +97,9 @@ const QualityControl = () => {
                 View Details
               </Link>
             </button>
-
           </div>
-        )
-      })
-      }
+        );
+      })}
     </div>
   );
 };

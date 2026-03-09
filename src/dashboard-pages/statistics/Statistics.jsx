@@ -29,25 +29,27 @@ const Statistics = () => {
 
   return (
     <div className='p-6'>
-      <div className='flex items-center gap-4 bg-white p-6 rounded-lg shadow-sm mb-6'>
+      <div className='flex items-center gap-4 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm mb-6'>
         <img
           src={avatar}
           alt={name}
           className='w-16 h-16 rounded-full border-2 border-[#0F83B2] object-cover'
         />
         <div>
-          <h1 className='text-2xl font-bold text-[#172B4D]'>
+          <h1 className='text-2xl font-bold text-[#172B4D] dark:text-white'>
             Welcome, {name}!
           </h1>
-          <p className='text-sm text-gray-500 uppercase tracking-wider font-medium'>
+          <p className='text-sm text-gray-500 uppercase tracking-wider font-medium dark:text-gray-300'>
             Role: {role}
           </p>
         </div>
       </div>
 
-      <div className='mt-8'>
+      <div className='mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6'>
         {role === "designer" && (
-          <p className='p-4 bg-blue-50'>Designer Overview Content</p>
+          <p className='p-4 text-gray-700 dark:text-gray-300'>
+            Designer Overview Content
+          </p>
         )}
         {role === "admin" && (
           // <p className='p-4 bg-green-50'>Designer Task Overview</p>

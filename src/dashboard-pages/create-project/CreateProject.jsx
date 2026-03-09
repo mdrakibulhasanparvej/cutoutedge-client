@@ -159,11 +159,11 @@ const CreateProject = () => {
   };
 
   return (
-    <div className='min-h-screen bg-white p-4 md:p-8 font-sans text-[#172B4D]'>
+    <div className='min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8 font-sans text-gray-800 dark:text-gray-200'>
       <div className='max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8'>
 
-        <div className='lg:col-span-7 bg-white rounded-md shadow-sm border border-gray-200 overflow-hidden'>
-          <div className='bg-[#091E42] p-4 text-white uppercase tracking-wider'>
+        <div className='lg:col-span-7 bg-white dark:bg-gray-800 rounded-md shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden'>
+          <div className='bg-gray-900 dark:bg-gray-800 p-4 text-white uppercase tracking-wider'>
             <h2 className='text-lg font-semibold flex items-center gap-2'>
               <Zap size={18} /> New Project Entry
             </h2>
@@ -171,30 +171,30 @@ const CreateProject = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} className='p-6 space-y-6'>
 
-            <div className='bg-gray-50 p-4 rounded-md border border-dashed border-gray-300'>
+            <div className='bg-gray-50 dark:bg-gray-700/40 p-4 rounded-md border border-dashed border-gray-300 dark:border-gray-600'>
               <FileInput onFilesSelect={handleFolderSelection} />
             </div>
 
 
             <div className='grid grid-cols-2 gap-4'>
               <div>
-                <label className='text-[11px] font-bold text-gray-500 uppercase flex items-center gap-1 mb-1'>
+                <label className='text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase flex items-center gap-1 mb-1'>
                   <ClipboardList size={12} /> Project ID
                 </label>
                 <input
                   type='text'
                   placeholder='#00000'
-                  className='w-full px-3 py-2 bg-white border border-gray-300 rounded-md outline-none focus:border-[#0F83B2] transition-all text-sm font-medium'
+                  className='w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md outline-none focus:border-[#0F83B2] transition-all text-sm font-medium text-gray-800 dark:text-gray-100'
                   {...register("projectId", { required: "Required" })}
                 />
               </div>
 
               <div>
-                <label className='text-[11px] font-bold text-gray-500 uppercase flex items-center gap-1 mb-1'>
+                <label className='text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase flex items-center gap-1 mb-1'>
                   <AlertCircle size={12} /> Priority
                 </label>
                 <select
-                  className='w-full px-3 py-2 bg-white border border-gray-300 rounded-md outline-none focus:border-[#0F83B2] text-sm'
+                  className='w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md outline-none focus:border-[#0F83B2] text-sm text-gray-800 dark:text-gray-100'
                   {...register("priority")}>
                   <option value='normal'>Normal</option>
                   <option value='medium'>Medium</option>
@@ -205,42 +205,42 @@ const CreateProject = () => {
 
             {/* Instructions */}
             <div>
-              <label className='text-[11px] font-bold text-gray-500 uppercase flex items-center gap-1 mb-1'>
+              <label className='text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase flex items-center gap-1 mb-1'>
                 <FileText size={12} /> Instructions
               </label>
               <textarea
                 placeholder='Specific requirements...'
                 rows='3'
-                className='w-full px-3 py-2 bg-white border border-gray-300 rounded-md outline-none focus:border-[#0F83B2] text-sm'
+                className='w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md outline-none focus:border-[#0F83B2] text-sm text-gray-800 dark:text-gray-100'
                 {...register("instructions", { required: "Required" })}
               />
             </div>
 
             {/* Service Categories with Scroll */}
             <div>
-              <label className='text-[11px] font-bold text-gray-500 uppercase flex items-center gap-1 mb-3'>
+              <label className='text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase flex items-center gap-1 mb-3'>
                 <Layers size={12} /> Service Categories
               </label>
-              <div className='space-y-4 max-h-75 overflow-y-auto pr-2 custom-scrollbar border rounded-md p-3 border-gray-100 bg-white'>
+              <div className='space-y-4 max-h-75 overflow-y-auto pr-2 custom-scrollbar border rounded-md p-3 border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800'>
                 {fullCategoryList.map((group, idx) => (
                   <div
                     key={idx}
-                    className='bg-gray-50 rounded-md border border-gray-200 p-3'>
-                    <h4 className='text-[11px] font-extrabold text-[#0F83B2] uppercase mb-2 border-b pb-1 border-gray-200'>
+                    className='bg-gray-50 dark:bg-gray-700/40 rounded-md border border-gray-200 dark:border-gray-600 p-3'>
+                    <h4 className='text-[11px] font-extrabold text-[#0F83B2] uppercase mb-2 border-b pb-1 border-gray-200 dark:border-gray-600'>
                       {group.title}
                     </h4>
                     <div className='grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1'>
                       {group.items.map((item) => (
                         <label
                           key={item}
-                          className='flex items-center gap-2 cursor-pointer hover:bg-white p-1 rounded transition-colors group'>
+                          className='flex items-center gap-2 cursor-pointer hover:bg-white dark:hover:bg-gray-700 p-1 rounded transition-colors group'>
                           <input
                             type='checkbox'
                             value={item}
                             className='checkbox checkbox-xs checkbox-primary rounded-sm'
                             {...register("categories")}
                           />
-                          <span className='text-[11px] text-gray-600 group-hover:text-black transition-colors'>
+                          <span className='text-[11px] text-gray-600 dark:text-gray-300 group-hover:text-black dark:group-hover:text-white transition-colors'>
                             {item}
                           </span>
                         </label>
@@ -253,12 +253,12 @@ const CreateProject = () => {
 
             {/* Deadline Selection */}
             <div>
-              <label className='text-[11px] font-bold text-gray-500 uppercase flex items-center gap-1 mb-1'>
+              <label className='text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase flex items-center gap-1 mb-1'>
                 <Clock size={12} /> Deadline
               </label>
               <div className='flex gap-2'>
                 <select
-                  className='flex-1 px-3 py-2 border border-gray-300 rounded-md outline-none focus:border-[#0F83B2] text-sm'
+                  className='flex-1 px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md outline-none focus:border-[#0F83B2] text-sm text-gray-800 dark:text-gray-100'
                   defaultValue=''
                   {...register("deadline", { required: "Required" })}>
                   <option value='' disabled>
@@ -273,7 +273,7 @@ const CreateProject = () => {
                   <input
                     type='number'
                     placeholder='Hours'
-                    className='w-28 px-3 py-2 border border-[#0F83B2] rounded-md outline-none text-sm'
+                    className='w-28 px-3 py-2 bg-white dark:bg-gray-700 border border-[#0F83B2] rounded-md outline-none text-sm text-gray-800 dark:text-gray-100'
                     {...register("customDeadline", { required: true })}
                   />
                 )}
@@ -303,13 +303,13 @@ const CreateProject = () => {
 
 
         <div className='lg:col-span-5'>
-          <div className='bg-white rounded-md shadow-sm border border-gray-200 sticky top-8 overflow-hidden'>
-            <div className='px-4 py-3 border-b border-gray-100 flex justify-between items-center bg-gray-50'>
+          <div className='bg-white dark:bg-gray-800 rounded-md shadow-sm border border-gray-200 dark:border-gray-700 sticky top-8 overflow-hidden'>
+            <div className='px-4 py-3 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-700/40'>
               <h3 className='text-[11px] font-bold text-gray-400 uppercase tracking-widest'>
                 Order Preview
               </h3>
               <div
-                className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${formData.priority === "high" ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"}`}>
+                className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${formData.priority === "high" ? "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400" : "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400"}`}>
                 {formData.priority || "Normal"}
               </div>
             </div>
@@ -319,17 +319,17 @@ const CreateProject = () => {
                 <label className='text-[10px] text-gray-400 font-bold uppercase block mb-1'>
                   Project Identifier
                 </label>
-                <h4 className='text-xl font-bold text-[#172B4D] border-l-4 border-[#0F83B2] pl-3 truncate'>
+                <h4 className='text-xl font-bold text-gray-800 dark:text-gray-100 border-l-4 border-[#0F83B2] pl-3 truncate'>
                   {formData?.projectId}
                 </h4>
               </div>
 
               <div className='grid grid-cols-2 gap-4'>
-                <div className='bg-[#F4F5F7] p-3 rounded-md border border-gray-100'>
-                  <label className='text-[9px] text-gray-500 font-bold uppercase block mb-1'>
+                <div className='bg-gray-100 dark:bg-gray-700/40 p-3 rounded-md border border-gray-100 dark:border-gray-700'>
+                  <label className='text-[9px] text-gray-500 dark:text-gray-400 font-bold uppercase block mb-1'>
                     Timeline
                   </label>
-                  <div className='flex items-center gap-1.5 text-[#172B4D] font-bold text-sm'>
+                  <div className='flex items-center gap-1.5 text-gray-800 dark:text-gray-100 font-bold text-sm'>
                     <Clock size={12} className='text-[#0F83B2]' />
                     {formData.deadline === "other"
                       ? formData.customDeadline
@@ -337,11 +337,11 @@ const CreateProject = () => {
                     h
                   </div>
                 </div>
-                <div className='bg-[#F4F5F7] p-3 rounded-md border border-gray-100'>
-                  <label className='text-[9px] text-gray-500 font-bold uppercase block mb-1'>
+                <div className='bg-gray-100 dark:bg-gray-700/40 p-3 rounded-md border border-gray-100 dark:border-gray-700'>
+                  <label className='text-[9px] text-gray-500 dark:text-gray-400 font-bold uppercase block mb-1'>
                     Total Files
                   </label>
-                  <div className='flex items-center gap-1.5 text-[#172B4D] font-bold text-sm'>
+                  <div className='flex items-center gap-1.5 text-gray-800 dark:text-gray-100 font-bold text-sm'>
                     <CheckCircle2 size={12} className='text-[#0F83B2]' />
                     {selectedFiles.length} Files
                   </div>
@@ -353,20 +353,20 @@ const CreateProject = () => {
                 <label className='text-[10px] text-gray-400 font-bold uppercase block mb-2'>
                   Attached Files
                 </label>
-                <div className='bg-gray-50 border border-gray-100 rounded-md p-2 max-h-35 overflow-y-auto custom-scrollbar'>
+                <div className='bg-gray-50 dark:bg-gray-700/40 border border-gray-100 dark:border-gray-700 rounded-md p-2 max-h-35 overflow-y-auto custom-scrollbar'>
                   {selectedFiles.length > 0 ? (
                     <div className='space-y-1'>
                       {selectedFiles.map((f, i) => (
                         <div
                           key={i}
-                          className='flex items-center gap-2 text-[10px] text-gray-600 bg-white p-1.5 rounded border border-gray-50 truncate'>
+                          className='flex items-center gap-2 text-[10px] text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 p-1.5 rounded border border-gray-50 dark:border-gray-700 truncate'>
                           <FileCode size={10} className='text-[#0F83B2]' />{" "}
                           {f.name}
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <p className='text-[10px] text-gray-300 italic text-center py-2'>
+                    <p className='text-[10px] text-gray-400 dark:text-gray-500 italic text-center py-2'>
                       Upload folder to see files
                     </p>
                   )}
@@ -379,12 +379,12 @@ const CreateProject = () => {
                   formData.categories.map((c) => (
                     <span
                       key={c}
-                      className='px-2 py-1 bg-white text-[#0F83B2] text-[9px] font-bold rounded-sm border border-blue-100 shadow-sm'>
+                      className='px-2 py-1 bg-white dark:bg-gray-700 text-[#0F83B2] text-[9px] font-bold rounded-sm border border-blue-100 dark:border-blue-900 shadow-sm'>
                       {c}
                     </span>
                   ))
                 ) : (
-                  <span className='text-[10px] text-gray-300 italic'>
+                  <span className='text-[10px] text-gray-400 dark:text-gray-500 italic'>
                     No services selected
                   </span>
                 )}
