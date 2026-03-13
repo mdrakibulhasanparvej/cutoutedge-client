@@ -7,19 +7,20 @@ import { Check, ChevronsRight, PauseCircle, PlayCircle, TimerIcon, XCircle } fro
 import ActionButton from '../shared/action-button/ActionButton';
 import toast from 'react-hot-toast';
 import RejectionModal from '../shared/modals/RejectionModal';
+import { useMutation } from '@tanstack/react-query';
 
 const WorkActions = ({ file, orderId, refetch }) => {
     const rejectionModalRef = useRef(null)
     const [rejectionReason, setRejectionReason] = useState("")
     const { userId, role } = useUser()
     const axiosSecure = useAxiosSecure()
+
     const {
         currentStage,
         assignedTo,
         filename,
         stageLogs,
     } = file;
-
 
     const currentStageLog = [...stageLogs].reverse().find(s => s.stage === currentStage)
     const isTimerRunning = currentStageLog?.timer?.isRunning
@@ -36,260 +37,217 @@ const WorkActions = ({ file, orderId, refetch }) => {
 
     const isAssignedUser = userId === assignedTo?._id
 
-    const handleStartDesigning = async () => {
-        const data = { orderId, filename, userId }
-        const result = await MyConfirmAlert({
-            title: "Start Designing?",
-            text: "Your work timer will start upon confirmation.",
-            icon: "info"
-        })
-        if (result.isConfirmed) {
-            try {
-                await axiosSecure.post('/files/start', data)
-                MyAlert({ title: "Success", text: "Design started successfully", icon: "success" })
+    // Mutations
+    const startDesignMutation = useMutation({
+        mutationFn: (data) => axiosSecure.post('/files/start', data),
+        onSuccess: () => {
+            MyAlert({ title: "Success", text: "Design started successfully", icon: "success" })
+            refetch()
+        },
+        onError: (err) => {
+            console.log(err.message)
+            MyAlert({ title: "Error", text: "Something went wrong", icon: "error" })
+        }
+    })
+
+    const finishDesignMutation = useMutation({
+        mutationFn: (data) => axiosSecure.post('/files/finish', data),
+        onSuccess: (res) => {
+            if (res.data.success) {
+                MyAlert({ title: "Success", text: "File submitted for QC1" })
                 refetch()
-            } catch (err) {
-                console.log(err.message)
-                MyAlert({ title: "Error", text: "Something went wrong", icon: "error" })
             }
+        },
+        onError: (err) => {
+            console.log(err.message)
+            MyAlert({ title: "Error", text: "Something went wrong", icon: "error" })
         }
-    }
+    })
 
-    const handleFinishDesigning = async () => {
-        const data = { orderId, filename, targetStage: "qc1", role }
-        const result = await MyConfirmAlert({
-            title: "Submit Work?",
-            text: "File will be moved to quality check 1."
-        })
-        if (result.isConfirmed) {
-            try {
-                const res = await axiosSecure.post('/files/finish', data)
-                if (res.data.success) {
-                    MyAlert({ title: "Success", text: "File submitted for QC1" })
-                    refetch()
-                }
-            } catch (err) {
-                console.log(err.message)
-                MyAlert({ title: "Error", text: "Something went wrong", icon: "error" })
-            }
+    const startQCMutation = useMutation({
+        mutationFn: (data) => axiosSecure.post('/files/qc/start', data),
+        onSuccess: (_, variables) => {
+            MyAlert({ title: "Success", text: `Started ${variables.stageName}`, icon: "success" })
+            refetch()
+        },
+        onError: (err) => {
+            console.log(err.message)
+            MyAlert({ title: "Error", text: "Something went wrong", icon: "error" })
         }
-    }
+    })
 
-    const handleStartQC = async (stageName) => {
-        const data = { orderId, filename, userId }
-        const result = await MyConfirmAlert({
-            title: `Start ${stageName}?`,
-            text: "Your work timer will start upon confirmation.",
-            icon: "info"
-        })
-        if (result.isConfirmed) {
-            try {
-                await axiosSecure.post('/files/qc/start', data)
-                MyAlert({ title: "Success", text: `Started ${stageName}`, icon: "success" })
+    const finishQCMutation = useMutation({
+        mutationFn: (data) => axiosSecure.post('/files/qc/finish', data),
+        onSuccess: (res) => {
+            if (res.data.success) {
+                MyAlert({ title: "Success", text: "File approved successfully" })
                 refetch()
-            } catch (err) {
-                console.log(err.message)
-                MyAlert({ title: "Error", text: "Something went wrong", icon: "error" })
             }
+        },
+        onError: (err) => {
+            console.log(err.message)
+            MyAlert({ title: "Error", text: "Something went wrong", icon: "error" })
         }
-    }
+    })
 
-    const handleFinishQC = async (targetStage) => {
-        let msgTarget = targetStage === 'done' ? 'completed stage' : targetStage;
-        const data = { orderId, filename, targetStage, role }
-        const result = await MyConfirmAlert({
-            title: "Approve File?",
-            text: `File will be moved to ${msgTarget}.`
-        })
-        if (result.isConfirmed) {
-            try {
-                const res = await axiosSecure.post('/files/qc/finish', data)
-                if (res.data.success) {
-                    MyAlert({ title: "Success", text: "File approved successfully" })
-                    refetch()
-                }
-            } catch (err) {
-                console.log(err.message)
-                MyAlert({ title: "Error", text: "Something went wrong", icon: "error" })
-            }
-        }
-    }
-
-    const handleReject = async () => {
-        const data = {
-            filename,
-            orderId,
-            reason: rejectionReason
-        }
-        try {
-            const res = await axiosSecure.patch('/files/reject', data)
+    const rejectMutation = useMutation({
+        mutationFn: (data) => axiosSecure.patch('/files/reject', data),
+        onSuccess: (res) => {
             if (res.data.success) {
                 rejectionModalRef.current.close()
                 setRejectionReason("")
                 MyAlert({ title: "Success", text: "File rejected" })
                 refetch()
             }
-        } catch (err) {
+        },
+        onError: (err) => {
             console.log(err.message)
             MyAlert({ title: "Error", text: "Something went wrong", icon: "error" })
         }
+    })
+
+    const pauseTimerMutation = useMutation({
+        mutationFn: (data) => axiosSecure.post('/files/pause', data),
+        onSuccess: () => {
+            toast.success("Timer Paused", { icon: <TimerIcon />, position: "top-right", style: { backgroundColor: '#0ea5e9', color: '#fff' } })
+            refetch()
+        },
+        onError: (err) => {
+            console.log(err.message)
+            toast.error("Failed to pause timer", { icon: <TimerIcon />, position: "top-right", style: { backgroundColor: '#0ea5e9', color: '#fff' } })
+        }
+    })
+
+    const resumeTimerMutation = useMutation({
+        mutationFn: (data) => axiosSecure.post('/files/resume', data),
+        onSuccess: () => {
+            toast.success("Timer Started", { icon: <TimerIcon />, position: "top-right", style: { backgroundColor: '#0ea5e9', color: '#fff' } })
+            refetch()
+        },
+        onError: (err) => {
+            console.log(err.message)
+            toast.error("Failed to start timer", { icon: <TimerIcon />, position: "top-right", style: { backgroundColor: '#0ea5e9', color: '#fff' } })
+        }
+    })
+
+    // Handlers
+    const handleStartDesigning = async () => {
+        const result = await MyConfirmAlert({ title: "Start Designing?", text: "Your work timer will start upon confirmation.", icon: "info" });
+        if (result.isConfirmed) startDesignMutation.mutate({ orderId, filename, userId });
     }
 
-    const handlePauseTimer = async () => {
-        try {
-            await axiosSecure.post(`/files/pause`, { orderId, filename, userId })
-            toast.success("Timer Paused",
-                {
-                    icon: <TimerIcon />,
-                    position: "top-right",
-                    style: {
-                        backgroundColor: '#0ea5e9',
-                        color: '#fff',
-                    }
-                })
-            refetch()
-        } catch (err) {
-            console.log(err.message)
-            toast.error("Failed to pause timer", {
-                icon: <TimerIcon />,
-                position: "top-right",
-                style: {
-                    backgroundColor: '#0ea5e9',
-                    color: '#fff',
-                }
-            })
-        }
+    const handleFinishDesigning = async () => {
+        const result = await MyConfirmAlert({ title: "Submit Work?", text: "File will be moved to quality check 1." });
+        if (result.isConfirmed) finishDesignMutation.mutate({ orderId, filename, targetStage: "qc1", role });
     }
 
-    const handleStartTimer = async () => {
-        try {
-            await axiosSecure.post(`/files/resume`, { orderId, filename, userId })
-            toast.success("Timer Started",
-                {
-                    icon: <TimerIcon />,
-                    position: "top-right",
-                    style: {
-                        backgroundColor: '#0ea5e9',
-                        color: '#fff',
-                    }
-                })
-            refetch()
-        } catch (err) {
-            console.log(err.message)
-            toast.success("Failed to start timer",
-                {
-                    icon: <TimerIcon />,
-                    position: "top-right",
-                    style: {
-                        backgroundColor: '#0ea5e9',
-                        color: '#fff',
-                    }
-                })
-        }
+    const handleStartQC = async (stageName) => {
+        const result = await MyConfirmAlert({ title: `Start ${stageName}?`, text: "Your work timer will start upon confirmation.", icon: "info" });
+        if (result.isConfirmed) startQCMutation.mutate({ orderId, filename, userId, stageName });
+    }
+
+    const handleFinishQC = async (targetStage) => {
+        const msgTarget = targetStage === 'done' ? 'completed stage' : targetStage;
+        const result = await MyConfirmAlert({ title: "Approve File?", text: `File will be moved to ${msgTarget}.` });
+        if (result.isConfirmed) finishQCMutation.mutate({ orderId, filename, targetStage, role });
+    }
+
+    const handleReject = () => {
+        rejectMutation.mutate({ filename, orderId, reason: rejectionReason });
     }
 
     if (isAdminOrIncharge) return null;
 
+    // Simplify rendering QC actions
+    const renderQCActions = (stageName, nextStage) => {
+        if (!assignedTo) {
+            return (
+                <ActionButton
+                    onClick={() => handleStartQC(stageName)}
+                    icon={ChevronsRight}
+                    text={`Start ${stageName}`}
+                    variant="success"
+                    iconPosition="right"
+                    isLoading={startQCMutation.isPending}
+                />
+            );
+        }
+
+        if (isAssignedUser) {
+            return (
+                <div className="flex gap-2 w-full">
+                    <ActionButton
+                        onClick={() => handleFinishQC(nextStage)}
+                        icon={Check}
+                        text="Approve"
+                        variant="success"
+                        isLoading={finishQCMutation.isPending}
+                        disabled={rejectMutation.isPending}
+                    />
+                    <ActionButton
+                        onClick={() => rejectionModalRef.current.showModal()}
+                        icon={XCircle}
+                        text="Reject"
+                        variant="reject"
+                        disabled={finishQCMutation.isPending || rejectMutation.isPending}
+                    />
+                </div>
+            );
+        }
+        return null;
+    }
+
     return (
         <div className="w-full space-y-1">
 
-            {/* designing Actions */}
-            {isDesigner && (
-                <div>
-                    {pending && (
-                        <ActionButton
-                            onClick={handleStartDesigning}
-                            icon={ChevronsRight}
-                            text="Start Designing"
-                            variant="success"
-                            iconPosition="right"
-                        />
-                    )}
-                    {isInProgress && (
-                        <ActionButton
-                            onClick={handleFinishDesigning}
-                            icon={Check}
-                            text="Finish Designing"
-                            variant="success"
-                        />
-                    )}
-                </div>
+            {/* Designing Actions */}
+            {isDesigner && pending && (
+                <ActionButton
+                    onClick={handleStartDesigning}
+                    icon={ChevronsRight}
+                    text="Start Designing"
+                    variant="success"
+                    iconPosition="right"
+                    isLoading={startDesignMutation.isPending}
+                />
+            )}
+
+            {isDesigner && isInProgress && isAssignedUser && (
+                <ActionButton
+                    onClick={handleFinishDesigning}
+                    icon={Check}
+                    text="Finish Designing"
+                    variant="success"
+                    isLoading={finishDesignMutation.isPending}
+                />
             )}
 
             {/* QC1 Actions */}
-            {isQC1 && isInQC1 && (
-                <div>
-                    {!assignedTo ? (
-                        <ActionButton
-                            onClick={() => handleStartQC('QC1')}
-                            icon={ChevronsRight}
-                            text="Start QC1"
-                            variant="success"
-                            iconPosition="right"
-                        />
-                    ) : (
-                        <div className="flex gap-2 w-full">
-                            <ActionButton
-                                onClick={() => handleFinishQC('qc2')}
-                                icon={Check}
-                                text="Approve"
-                                variant="success"
-                            />
-                            <ActionButton
-                                onClick={() => { rejectionModalRef.current.showModal() }}
-                                icon={XCircle}
-                                text="Reject"
-                                variant="reject"
-                            />
-                        </div>
-                    )}
-                </div>
-            )}
+            {isQC1 && isInQC1 && renderQCActions('QC1', 'qc2')}
 
-            {isQC2 && isInQC2 && (
-                <div>
-                    {!assignedTo ? (
-                        <ActionButton
-                            onClick={() => handleStartQC('QC2')}
-                            icon={ChevronsRight}
-                            text="Start QC2"
-                            variant="success"
-                            iconPosition="right"
-                        />
-                    ) : (
-                        <div className="flex gap-2 w-full">
-                            <ActionButton
-                                onClick={() => handleFinishQC('done')}
-                                icon={Check}
-                                text="Approve"
-                                variant="success"
-                            />
-                            <ActionButton
-                                onClick={() => { rejectionModalRef.current.showModal() }}
-                                icon={XCircle}
-                                text="Reject"
-                                variant="reject"
-                            />
-                        </div>
-                    )}
-                </div>
-            )}
+            {/* QC2 Actions */}
+            {isQC2 && isInQC2 && renderQCActions('QC2', 'done')}
 
+            {/* Timer Actions */}
             {isAssignedUser && (
                 <div>
                     {!isTimerRunning ? (
                         <ActionButton
-                            onClick={handleStartTimer}
+                            onClick={() => resumeTimerMutation.mutate({ orderId, filename, userId })}
                             icon={PlayCircle}
                             text="Start Timer"
                             variant="primary"
+                            isLoading={resumeTimerMutation.isPending}
+                            disabled={pauseTimerMutation.isPending}
                         />
                     ) : (
                         <ActionButton
-                            onClick={handlePauseTimer}
+                            onClick={() => pauseTimerMutation.mutate({ orderId, filename, userId })}
                             icon={PauseCircle}
                             text="Pause Timer"
                             variant="warning"
+                            isLoading={pauseTimerMutation.isPending}
+                            disabled={resumeTimerMutation.isPending}
                         />
                     )}
                 </div>
@@ -302,6 +260,7 @@ const WorkActions = ({ file, orderId, refetch }) => {
                 setRejectionReason={setRejectionReason}
                 handleReject={handleReject}
                 filename={filename}
+                isRejecting={rejectMutation.isPending}
             />
         </div>
     );

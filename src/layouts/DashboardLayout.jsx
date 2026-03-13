@@ -70,11 +70,9 @@ const DashboardLayout = () => {
             label={sidebarOpen ? "Statistics" : ""}
             address='/dashboard'
           />
-          {role === "admin" && <AdminMenu sidebarOpen={sidebarOpen} />}
-          {role === "designer" && <DesignerMenu sidebarOpen={sidebarOpen} />}
-          {role === "incharge" && <AdminMenu sidebarOpen={sidebarOpen} />}
-          {role === "qc1" ||
-            (role === "qc2" && <DesignerMenu sidebarOpen={sidebarOpen} />)}
+          {["admin", "incharge"].includes(role) && <AdminMenu sidebarOpen={sidebarOpen} />}
+
+          {['designer', 'qc1', 'qc2'].includes(role) && <DesignerMenu sidebarOpen={sidebarOpen} />}
         </div>
 
         {/* Sidebar Footer */}

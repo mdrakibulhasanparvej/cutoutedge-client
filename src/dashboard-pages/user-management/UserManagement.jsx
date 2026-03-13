@@ -51,7 +51,7 @@ const UserManagement = () => {
     toggleStatusMutation.mutate({ id, newStatus });
   };
 
-  const handleDeleteUser = async (id, userName) => {
+  const handleDeleteUser = async (id, userName) => { 
     const result = await MyConfirmAlert({
       title: "Delete User",
       text: `Are you sure you want to delete "${userName}"? This action cannot be undone.`,
@@ -75,7 +75,7 @@ const UserManagement = () => {
             <tr className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
               <th className="text-gray-800 dark:text-gray-100">Name</th>
               <th className="text-gray-800 dark:text-gray-100">Email</th>
-              <th className="text-gray-800 dark:text-gray-100">Role</th>
+              <th className="text-gray-800 dark:text-gray-100 text-center">Role</th>
               <th className="text-gray-800 dark:text-gray-100">Status</th>
               <th className="text-gray-800 dark:text-gray-100">Action</th>
             </tr>
@@ -96,8 +96,8 @@ const UserManagement = () => {
                   </div>
                 </td>
                 <td className="text-gray-600 dark:text-gray-300">{u.email}</td>
-                <td className="text-gray-600 dark:text-gray-300">
-                  <span className="badge badge-info">{u.role}</span>
+                <td className="text-gray-600 dark:text-gray-300 w-32">
+                  <span className="badge badge-info w-full">{u.role}</span>
                 </td>
                 <td className="text-gray-600 dark:text-gray-300">
                   <span

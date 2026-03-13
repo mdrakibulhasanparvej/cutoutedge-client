@@ -1,6 +1,7 @@
 import React from 'react';
+import LoadingSpinner from '../../Loading/LoadingSpinner';
 
-const ActionButton = ({ onClick, icon: Icon, text, variant = 'primary', className = '', fullWidth = true, disabled = false, iconPosition = 'left' }) => {
+const ActionButton = ({ onClick, icon: Icon, text, variant = 'primary', className = '', fullWidth = true, disabled = false, isLoading = false, iconPosition = 'left' }) => {
 
     const baseClasses = 'flex flex-1 items-center justify-center px-3 py-1 gap-1.5 text-[13px] font-bold rounded-lg transition-all active:scale-95 shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed';
     const widthClass = fullWidth ? 'w-full' : '';
@@ -18,12 +19,13 @@ const ActionButton = ({ onClick, icon: Icon, text, variant = 'primary', classNam
     return (
         <button
             onClick={onClick}
-            disabled={disabled}
+            disabled={disabled || isLoading}
             className={`${baseClasses} ${widthClass} ${styleClass} ${className}`}
         >
-            {Icon && iconPosition === 'left' && <Icon size={16} />}
+            {isLoading && <LoadingSpinner variant='inline' />}
+            {Icon && !isLoading && iconPosition === 'left' && <Icon size={16} />}
             <span>{text}</span>
-            {Icon && iconPosition === 'right' && <Icon size={16} />}
+            {Icon && !isLoading && iconPosition === 'right' && <Icon size={16} />}
         </button>
     );
 };

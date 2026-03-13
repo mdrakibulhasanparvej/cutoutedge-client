@@ -4,19 +4,9 @@ import { useNavigate, useParams } from "react-router";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import FileDetailsCard from "./FileDetailsCard";
 import Deadline from "../shared/timers/Deadline";
-import {
-  ChevronLeft,
-  Clock,
-  Share2,
-  Edit2,
-  Layers,
-  FileText,
-  Tag,
-  Briefcase,
-  User,
-} from "lucide-react";
+import { ChevronLeft, Clock, Share2, Edit2, Layers, FileText, Tag, Briefcase, User } from "lucide-react";
 import useUser from "../../hooks/useUser";
-import StageLogModal from "./StageLogModal";
+import StageLogModal from "../shared/modals/StageLogModal";
 
 const ProjectDetails = () => {
   const [selectedLogs, setSelectedLogs] = useState(null);
@@ -145,10 +135,10 @@ const ProjectDetails = () => {
                     {cat}
                   </span>
                 )) || (
-                  <span className='text-gray-400 dark:text-gray-600 italic text-[11px]'>
-                    No category
-                  </span>
-                )}
+                    <span className='text-gray-400 dark:text-gray-600 italic text-[11px]'>
+                      No category
+                    </span>
+                  )}
               </div>
             </div>
 
@@ -262,7 +252,9 @@ const ProjectDetails = () => {
                     refetch={refetch}
                     onViewLogs={(logs) => {
                       setSelectedLogs(logs);
-                      document.getElementById("logs_modal").showModal();
+                      setTimeout(() => {
+                        document.getElementById("logs_modal")?.showModal();
+                      }, 10);
                     }}
                   />
                 ))

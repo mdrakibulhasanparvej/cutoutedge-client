@@ -6,25 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-import {
-  Briefcase,
-  Network,
-  Building2,
-  MapPin,
-  Mail,
-  Plus,
-  Trophy,
-  ClipboardList,
-  Users,
-  PlayCircle,
-  CheckCircle,
-  XCircle,
-  Phone,
-  FileText,
-  IdCard,
-  Calendar,
-  UserCheck,
-} from "lucide-react";
+import { Briefcase, Network, Building2, MapPin, Mail, Plus, Trophy, ClipboardList, Users, PlayCircle, CheckCircle, XCircle, Phone, FileText, IdCard, Calendar, UserCheck } from "lucide-react";
 
 import useUser from "../../hooks/useUser";
 import useAuth from "../../hooks/useAuth";
@@ -33,9 +15,9 @@ import useTitle from "../../hooks/useTitle";
 import useBDLocation from "../../hooks/useBDLocation";
 
 import AddressSelect from "./AddressSelect";
-import Pending from "../Design-online/pending/Pending";
-import InProgress from "../Design-online/in-progress/InProgress";
 import StatsCard from "../../components/shared/Cards/StatsCard";
+import Pending from "../../components/design-tabs/pending/Pending";
+import InProgress from "../../components/design-tabs/in-progress/InProgress";
 
 const InfoForm = ({ label, value }) => (
   <div className='bg-white p-3 rounded-xl border-gray-500 shadow-sm'>
@@ -77,7 +59,7 @@ const Profile = () => {
   const axiosUsers = useAxios();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [editingSection, setEditingSection] = useState("basic"); // basic, employee, address
+  const [editingSection, setEditingSection] = useState("basic");
   const [preview, setPreview] = useState("");
   const isInitialResetDone = useRef(false);
 
@@ -871,7 +853,7 @@ const Profile = () => {
 
               {/* Reporting Line / Organization */}
               <div className='bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-8 shadow-sm'>
-                <h3 className='font-bold text-lg mb-8 text-gray-700 dark:text-gray-300 uppercase tracking-widest text-xs'>
+                <h3 className='font-bold text-lg mb-8 text-gray-700 dark:text-gray-300 uppercase tracking-widest'>
                   Organization
                 </h3>
                 <div className='flex flex-col items-center py-10 bg-gray-50 dark:bg-gray-700/30 rounded-2xl border border-gray-200 dark:border-gray-600'>
