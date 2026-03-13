@@ -1,36 +1,16 @@
 import React, { useState } from "react";
-// আইকন ইমপোর্ট (lucide-react থেকে)
-import {
-  Clock, // Pending এর জন্য
-  PlayCircle, // InProgress এর জন্য
-  SearchCheck, // QualityControl এর জন্য
-  ShieldCheck, // QualityControl2 এর জন্য
-  CheckCircle2, // Finished এর জন্য
-  MoreHorizontal,
-  Plus,
-  Users,
-  Share2,
-  Zap,
-  Maximize2,
-  KanbanSquare,
-} from "lucide-react";
-import Pending from "./pending/Pending";
-import InProgress from "./in-progress/InProgress";
-import QualityControl from "./qc-1/QualityControl";
-import QualityControl2 from "./qc-2/QualityControl2";
-import Finished from "./finished/Finished";
+import { Clock, PlayCircle, SearchCheck, ShieldCheck, CheckCircle2, KanbanSquare } from "lucide-react";
 
-// import Pending from "./Pending";
-// import InProgress from "./in-progress/InProgress";
-// import QualityControl from "./qc-1/QualityControl";
-// import QualityControl2 from "./qc-2/QualityControl2";
-// import Finished from "./finished/Finished";
+import Pending from "../../components/design-tabs/pending/Pending";
+import InProgress from "../../components/design-tabs/in-progress/InProgress";
+import QualityControl from "../../components/design-tabs/qc-1/QualityControl";
+import QualityControl2 from "../../components/design-tabs/qc-2/QualityControl2";
+import Finished from "../../components/design-tabs/finished/Finished";
 
 const DesignOnline = () => {
-  // ডিফল্ট ট্যাব 'Pending'
+
   const [activeTab, setActiveTab] = useState("Pending");
 
-  // কম্পোনেন্টগুলোকে নাম অনুযায়ী ম্যাপ করা হয়েছে
   const tabData = [
     { label: "Pending", icon: Clock, Comp: Pending },
     { label: "InProgress", icon: PlayCircle, Comp: InProgress },
@@ -39,7 +19,6 @@ const DesignOnline = () => {
     { label: "Finished", icon: CheckCircle2, Comp: Finished },
   ];
 
-  // Active Component বের করা
   const activeItem = tabData.find((t) => t.label === activeTab);
   const ActiveComp = activeItem ? activeItem.Comp : Pending;
 
@@ -67,19 +46,6 @@ const DesignOnline = () => {
             </div>
           </div>
         </div>
-
-        {/* Right Side Tools */}
-        {/* <div className='flex items-center gap-3 text-gray-500'>
-          <button className='p-2 hover:bg-gray-100 rounded transition-colors'>
-            <Share2 size={20} />
-          </button>
-          <button className='p-2 hover:bg-gray-100 rounded transition-colors'>
-            <Zap size={20} />
-          </button>
-          <button className='p-2 hover:bg-gray-100 rounded transition-colors'>
-            <Maximize2 size={20} />
-          </button>
-        </div> */}
       </div>
 
       {/* --- Tab Navigation Bar (Updated) --- */}
@@ -93,14 +59,11 @@ const DesignOnline = () => {
               <button
                 key={tab.label}
                 onClick={() => setActiveTab(tab.label)}
-                className={`
-                    group cursor-pointer  flex items-center gap-2 py-3 border-b-[3px] transition-all whitespace-nowrap text-[15px]
-                    ${
-                      isActive
-                        ? "border-[#0F83B2] text-[#0F83B2] font-medium" // Active: Blue color & border
-                        : "border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-t-md px-1" // Inactive
-                    }
-                `}>
+                className={`group cursor-pointer  flex items-center gap-2 py-3 border-b-[3px] transition-all whitespace-nowrap text-[15px]
+                    ${isActive
+                    ? "border-[#0F83B2] text-[#0F83B2] font-medium"
+                    : "border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-t-md px-1"
+                  }`}>
                 <Icon
                   size={18}
                   className={
@@ -113,19 +76,6 @@ const DesignOnline = () => {
               </button>
             );
           })}
-
-          {/* "More" Dropdown & Plus Button (Visual Only) */}
-          {/* <div className='flex items-center gap-2 ml-auto pl-4'>
-            <button className='flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded text-sm font-medium transition-colors'>
-              More{" "}
-              <span className='bg-gray-300 text-gray-800 text-xs px-1.5 rounded-full'>
-                3
-              </span>
-            </button>
-            <button className='p-1.5 hover:bg-gray-200 rounded text-gray-600'>
-              <Plus size={20} />
-            </button>
-          </div> */}
         </div>
       </div>
 

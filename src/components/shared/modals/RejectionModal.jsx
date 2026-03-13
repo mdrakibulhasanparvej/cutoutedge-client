@@ -1,7 +1,7 @@
-import { Send, XCircle } from 'lucide-react';
+import { Send, XCircle, Loader2 } from 'lucide-react';
 import React from 'react';
 
-const RejectionModal = ({ rejectionModalRef, rejectionReason, setRejectionReason, handleReject, filename }) => {
+const RejectionModal = ({ rejectionModalRef, rejectionReason, setRejectionReason, handleReject, filename, isRejecting }) => {
 
     return (
         <dialog ref={rejectionModalRef} className="modal modal-bottom sm:modal-middle">
@@ -18,20 +18,27 @@ const RejectionModal = ({ rejectionModalRef, rejectionReason, setRejectionReason
                     placeholder="Type rejection reason here..."
                     value={rejectionReason}
                     onChange={(e) => setRejectionReason(e.target.value)}
+                    disabled={isRejecting}
                 ></textarea>
 
                 <div className="modal-action">
                     <button
                         className="btn btn-ghost"
                         onClick={() => rejectionModalRef.current.close()}
+                        disabled={isRejecting}
                     >
                         Cancel
                     </button>
                     <button
                         className="btn bg-red-600 hover:bg-red-700 text-white border-none gap-2"
                         onClick={handleReject}
+                        disabled={isRejecting}
                     >
-                        <Send size={18} /> Submit Rejection
+                        {isRejecting ? (
+                            <><Loader2 size={18} className="animate-spin" /> Rejecting...</>
+                        ) : (
+                            <><Send size={18} /> Submit Rejection</>
+                        )}
                     </button>
                 </div>
             </div>
