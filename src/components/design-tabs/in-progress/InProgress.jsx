@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  FiClock,
-  FiEye,
-  FiImage,
-  FiLoader,
-  FiMoreVertical,
-  FiXCircle,
-} from "react-icons/fi";
+import { FiClock, FiEye, FiImage } from "react-icons/fi";
 import { calculateTime } from "../../../utils/calculateTime";
 import { Link } from "react-router";
 import useOrders from "../../../hooks/useOrders";

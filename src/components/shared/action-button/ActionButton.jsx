@@ -22,7 +22,7 @@ const ActionButton = ({ onClick, icon: Icon, text, variant = 'primary', classNam
             disabled={disabled || isLoading}
             className={`${baseClasses} ${widthClass} ${styleClass} ${className}`}
         >
-            {isLoading && <LoadingSpinner variant='inline' />}
+            {isLoading && <LoadingSpinner variant='inline' size='xs' />}
             {Icon && !isLoading && iconPosition === 'left' && <Icon size={16} />}
             <span>{text}</span>
             {Icon && !isLoading && iconPosition === 'right' && <Icon size={16} />}
