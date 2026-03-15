@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  FiClock,
-  FiDroplet,
-  FiEye,
-  FiImage,
-  FiMoreVertical,
-} from "react-icons/fi";
+import { FiClock, FiDroplet, FiEye, FiImage } from "react-icons/fi";
 import { Link } from "react-router";
 import { calculateTime } from "../../../utils/calculateTime";
 import Deadline from "../../../components/shared/timers/Deadline";

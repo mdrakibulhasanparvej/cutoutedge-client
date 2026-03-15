@@ -7,9 +7,10 @@ import { Check, ChevronsRight, PauseCircle, PlayCircle, TimerIcon, XCircle } fro
 import ActionButton from '../shared/action-button/ActionButton';
 import toast from 'react-hot-toast';
 import RejectionModal from '../shared/modals/RejectionModal';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const WorkActions = ({ file, orderId, refetch }) => {
+    const queryClient = useQueryClient()
     const rejectionModalRef = useRef(null)
     const [rejectionReason, setRejectionReason] = useState("")
     const { userId, role } = useUser()
@@ -41,6 +42,7 @@ const WorkActions = ({ file, orderId, refetch }) => {
     const startDesignMutation = useMutation({
         mutationFn: (data) => axiosSecure.post('/files/start', data),
         onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["orders"] })
             MyAlert({ title: "Success", text: "Design started successfully", icon: "success" })
             refetch()
         },
@@ -54,6 +56,7 @@ const WorkActions = ({ file, orderId, refetch }) => {
         mutationFn: (data) => axiosSecure.post('/files/finish', data),
         onSuccess: (res) => {
             if (res.data.success) {
+                queryClient.invalidateQueries({ queryKey: ["orders"] })
                 MyAlert({ title: "Success", text: "File submitted for QC1" })
                 refetch()
             }
@@ -67,6 +70,7 @@ const WorkActions = ({ file, orderId, refetch }) => {
     const startQCMutation = useMutation({
         mutationFn: (data) => axiosSecure.post('/files/qc/start', data),
         onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: ["orders"] })
             MyAlert({ title: "Success", text: `Started ${variables.stageName}`, icon: "success" })
             refetch()
         },
@@ -80,6 +84,7 @@ const WorkActions = ({ file, orderId, refetch }) => {
         mutationFn: (data) => axiosSecure.post('/files/qc/finish', data),
         onSuccess: (res) => {
             if (res.data.success) {
+                queryClient.invalidateQueries({ queryKey: ["orders"] })
                 MyAlert({ title: "Success", text: "File approved successfully" })
                 refetch()
             }
@@ -94,6 +99,7 @@ const WorkActions = ({ file, orderId, refetch }) => {
         mutationFn: (data) => axiosSecure.patch('/files/reject', data),
         onSuccess: (res) => {
             if (res.data.success) {
+                queryClient.invalidateQueries({ queryKey: ["orders"] })
                 rejectionModalRef.current.close()
                 setRejectionReason("")
                 MyAlert({ title: "Success", text: "File rejected" })
@@ -223,10 +229,10 @@ const WorkActions = ({ file, orderId, refetch }) => {
             )}
 
             {/* QC1 Actions */}
-            {isQC1 && isInQC1 && renderQCActions('QC1', 'qc2')}
+            {(isQC1 || isDesigner) && isInQC1 && renderQCActions('QC1', 'qc2')}
 
             {/* QC2 Actions */}
-            {isQC2 && isInQC2 && renderQCActions('QC2', 'done')}
+            {(isQC2 || isDesigner) && isInQC2 && renderQCActions('QC2', 'done')}
 
             {/* Timer Actions */}
             {isAssignedUser && (

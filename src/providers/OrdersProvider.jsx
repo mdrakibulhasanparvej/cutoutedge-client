@@ -15,9 +15,7 @@ const OrdersProvider = ({ children }) => {
             const res = await axiosSecure.get(`/files/orders`)
             return res.data.data;
         },
-        staleTime: 60000,
     });
-
 
     const noOrders = orders.length === 0
 

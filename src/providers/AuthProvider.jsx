@@ -17,24 +17,44 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const createUser = (email, password) => {
+  const createUser = async (email, password) => {
     setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
+    return createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        setUser(userCredential.user);
+        return userCredential;
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   // const signInGoogle = () => {
   //   setLoading(true);
   //   return signInWithPopup(auth, gooogleProvider);
   // };
-  const logIn = (email, password) => {
+  const logIn = async (email, password) => {
     setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        setUser(userCredential.user);
+        return userCredential;
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   const updateUserProfile = (profile) => {
     return updateProfile(auth.currentUser, profile);
   };
-  const logOut = () => {
+  const logOut = async () => {
     setLoading(true);
-    return signOut(auth);
+    return signOut(auth)
+      .then(() => {
+        setUser(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
